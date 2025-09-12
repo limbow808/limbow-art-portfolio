@@ -1,0 +1,45 @@
+
+<%- include("header", {title: title}); %>
+
+<body>
+    <div class = "wrapper">
+
+        <%- include("nav"); %>
+
+        <div class="main" role="main" id = "main">
+            <div class = "content overview">
+                <h1> Commissioned art </h1>
+                <div class="commissions-container">
+                    <div class="commissions-item">
+                        <a href="/commissions/Holmesick">
+                            <picture class="commissions-picture">
+                                <source media="(min-width: 3000px)" srcset="http://localhost:8080/dbwebb/design/me/kmom10/design-project/image/commissions/Holmesick/4.png?w=1000">
+                                <source media="(max-width: 900px)" srcset="http://localhost:8080/dbwebb/design/me/kmom10/design-project/image/commissions/Holmesick/4.png?w=500">
+                                <img src="http://localhost:8080/dbwebb/design/me/kmom10/design-project/image/commissions/Holmesick/4.png?w=750" alt="Holmsick commission">
+                            </picture>
+                        </a>
+                    </div>
+                    <div class="commissions-item">
+                        <a href="http://localhost:8080/dbwebb/design/me/kmom10/design-project/highlight/commissions/Sam">
+                            <picture class="commissions-picture">
+                                <source media="(min-width: 3000px)" srcset="http://localhost:8080/dbwebb/design/me/kmom10/design-project/image/commissions/Sam/2.png?w=1000">
+                                <source media="(max-width: 900px)" srcset="http://localhost:8080/dbwebb/design/me/kmom10/design-project/image/commissions/Sam/2.png?w=500">
+                                <img src="http://localhost:8080/dbwebb/design/me/kmom10/design-project/image/commissions/Sam/2.png?w=750" alt="Sam commission">
+                            </picture>
+                        </a>
+                    </div>
+                    <div class="commissions-item">
+                        <a href="http://localhost:8080/dbwebb/design/me/kmom10/design-project/highlight/commissions/WILK">
+                            <picture class="commissions-picture">
+                                <source media="(min-width: 3000px)" srcset="http://localhost:8080/dbwebb/design/me/kmom10/design-project/image/commissions/WILK/6.png?w=1000">
+                                <source media="(max-width: 900px)" srcset="http://localhost:8080/dbwebb/design/me/kmom10/design-project/image/commissions/WILK/6.png?w=500">
+                                <img src="http://localhost:8080/dbwebb/design/me/kmom10/design-project/image/commissions/WILK/6.png?w=750" alt="WILK commission">
+                            </picture>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include("footer"); %>
+    </div>
+</body>

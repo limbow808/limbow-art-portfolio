@@ -1,0 +1,63 @@
+.slide {
+    overflow-y: hidden !important;
+    transition: height 0.5s ease-in !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.nav ul {
+    display: flex;
+    justify-content: flex-end;
+    /* padding: 1em 0; */
+    list-style: none;
+}
+
+.nav a, .nav-toggle {
+    /* color: #333; */
+}
+
+.nav-toggle {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .header {
+        flex-direction: column;
+    }
+    /* .nav ul {
+        display: flex;
+        flex-direction: row;
+    } */
+    /* .nav ul {
+        flex-direction: column;
+        padding-bottom: 1em;
+        padding: 0;
+    } */
+
+    /* .nav ul li {
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+    } */
+
+    .nav ul li a {
+        display: block;
+        padding: 0.5em 0;
+    }
+
+    .js .nav-toggle {
+        display: block;
+        float: right;
+        /* width: 2em; */
+        /* margin: 0.6667em 0; */
+        margin-right: .4rem;
+        font-size: 1.5rem;
+        line-height: 2em;
+        text-align: center;
+        cursor: pointer;
+    }
+
+
+}

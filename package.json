@@ -1,0 +1,30 @@
+{
+  "name": "website_limbow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "npx sass --load-path=node_modules public/scss/style.scss public/css/style.css",
+    "watch:css": "sass --watch public/scss/style.scss:public/css/style.css",
+    "build": "npm install && npm run build:css && node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lvndquist/website_limbow.git"
+  },
+  "author": "lvndquist",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lvndquist/website_limbow/issues"
+  },
+  "homepage": "https://github.com/lvndquist/website_limbow#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "normalize.css": "^8.0.1",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "sass": "^1.86.0"
+  }
+}

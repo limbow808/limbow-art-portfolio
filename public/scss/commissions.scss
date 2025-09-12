@@ -1,0 +1,81 @@
+img,
+embed,
+object,
+video {
+  max-width: 100%;
+}
+
+.commissions-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  row-gap: 0.4rem;
+  column-gap: 0.4rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+  //   justify-content: center;
+  //   align-items: center;
+  //   text-align: center;
+}
+
+.back {
+  transition: transform 0.3s ease;
+  font-size: 1.4rem;
+}
+
+.back:hover {
+  transform: scale(1.1);
+}
+
+.commissions-item {
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+  
+.commissions-item:hover {
+  transform: scale(1.02);
+}
+
+.commission-artist-title a {
+  font-size: 1rem;
+}
+
+.commissions-picture {
+  height: auto;
+  line-height: 0;
+  border-radius: 3px;
+  width: auto;
+}
+
+.commission-name {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .commissions-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .commissions-item:hover {
+    transform: none;
+  }
+
+  .back:hover {
+    transform: none;
+  }
+
+  .commissions-container {
+    padding-bottom: 5rem;
+  }
+}
+
+@media (min-width: 3000px) {
+  .commissions-item:hover {
+    transform: none;
+  }
+}
+
+
+
+
+

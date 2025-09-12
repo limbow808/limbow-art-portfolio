@@ -1,0 +1,48 @@
+/* Footer */
+@use 'vars' as *;
+
+
+.footer {
+  grid-area: foot;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0 0 0 $left-padding;
+
+}
+
+.social a {
+  text-decoration: none;
+}
+
+.social,
+.rights {
+  // line-height: 1.1rem;
+}
+
+.social a {
+  padding-right: 0.7rem;
+  padding-bottom: 0.4rem;
+}
+
+.rights {
+  padding-bottom: 0.1rem;
+  padding-top: 0.2rem;
+  letter-spacing: 0.1rem;
+}
+
+@media (max-width: 900px) {
+  .footer {
+    display: flex;
+    width: 100%;
+    padding: 0.25rem 1rem;
+    justify-content: space-between;
+  }
+
+}
+
+@media (min-width: 3000px) {
+  .footer {
+    padding: 0 0 0 2rem;
+  }
+}

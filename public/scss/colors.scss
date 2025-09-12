@@ -1,0 +1,70 @@
+$background-color: #e9e9e9;
+$side-bar-color: $background-color;
+$text-color: #111;
+$icon-color: $text-color;
+$picture-bg-color: #f0f0f0;
+$loading-bg-color1: #b3b3b3;
+$loading-bg-color2: #f0f0f0;
+$loading-bg-color3: #e0e0e0;
+$code-bg: #e8e6e6;
+
+body {
+  background-color: $background-color;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  color: $text-color;
+}
+
+code {
+  background-color: $code-bg;
+}
+
+.header {
+  background-color: $side-bar-color;
+}
+
+.social a {
+  color: $text-color;
+}
+
+.commissions-picture {
+  background-color: $background-color;
+}
+
+.commission-artist-title a {
+  color: $text-color;
+}
+
+.social {
+  color: $icon-color;
+}
+
+picture {
+  background-color: $picture-bg-color;
+}
+
+.discography-loading-overlay {
+  background-color: $loading-bg-color1; 
+}
+
+.loading-overlay {
+  background: linear-gradient(100deg, $loading-bg-color1 25%, $loading-bg-color2 50%, $loading-bg-color3 75%);
+}
+
+.nav a,
+.nav-toggle {
+  color: $text-color;
+}
+
+@media (max-width: 900px) {
+  .footer {
+    background-color: $background-color;
+  }
+}

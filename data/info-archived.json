@@ -1,0 +1,12 @@
+{
+  "links": [
+    { "label": "SoundCloud", "url": "https://soundcloud.com/limbowmusic" },
+    { "label": "Instagram", "url": "https://www.instagram.com/limmbow/" },
+    { "label": "Spotify", "url": "https://open.spotify.com/artist/5ddlAl5vT4NPBSKBLaEmJJ?si=fqORKvx_TY6aSl8pKz4Czg" },
+    { "label": "Discord", "url": "https://discord.gg/xTY3y3tw" }
+  ],
+  "credits": {
+    "title": "Credits",
+    "lines": ["Web dev & design", "Jonatan Lundquist"]
+  }
+}

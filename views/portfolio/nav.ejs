@@ -1,0 +1,39 @@
+<div class="header" id = "header" role="banner">
+    <div class="site-header">
+        <div class="logo">
+            <a href="/" id = "nav-link">
+                <img src="/images/web-min.png" alt="Home" />
+            </a>
+        </div>
+    </div>
+    <div class="nav" id="outer-nav">
+        <div id="nav" role="navigation" tabindex="-1">
+            <ul class = "nav-list">
+                <li class="<%= (currentURL === '/') ? 'active' : ' '%>">
+                    <a class = "nav-item" href="/" id = "nav-link">Overview</a>
+                </li>
+                <li class="<%= (currentURL === '/info') ? 'active' : ' '%>">
+                    <a class="nav-item" href="/info" id = "nav-link">Info</a>
+                </li>
+                <li class="<%= (currentURL === '/contact') ? 'active' : ' '%>">
+                    <a class="nav-item" href="/contact" id = "nav-link">Contact</a>
+                </li>
+                <!----
+                <li>
+                    <a class = "nav-item" href="" id = "highlight-link">Highlight
+                        <i class="fa fa-caret-down" aria-hidden="true" id="highlight-caret"></i>
+                    </a>
+                    <ul class = "highlight-dropdown" id = "highlight-dropdown">
+                        <li class="nav-item sub <%= (currentURL.startsWith('/commissions')) ? 'active' : '' %>">
+                            <a href = "/commissions" id = "nav-link">commissions <%=currentURL %></a>
+                        </li>
+                        <li class="nav-item sub <%= (currentURL.startsWith('/discography')) ? 'active' : '' %>">
+                            <a href = "/discography" id = "nav-link">discography</a>
+                        </li>
+                    </ul>
+                </li>
+                ---->
+            </ul>
+        </div>
+    </div>
+</div>

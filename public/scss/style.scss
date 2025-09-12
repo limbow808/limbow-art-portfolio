@@ -1,0 +1,275 @@
+//@use "../../node_modules/normalize.css/normalize.css";
+
+@use 'vars' as *;
+@use 'typography';
+@use 'colors';
+
+@use 'header';
+@use 'footer';
+
+@use 'overview';
+@use 'commissions';
+@use 'discography';
+
+@import "normalize.css";
+
+body,
+html {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+  border: 0 none;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: $sidebar-size 1fr;
+  grid-template-rows: auto 1.3fr;
+  gap: 0;
+  grid-auto-flow: row;
+  grid-template-areas:
+    'nav large'
+    'foot large';
+}
+
+.main {
+  grid-area: large;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.content {
+  margin: 0 1rem 0 0;
+}
+
+.content {
+  padding-top: $top-padding;
+}
+
+.content p {
+  max-width: 90%;
+  padding: 0.3rem 0;
+}
+
+.main {
+  opacity: 0;
+  transition: opacity $opacity-animation-duration ease-in-out;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+.content.about {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    margin: 0;
+}
+
+.content.about > div {
+    text-align: left;
+    max-width: 1000px;
+}
+
+
+@media (max-width: 900px) {
+  .nav-toggle {
+    display: block;
+  }
+
+  .content p {
+    max-width: 100%;
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content {
+    padding-top: 0;
+  }
+
+  .content {
+    margin: 0 1rem !important;
+  }
+
+  .about {
+      padding-bottom: 10rem;
+  }
+}
+
+@media (min-width: 3000px) {
+  .wrapper {
+    grid-template-columns: 21rem 1fr;
+  }
+}
+
+/* Info page three-column layout */
+
+/* Info page three-column layout */
+.info-columns {
+  display: grid;
+  /* wider left column for the long about text, narrow center for links, medium right for credits */
+  grid-template-columns: 2fr 0.6fr 0.8fr;
+  gap: 2rem 2.4rem;
+  align-items: start; /* align cell content to the top */
+  align-content: start;
+  grid-auto-rows: min-content; /* keep rows sized to content so tops line up */
+  width: 100%;
+}
+
+.info-columns .col {
+  max-width: 100%;
+}
+
+/* Ensure the first visible item in each column shares a consistent top offset */
+.info-columns > .col > :first-child {
+  margin-top: 0.2rem;
+}
+
+/* Ensure grid items align to the column edges: center starts at left, right column snaps to right */
+.info-columns {
+  justify-items: start;
+}
+
+.info-columns .col-center {
+  justify-self: start;
+}
+
+.info-columns .col-right {
+  justify-self: end;
+}
+
+
+.info-columns .col-left {
+  /* left column reads normally */
+  text-align: left;
+}
+
+.info-columns .col-left p {
+  font-size: 0.98rem;
+  line-height: 1.32;
+  margin: 0 0 0.9rem 0;
+}
+
+.info-columns .col-left p:first-child {
+  /* small top offset so the first paragraph lines up with the other columns' first items */
+  margin-top: 0.2rem;
+}
+
+
+.info-columns .col-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* align to top so links line up with left text */
+  align-items: flex-start;
+  padding-top: 0.2rem;
+}
+
+
+.info-columns .social-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+/* Normalize center and right column typography to match left column body text */
+.info-columns .col-center,
+.info-columns .col-right {
+  font-size: 0.98rem;
+  line-height: 1.32;
+  color: #111;
+  font-style: normal; /* left column uses <i> for italic, keep other columns normal */
+}
+
+.info-columns .col-center a {
+  font-size: 0.98rem;
+  line-height: 1.32;
+}
+
+.credits-list li {
+  font-size: 0.98rem;
+  line-height: 1.32;
+  margin-left: 0.6rem; /* keep bullet aligned visually */
+}
+
+/* High-specificity fallback in case global rules override sizes */
+.info-columns,
+.info-columns * {
+  font-size: inherit;
+}
+
+.info-columns p,
+.info-columns .col-center a,
+.info-columns .credits-list li {
+  font-size: 0.98rem !important;
+  line-height: 1.32 !important;
+  font-style: normal !important;
+}
+
+.info-columns .social-vertical a {
+  color: #111;
+  text-decoration: none;
+  font-size: 0.96rem;
+  padding: 2px 0;
+}
+
+.info-columns .social-vertical a:hover {
+  text-decoration: underline;
+}
+
+
+.info-columns .col-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.credits {
+  text-align: right;
+}
+
+.credits-title {
+  margin-top: 0.2rem; /* align title baseline with left column's first line */
+  font-size: 0.96rem;
+}
+
+.credits-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.credits-list li {
+  margin: 0 0 0.5rem 0;
+  padding: 0;
+}
+
+@media (max-width: 900px) {
+  .info-columns {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .info-columns .col {
+    max-width: 100%;
+  }
+  .info-columns .col-center .social.large {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+}

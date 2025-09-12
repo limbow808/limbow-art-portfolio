@@ -1,0 +1,166 @@
+/* Header */
+
+@use 'vars' as *;
+
+.header {
+  grid-area: nav;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+}
+
+.nav ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.nav.loaded,
+.footer.loaded {
+  opacity: 1;
+  transition: opacity $opacity-animation-duration ease-in-out;
+}
+
+.nav,
+.footer {
+  opacity: 1;
+  //opacity: 0; // change for animation
+}
+
+.nav {
+  padding: 0.5rem 0 1rem;
+}
+
+.nav a {
+  text-decoration: none;
+  background: none;
+}
+
+.active a {
+  text-decoration: underline;
+  opacity: 0.7;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
+.nav-item {
+  padding: 0 0 0 $left-padding;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-top: $top-padding;
+}
+
+.logo img {
+  width: 225px;
+}
+
+.highlight-dropdown {
+  line-height: 1rem;
+}
+
+.sub a {
+  margin-left: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .nav a:hover {
+    text-decoration: none;
+  }
+
+  .nav ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .nav ul li {
+    margin-right: 0.3rem;
+  }
+
+  .nav-item {
+    padding: 0;
+  }
+
+  .nav ul li a {
+    padding: 0 !important;
+  }
+
+  //   #nav {
+  //     padding-bottom: 0.8rem;
+  //   }
+
+  .sub a {
+    margin: 0;
+  }
+
+  .logo img {
+    width: 150px;
+  }
+
+  .highlight-dropdown {
+    padding: 0;
+  }
+
+  .nav-toggle {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav {
+    padding: 0;
+    margin: 0 1rem;
+  }
+
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    //padding-bottom: 0.5rem;
+    overflow: hidden;
+  }
+
+  .logo {
+    padding-top: $top-padding - 1.5;
+    text-align: center;
+  }
+
+  .logo img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
+  .nav-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding-bottom: 1.5rem;
+  }
+
+}
+
+@media (min-width: 3000px) {
+  .logo img {
+    width: 380px;
+  }
+
+  .nav ul li {
+    padding: 0;
+  }
+
+  .nav-item {
+    padding: 0 0 0 2rem;
+  }
+
+}

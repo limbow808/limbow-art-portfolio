@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@100;200;300;400;600;700;800&family=Open+Sans&family=Roboto&display=swap');
+@import url('https://db.onlinewebfonts.com/c/22bbdd53424bef8a0c11fde5ed420f5f?family=NordeaSansSmall-Regular');
+@import url('https://db.onlinewebfonts.com/c/095df2d8a2d98ea67750c993758df467?family=NordeaSansLarge-Bold');
+@import url('https://db.onlinewebfonts.com/c/25cb6845cb99afb2f536ee7861d32413?family=Volvo+Novum+Regular');
+
+/* Using Manrope from Google Fonts as the primary site font. */
+
+* {
+  font-family: 'Manrope','Roboto', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Manrope', 'Open Sans', sans-serif;
+}
+
+body {
+  line-height: 1.5rem;
+}
+
+p,
+td,
+th,
+li,
+dd {
+  text-align: justify;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 100;
+  line-height: 0.9;
+  margin: 0;
+}
+
+h1 {
+  padding-bottom: 0.2rem;
+}
+
+h2 {
+  padding: 0.5rem 0;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+img {
+  max-width: 100%;
+}
+
+html {
+  font-size: 100%;
+}
+
+p {
+  font-size: 0.9rem;
+}
+
+code {
+  font-size: 0.7rem;
+}
+
+.footer {
+  font-size: 0.7rem;
+}
+
+.social a {
+  font-size: 0.9rem;
+}
+
+.nav a {
+  font-size: 0.9rem;
+}
+
+.sub a {
+  font-size: 0.75rem;
+}
+
+code {
+  padding: 0.1rem;
+}
+
+@media (max-width: 900px) {
+  .social a {
+    font-size: 1rem;
+  }
+
+  .about p {
+    font-size: 1.2rem;
+  }
+
+}
+
+@media (min-width: 3000px) {
+  html {
+    font-size: 115.5%;
+  }
+
+  .nav a {
+    font-size: 2rem;
+    line-height: 3rem;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  h1 a {
+    font-size: 2rem;
+  }
+
+  .nav-item a,
+  .highlight-dropdown {
+    font-size: 1.5rem;
+    padding-left: 2rem;
+    line-height: 2rem;
+  }
+
+  p {
+    font-size: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    text-align: start;
+  }
+
+  .social a {
+    font-size: 1.5rem;
+  }
+
+  .logo {
+    padding-bottom: 0.5rem;
+  }
+}
