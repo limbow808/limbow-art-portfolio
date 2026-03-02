@@ -349,6 +349,21 @@ picture {
     padding: 0 0 0 2rem;
   }
 }
+.section-heading {
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  color: #666666;
+  margin: 0 0 1rem 0;
+  padding: 0;
+}
+
+.hero-image {
+  display: block;
+  margin-bottom: 2.5rem;
+}
+
 .gallery-container {
   line-height: 2rem;
   column-count: 3;

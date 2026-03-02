@@ -1,5 +1,21 @@
 
 // as seen on https://medium.com/@MilesOfRoses/css-image-gallery-for-pictures-with-different-aspect-ratios-a20ffecb75d5
+
+.section-heading {
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  color: #666666;
+  margin: 0 0 1rem 0;
+  padding: 0;
+}
+
+.hero-image {
+  display: block;
+  margin-bottom: 2.5rem;
+}
+
 .gallery-container {
   $count: 3;
   $col-gap: 0.6rem;
