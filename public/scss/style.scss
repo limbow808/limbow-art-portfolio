@@ -261,10 +261,17 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2.5rem;
   margin: 0 auto;
   padding: 2rem 1rem;
+}
+
+.contact-content {
+  width: auto;
   max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  align-items: center;
 }
 
 .email-copy {
@@ -278,7 +285,7 @@ html {
   cursor: pointer;
   transition: opacity 0.2s ease;
   text-align: center;
-  max-width: 100%;
+  width: auto;
 }
 
 .email-copy:hover {
@@ -310,23 +317,23 @@ html {
 .contact-links {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 100%;
-  max-width: 600px;
-  margin-top: 0;
-  text-align: center;
+  gap: 1rem;
 }
 
 .contact-links a {
-  font-size: 0.9rem;
-  color: inherit;
+  font-size: clamp(0.55rem, 1.8vw, 0.85rem);
+  color: #666666;
   text-transform: lowercase;
   letter-spacing: 0.05rem;
-  transition: opacity 0.2s ease;
+  transition: text-decoration 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+  text-align: center;
 }
 
 .contact-links a:hover {
-  opacity: 0.6;
+  text-decoration: underline;
 }
 
 .impressum-content {
