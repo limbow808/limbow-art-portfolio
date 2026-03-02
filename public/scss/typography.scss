@@ -18,16 +18,14 @@ h6 {
   font-family: 'Manrope', 'Open Sans', sans-serif;
 }
 
-body {
-  line-height: 1.5rem;
-}
+
 
 p,
 td,
 th,
 li,
 dd {
-  text-align: left;
+  text-align: justify;
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
@@ -69,6 +67,10 @@ html {
 
 p {
   font-size: 0.9rem;
+}
+
+.about p {
+  font-size: 1.4rem;
 }
 
 code {
