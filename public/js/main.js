@@ -115,6 +115,44 @@ function setupEmailCopy() {
 	}
 }
 
+function setupCustomCursor() {
+	try {
+		var supportsFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+		if (!supportsFinePointer) return;
+
+		var existingCursor = document.querySelector('.custom-cursor');
+		if (existingCursor) return;
+
+		var cursor = document.createElement('div');
+		cursor.className = 'custom-cursor';
+		document.body.appendChild(cursor);
+
+		document.addEventListener('mousemove', function(event) {
+			cursor.style.left = event.clientX + 'px';
+			cursor.style.top = event.clientY + 'px';
+		});
+
+		document.addEventListener('mousedown', function() {
+			cursor.classList.add('active');
+		});
+
+		document.addEventListener('mouseup', function() {
+			cursor.classList.remove('active');
+		});
+
+		document.addEventListener('mouseleave', function() {
+			cursor.style.opacity = '0';
+		});
+
+		document.addEventListener('mouseenter', function() {
+			cursor.style.opacity = '1';
+		});
+	} catch (e) {
+		console.error('setupCustomCursor error', e);
+	}
+}
+
 window.addEventListener('load', function() {
 	setupEmailCopy();
+	setupCustomCursor();
 });
