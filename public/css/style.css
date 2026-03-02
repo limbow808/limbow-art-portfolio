@@ -1042,7 +1042,7 @@ html {
 .contact-links {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   width: 100%;
   gap: 1rem;
 }
@@ -1054,7 +1054,7 @@ html {
   letter-spacing: 0.05rem;
   transition: text-decoration 0.2s ease, color 0.2s ease;
   text-decoration: none;
-  text-align: center;
+  text-align: justify;
 }
 
 .contact-links a:hover {
