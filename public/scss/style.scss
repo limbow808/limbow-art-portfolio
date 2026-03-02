@@ -38,6 +38,11 @@ html {
   grid-template-areas:
     'nav large'
     'foot large';
+  transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wrapper.nav-collapsed {
+  grid-template-columns: 0 1fr;
 }
 
 .main {
@@ -45,15 +50,22 @@ html {
   overflow-y: auto;
   height: 100vh;
   background-color: #ffffff;
+  margin-left: 0.8rem;
+  border-left: 1px solid #e0e0e0;
+  border-radius: 0;
 }
 
 .content {
   margin: 0 1rem 0 0;
   background-color: #ffffff;
+  padding-top: $top-padding;
 }
 
-.content {
-  padding-top: $top-padding;
+.content.overview {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: $top-padding 1.2rem;
+  margin: 1rem 1rem 1rem 0;
 }
 
 .content p {
@@ -269,8 +281,9 @@ html {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  margin: 0;
+  margin: 0 auto;
   padding: 2rem 1rem;
+  max-width: 600px;
 }
 
 .email-copy {
@@ -348,19 +361,15 @@ html {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    //border: 2px solid rgba(34, 113, 255, 0.95);
-    background-color: rgb(0, 26, 255);
+    background-color: rgb(52, 113, 255);
     pointer-events: none;
     transform: translate(-50%, -50%);
     z-index: 3000;
-    transition: width 0.16s ease, height 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
   }
 
   .custom-cursor.active {
-    width: 18px;
-    height: 18px;
-    background-color: rgba(34, 113, 255, 0.28);
-    border-color: rgba(34, 113, 255, 1);
+    width: 12px;
+    height: 12px;
   }
 }
 

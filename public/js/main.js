@@ -132,14 +132,6 @@ function setupCustomCursor() {
 			cursor.style.top = event.clientY + 'px';
 		});
 
-		document.addEventListener('mousedown', function() {
-			cursor.classList.add('active');
-		});
-
-		document.addEventListener('mouseup', function() {
-			cursor.classList.remove('active');
-		});
-
 		document.addEventListener('mouseleave', function() {
 			cursor.style.opacity = '0';
 		});
@@ -152,7 +144,32 @@ function setupCustomCursor() {
 	}
 }
 
+function setupNavToggle() {
+	try {
+		var toggleBtn = document.getElementById('nav-collapse-btn');
+		var header = document.getElementById('header');
+		var wrapper = document.querySelector('.wrapper');
+		
+		if (!toggleBtn || !header || !wrapper) return;
+
+		var isCollapsed = localStorage.getItem('nav-collapsed') === 'true';
+		if (isCollapsed) {
+			header.classList.add('collapsed');
+			wrapper.classList.add('nav-collapsed');
+		}
+
+		toggleBtn.addEventListener('click', function() {
+			header.classList.toggle('collapsed');
+			wrapper.classList.toggle('nav-collapsed');
+			localStorage.setItem('nav-collapsed', header.classList.contains('collapsed'));
+		});
+	} catch (e) {
+		console.error('setupNavToggle error', e);
+	}
+}
+
 window.addEventListener('load', function() {
 	setupEmailCopy();
 	setupCustomCursor();
+	setupNavToggle();
 });

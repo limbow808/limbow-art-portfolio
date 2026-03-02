@@ -42,7 +42,7 @@ picture {
 }
 
 picture:hover .gallery-image {
-  filter: brightness(1.08);
+  filter: opacity(0.92);
 }
 
 .card-meta {
@@ -144,7 +144,7 @@ picture .gallery-image.loaded {
     padding-bottom: 5rem;
     $count: 1;
     $col-gap: 0.3rem;
-    line-height: 2rem;
+    line-height: 1rem;
     column-count: $count;
     column-gap: $col-gap;
     -webkit-row-gap: $col-gap;

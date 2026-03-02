@@ -201,6 +201,40 @@ picture {
   position: sticky;
   top: 0;
   overflow-y: auto;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header.collapsed {
+  width: 0;
+  overflow: hidden;
+}
+
+.nav-collapse-btn {
+  position: fixed;
+  top: 2.1rem;
+  left: 0.6rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 1.8rem;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2001;
+  transition: transform 0.3s ease, left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-collapse-btn:hover {
+  opacity: 0.7;
+}
+
+.wrapper.nav-collapsed .nav-collapse-btn {
+  transform: rotate(180deg);
+  left: 0.6rem;
 }
 
 .nav ul {
@@ -341,6 +375,12 @@ picture {
   bottom: 0;
   left: 0;
   padding: 0 0 0 2.7rem;
+  transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wrapper.nav-collapsed .footer {
+  left: 0;
+  padding-left: 1.6rem;
 }
 
 .social a {
@@ -353,15 +393,19 @@ picture {
 }
 
 .rights {
-  padding-bottom: 0.1rem;
-  padding-top: 0.2rem;
-  letter-spacing: 0.1rem;
-  font-size: 0.58rem;
+  padding-bottom: 0.3rem;
+  padding-top: 0rem;
+  letter-spacing: 0.06rem;
+  font-size: 0.48rem;
+  line-height: 1rem;
 }
 
 .rights p {
   margin: 0;
   white-space: nowrap;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
 }
 
 .rights a {
@@ -412,7 +456,7 @@ picture {
   width: 100%;
   height: 430px;
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 12px;
   margin-bottom: 0.75rem;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
   background-color: #ffffff;
@@ -427,7 +471,7 @@ picture {
 }
 
 picture:hover .gallery-image {
-  filter: brightness(1.08);
+  filter: opacity(0.92);
 }
 
 .card-meta {
@@ -523,7 +567,7 @@ picture .gallery-image.loaded {
 @media (max-width: 900px) {
   .gallery-container {
     padding-bottom: 5rem;
-    line-height: 2rem;
+    line-height: 1rem;
     column-count: 1;
     column-gap: 0.3rem;
     -webkit-row-gap: 0.3rem;
@@ -790,6 +834,11 @@ html {
   gap: 0;
   grid-auto-flow: row;
   grid-template-areas: "nav large" "foot large";
+  transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wrapper.nav-collapsed {
+  grid-template-columns: 0 1fr;
 }
 
 .main {
@@ -797,15 +846,22 @@ html {
   overflow-y: auto;
   height: 100vh;
   background-color: #ffffff;
+  margin-left: 0.8rem;
+  border-left: 1px solid #e0e0e0;
+  border-radius: 0;
 }
 
 .content {
   margin: 0 1rem 0 0;
   background-color: #ffffff;
+  padding-top: 2rem;
 }
 
-.content {
-  padding-top: 2rem;
+.content.overview {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 2rem 1.2rem;
+  margin: 1rem 1rem 1rem 0;
 }
 
 .content p {
@@ -1008,8 +1064,9 @@ html {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  margin: 0;
+  margin: 0 auto;
   padding: 2rem 1rem;
+  max-width: 600px;
 }
 
 .email-copy {
@@ -1083,21 +1140,17 @@ html {
     position: fixed;
     top: 0;
     left: 0;
-    width: 18px;
-    height: 18px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    border: 2px solid rgba(34, 113, 255, 0.95);
-    background-color: rgba(34, 113, 255, 0.18);
+    background-color: rgb(52, 113, 255);
     pointer-events: none;
     transform: translate(-50%, -50%);
     z-index: 3000;
-    transition: width 0.16s ease, height 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
   }
   .custom-cursor.active {
-    width: 24px;
-    height: 24px;
-    background-color: rgba(34, 113, 255, 0.28);
-    border-color: rgb(34, 113, 255);
+    width: 12px;
+    height: 12px;
   }
 }
 @media (max-width: 900px) {

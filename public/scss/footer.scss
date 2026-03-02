@@ -8,7 +8,12 @@
   bottom: 0;
   left: 0;
   padding: 0 0 0 $left-padding;
+  transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+.wrapper.nav-collapsed .footer {
+  left: 0;
+  padding-left: 1.6rem;
 }
 
 .social a {
@@ -26,15 +31,19 @@
 }
 
 .rights {
-  padding-bottom: 0.1rem;
-  padding-top: 0.2rem;
-  letter-spacing: 0.1rem;
-  font-size: 0.58rem;
+  padding-bottom: 0.3rem;
+  padding-top: 0rem;
+  letter-spacing: 0.06rem;
+  font-size: 0.48rem;
+  line-height: 1rem;
 }
 
 .rights p {
   margin: 0;
   white-space: nowrap;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
 }
 
 .rights a {
