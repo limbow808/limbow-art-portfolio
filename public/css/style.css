@@ -317,7 +317,7 @@ picture {
   font-weight: 700;
   letter-spacing: -0.01rem;
   text-transform: none;
-  color: #333333;
+  color: #666666;
   margin: 0 0 1.5rem 0;
   padding: 0;
   position: relative;
@@ -328,7 +328,6 @@ picture {
 .section-heading.gallery-heading {
   padding-top: 2rem;
   margin-top: 1.5rem;
-  border-top: 1px solid #f0f0f0;
   position: relative;
 }
 
@@ -966,7 +965,7 @@ html {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 2.5rem;
   margin: 0 auto;
   padding: 2rem 1rem;
   max-width: 600px;
@@ -983,6 +982,7 @@ html {
   cursor: pointer;
   transition: opacity 0.2s ease;
   text-align: center;
+  max-width: 100%;
 }
 
 .email-copy:hover {
@@ -991,7 +991,7 @@ html {
 
 .email-copy-hint {
   position: absolute;
-  top: -2rem;
+  top: -3rem;
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.7rem;
@@ -1014,7 +1014,9 @@ html {
 .contact-links {
   display: flex;
   flex-direction: row;
-  gap: 1.5rem;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
   margin-top: 0;
   text-align: center;
 }

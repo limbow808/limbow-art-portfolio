@@ -93,18 +93,13 @@ function setupEmailCopy() {
 
 		var emailText = emailButton.textContent.trim();
 
-		emailButton.addEventListener('mouseenter', function() {
-			hint.textContent = 'Click to copy';
-		});
-
-		emailButton.addEventListener('mouseleave', function() {
-			hint.textContent = 'Hover to copy';
-		});
-
 		emailButton.addEventListener('click', async function() {
 			try {
 				await navigator.clipboard.writeText(emailText);
 				hint.textContent = 'Copied';
+				setTimeout(function() {
+					hint.textContent = 'Click to copy';
+				}, 2000);
 			} catch (copyError) {
 				hint.textContent = 'Copy failed';
 				console.error('Failed to copy email:', copyError);
