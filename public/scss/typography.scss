@@ -106,43 +106,4 @@ code {
 
 }
 
-@media (min-width: 3000px) {
-  html {
-    font-size: 115.5%;
-  }
-
-  .nav a {
-    font-size: 2rem;
-    line-height: 3rem;
-  }
-
-  h1 {
-    font-size: 2.2rem;
-  }
-
-  h1 a {
-    font-size: 2rem;
-  }
-
-  .nav-item a,
-  .highlight-dropdown {
-    font-size: 1.5rem;
-    padding-left: 2rem;
-    line-height: 2rem;
-  }
-
-  p {
-    font-size: 1.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    text-align: start;
-  }
-
-  .social a {
-    font-size: 1.5rem;
-  }
-
-  .logo {
-    padding-bottom: 0.5rem;
-  }
-}
+/* Removed ultrawide typography overrides to keep scaling consistent */
