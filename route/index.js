@@ -48,6 +48,7 @@ function getImagesWithLayout() {
             filename: file,
             name: path.parse(file).name,
             path: `/images/index/${file}`,
+            workType: '3D Artwork',
             cssClass: layoutPatterns[index % layoutPatterns.length] || 'span-1col span-1row'
         }));
         
@@ -83,6 +84,12 @@ router.get("/info", (req, res) => {
 router.get("/contact", (req, res) => {
     let data = { title: `Contact ${sitename}` };
     res.render("portfolio/contact", {...data, currentURL: req.originalUrl });
+});
+
+// Impressum page
+router.get("/impressum", (req, res) => {
+    let data = { title: `Impressum ${sitename}` };
+    res.render("portfolio/impressum", {...data, currentURL: req.originalUrl });
 });
 
 // Keep /about route for compatibility but render the info page

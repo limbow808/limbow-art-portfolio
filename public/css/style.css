@@ -19,7 +19,6 @@ h6 {
 
 body {
   line-height: 1.5rem;
-  font-weight: 400;
 }
 
 p,
@@ -117,261 +116,6 @@ code {
   h1 a {
     font-size: 2rem;
   }
-
-/* Align center column vertically and right column to the right like the desired mockup */
-
-/* Info page layout: two-column grid */
-.info-columns {
-  display: grid;
-  /* altseen-like columns: left body (comfortable measure), narrow center, small right */
-  grid-template-columns: minmax(46ch, 1fr) 200px 220px;
-  gap: 2.4rem 3rem;
-  align-items: start;
-  align-content: start;
-}
-
-.info-columns .col {
-  padding: 0 1.2rem;
-}
-
-.info-columns .col-left p {
-  font-size: 0.98rem;
-  line-height: 1.36;
-  margin: 0 0 0.9rem 0;
-  font-weight: 400; /* regular weight */
-  font-style: normal;
-}
-
-.info-columns .col-left p:first-child {
-  margin-top: 0.2rem;
-}
-
-.info-columns .col-center {
-  display: flex;
-  align-items: center; /* vertically center link block */
-  justify-content: center;
-}
-
-.info-columns .col-right {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  align-items: flex-start;
-  justify-content: flex-start;
-
-/* Right column internals: top = links, bottom = credits pinned to bottom-right */
-html body .content.about .info-columns .col-right .col-top {
-  padding-bottom: 1rem;
-}
-  text-align: left;
-}
-
-.info-columns .social.large a {
-  color: #111;
-  text-decoration: none;
-  font-size: 1.5rem;
-  line-height: 1.1;
-  font-weight: 300;
-  display: block;
-  padding: 0.4rem 0;
-  letter-spacing: 0.02em;
-}
-
-.credits {
-  text-align: left;
-  margin-top: 0.6rem;
-}
-
-.credits-title {
-  font-size: 0.95rem;
-  margin: 0 0 0.4rem 0;
-  color: #222;
-  font-weight: 400;
-}
-
-.credits-line {
-  margin: 0;
-  font-size: 0.95rem;
-}
-
-.credits-name {
-  margin: 0.15rem 0 0 0;
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
-/* Info page header weight */
-.content.about h1 {
-  font-weight: 600; /* semibold */
-}
-
-/* Critical layout fixes for LibreWolf compatibility */
-html body .wrapper .main .content.about .info-columns {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem 2.4rem !important;
-  align-items: start;
-  align-content: start;
-  grid-auto-rows: min-content;
-  width: 100%;
-}
-
-html body .wrapper .main .content.about .info-columns .col {
-  padding: 0 1.2rem;
-}
-
-html body .wrapper .main .content.about .info-columns .credits-list li {
-  margin-left: 0.6rem !important;
-}
-
-/* Remove conflicting three-column fallback and col-center rules */
-
-
-.info-columns .social-vertical a:hover {
-  text-decoration: underline;
-}
-
-
-.info-columns .col-right {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
-}
-
-/* Moved page-specific styles from templates to central stylesheet */
-.info-row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 0.8rem;
-  align-items: flex-start;
-  justify-content: flex-start;
-  box-sizing: border-box;
-}
-
-/* Force no gap/padding inside the Info row when user requests no padding */
-html body .content.about .info-row { gap: 0 !important; }
-
-.i-bio {
-  /* allow bio text to extend to the section's right boundary */
-  flex: 1 1 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  padding-right: 0;
-}
-
-.info-links {
-  margin-top: 1.25rem;
-}
-.info-links ul { list-style: none; margin: 0; padding: 0; }
-.info-links li { margin: 0 0 0.45rem 0; }
-.info-links a { text-decoration: underline; color: inherit; }
-
-.i-credits {
-  flex: 0 0 30%;
-  max-width: 30%;
-  box-sizing: border-box;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding-right: 2rem;
-}
-.i-credits .credits-list { list-style: none; margin: 0; padding: 0; width: auto; text-align: right; }
-
-/* hide the highlight dropdown by default; JS can toggle a class to show */
-.highlight-dropdown { display: none; }
-
-/* Typography: body regular, headings semibold */
-body { font-weight: 400; font-style: normal; }
-.content.about h1, h2, h3 { font-weight: 600; }
-
-/* Responsive: stack columns on small screens */
-@media (max-width: 900px) {
-  .info-row {
-    flex-direction: column;
-  }
-  .i-bio, .i-credits { max-width: 100%; flex: 1 1 100%; padding-right: 0; }
-  .i-credits .credits-list { text-align: left; }
-}
-
-/* Right-side supplementary container: links (top) and credits (bottom) */
-.info-side {
-  /* hide the side column when unused so the bio can extend to the right edge */
-  display: none !important;
-}
-.info-side .side-links ul { list-style: none; margin: 0; padding: 0; }
-.info-side .side-links li { margin-bottom: 0.6rem; }
-.info-side .side-links a { text-decoration: underline; color: inherit; }
-.info-side .side-credits { text-align: right; }
-.info-side .credits-list { margin: 0; padding: 0; list-style: none; }
-
-@media (max-width: 900px) {
-  .info-side { max-width: 100%; flex: 1 1 100%; padding-left: 0; }
-  .info-side .side-credits { text-align: left; margin-top: 1rem; }
-}
-
-.credits {
-  text-align: right;
-}
-
-.credits-title {
-  margin-top: 0.2rem; /* align title baseline with left column's first line */
-  font-size: 0.96rem;
-}
-
-.credits-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.credits-list li {
-  margin: 0 0 0.5rem 0;
-  padding: 0;
-}
-
-/* High-specificity fallback in case global rules override sizes */
-.info-columns,
-.info-columns * {
-  font-size: inherit;
-}
-
-.info-columns p,
-.info-columns .col-center a,
-.info-columns .credits-list li {
-  font-size: 0.98rem !important;
-  line-height: 1.32 !important;
-  font-style: normal !important;
-}
-
-/* Ensure the first visible item in each column shares a consistent top offset */
-.info-columns > .col > :first-child {
-  margin-top: 0.2rem;
-}
-
-@media (max-width: 900px) {
-  .info-columns {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  .info-columns .col-left p {
-    font-size: 1rem;
-    line-height: 1.45;
-  }
-  .info-columns .col-center {
-    justify-content: center;
-  }
-  .info-columns .social-vertical {
-    gap: 0.6rem;
-    flex-direction: row;
-  }
-  .info-columns .social-vertical a {
-    font-size: 1rem;
-  }
-  .info-columns .col-right {
-    justify-content: flex-start;
-  }
-}
   .nav-item a,
   .highlight-dropdown {
     font-size: 1.5rem;
@@ -438,10 +182,7 @@ picture {
 }
 
 .loading-overlay {
-  /* subtle skeleton background while images load (gentle gray pulse) */
-  background-color: #ffffff;
-  transition: background-color 0.3s linear;
-  animation: skeletonPulse 1.6s ease-in-out infinite;
+  background: linear-gradient(100deg, #b3b3b3 25%, #f0f0f0 50%, #e0e0e0 75%);
 }
 
 .nav a,
@@ -451,7 +192,7 @@ picture {
 
 @media (max-width: 900px) {
   .footer {
-    background-color: #e9e9e9;
+    background-color: #ffffff;
   }
 }
 /* Header */
@@ -599,7 +340,7 @@ picture {
   position: absolute;
   bottom: 0;
   left: 0;
-  padding: 0 0 0 1.2rem; /* nudged left */
+  padding: 0 0 0 2.7rem;
 }
 
 .social a {
@@ -615,6 +356,22 @@ picture {
   padding-bottom: 0.1rem;
   padding-top: 0.2rem;
   letter-spacing: 0.1rem;
+  font-size: 0.58rem;
+}
+
+.rights p {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.rights a {
+  color: inherit;
+  opacity: 0.82;
+}
+
+.rights a:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
 
 @media (max-width: 900px) {
@@ -655,7 +412,9 @@ picture {
   width: 100%;
   height: 430px;
   overflow: hidden;
-  border-radius: 2px;
+  border-radius: 16px;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
 }
 
 .gallery-image {
@@ -665,180 +424,61 @@ picture {
   display: block;
 }
 
+picture:hover .gallery-image {
+  transform: scale(1.02);
+  transition: transform 0.25s ease;
+}
+
+.card-meta {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.7rem 0.8rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0));
+  color: #fff;
+  pointer-events: none;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-transform: capitalize;
+}
+
+.card-type {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  opacity: 0.92;
+  white-space: nowrap;
+}
+
 .loading-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* use the skeleton pulse animation instead of the moving gradient */
-  background-color: #e9e9e9;
-  animation: skeletonPulse 1.6s ease-in-out infinite;
+  background-size: 200% 100%;
+  animation: loadingAnimation 2.5s infinite reverse;
 }
 
-@keyframes skeletonPulse {
+@keyframes loadingAnimation {
   0% {
-    background-color: #ececec;
-  }
-  50% {
-    background-color: #e0e0e0;
+    background-position: -200% 0;
   }
   100% {
-    background-color: #ececec;
+    background-position: 200% 0;
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .loading-overlay {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-/* Gallery styling: rounded corners + hover darkening overlay + subtle lift/shadow */
-.gallery-container picture {
-  border-radius: 12px; /* rounded edges like Pinterest */
-  overflow: hidden; /* ensure img is clipped to rounded corners */
-  transition: transform 0.28s ease, box-shadow 0.28s ease;
-  will-change: transform, box-shadow;
-}
-
-.gallery-container picture::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.18); /* subtle dark overlay */
-  opacity: 0;
-  transition: opacity 0.22s ease;
-  pointer-events: none;
-}
-
-.gallery-container picture:hover::after,
-.gallery-container picture.gallery-hover::after {
-  opacity: 1;
-}
-
-.gallery-container picture:hover {
-  transform: translateY(-2.25px); /* reduced 50% */
-  box-shadow: 0 3.75px 11.25px rgba(0, 0, 0, 0.18); /* reduced 50% */
-}
-
-.gallery-container .gallery-image {
-  border-radius: inherit; /* keep img edges consistent */
-  transition: transform 0.45s ease, opacity 0.28s ease;
-  display: block;
-}
-
-/* Prefer reduced-motion: disable animations/transforms */
-@media (prefers-reduced-motion: reduce) {
-  .gallery-container picture,
-  .gallery-container .gallery-image {
-    transition: none !important;
-    transform: none !important;
-  }
-}
-
-/* Apply same Pinterest-like treatment to the hero image */
-.hero-image {
-  border-radius: 12px;
-  overflow: hidden;
-  position: relative;
-  transition: transform 0.28s ease, box-shadow 0.28s ease;
-  will-change: transform, box-shadow;
-}
-
-.hero-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.12);
-  opacity: 0;
-  transition: opacity 0.22s ease;
-  pointer-events: none;
-}
-
-.hero-image:hover::after {
-  opacity: 1;
-}
-
-.hero-image:hover {
-  transform: translateY(-2.25px); /* reduced 50% */
-  box-shadow: 0 3.75px 11.25px rgba(0, 0, 0, 0.12); /* reduced 50% */
-}
-
-.hero-image img {
-  border-radius: inherit;
-  display: block;
-}
-
-/* Disable shadows and hover lift on the Overview page */
-
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-image {
-    transition: none !important;
-    transform: none !important;
-  }
-}
-
-@media (max-width: 900px) {
-  /* match mobile gallery row-gap: spacing handled on .gallery-container */
-}
-
-.hero-image {
-  margin-bottom: 0.6rem; /* match .gallery-container row-gap for consistent spacing */
-}
-
-@media (max-width: 900px) {
-  .hero-image {
-    margin-bottom: 0.3rem;
-  }
-}
-
-/* Ensure gallery pictures align at the top so the hero lines up visually */
-.gallery-container picture {
-  vertical-align: top;
-}
-
-/* Make gallery pictures behave well inside CSS multi-column layout */
-.gallery-container picture {
-  display: inline-block; /* keep column flow */
-  break-inside: avoid-column; /* avoid breaking images across columns */
-  -webkit-column-break-inside: avoid;
-  -moz-column-break-inside: avoid;
-  margin-bottom: 0.6rem; /* explicit spacing to ensure consistent vertical gaps */
-}
-
-/* Make hero a block-level picture so it doesn't use inline baseline spacing */
-.hero-image {
-  display: block;
-  width: 100%;
-}
-
-/* Info page: choose a readable body scale that fits common 16:9 viewports without scrolling */
-.content.about h1 {
-  font-size: 140% !important;
-  line-height: 1.05 !important;
-}
-.content.about .i-bio {
-  /* reduce from an earlier 200% to avoid vertical scrolling on typical 16:9 screens */
-  font-size: 120% !important; /* comfortable increase but fits inside 16:9 without scrolling */
-  line-height: 1.34 !important; /* preserve readable rhythm */
-}
-
-/* On shorter viewports, reduce further to guarantee no vertical overflow */
-@media (max-height: 820px) {
-  .content.about .i-bio { font-size: 100% !important; line-height: 1.28 !important; }
-}
-
-/* On very wide / tall displays allow slightly larger body text */
-@media (min-aspect-ratio: 16/9) and (min-height: 900px) {
-  .content.about .i-bio { font-size: 130% !important; }
-}
-
-/* DEBUG helpers: toggle by adding `debug-spacing` class to <body> in DevTools */
-.debug-spacing .hero-image { outline: 3px solid rgba(255,0,0,0.9); }
-.debug-spacing .gallery-container { outline: 2px solid rgba(0,255,0,0.6); }
-.debug-spacing .gallery-container picture { outline: 2px dashed rgba(0,0,255,0.6); }
 .gallery-image.loaded {
   opacity: 1;
 }
@@ -885,6 +525,12 @@ picture .gallery-image.loaded {
     column-count: 1;
     column-gap: 0.3rem;
     row-gap: 0.3rem;
+  }
+  picture {
+    border-radius: 12px;
+  }
+  .card-title {
+    font-size: 0.86rem;
   }
 }
 img,
@@ -1144,9 +790,6 @@ html {
   margin: 0 1rem 0 0;
 }
 
-/* Ensure the Info page uses the same outer gutters as Overview */
-html body .content.about { margin: 0 1rem 0 0 !important; padding-top: 2rem !important; }
-
 .content {
   padding-top: 2rem;
 }
@@ -1154,15 +797,6 @@ html body .content.about { margin: 0 1rem 0 0 !important; padding-top: 2rem !imp
 .content p {
   max-width: 90%;
   padding: 0.3rem 0;
-}
-
-/* Allow About page paragraphs to use full container width so the bio extends to the right edge */
-.content.about p,
-.content.about .i-bio p {
-  max-width: none !important;
-  width: 100% !important;
-  font-size: inherit !important;
-  line-height: inherit !important;
 }
 
 .main {
@@ -1184,111 +818,11 @@ html body .content.about { margin: 0 1rem 0 0 !important; padding-top: 2rem !imp
   align-items: flex-start;
   height: 100vh;
   margin: 0;
-  padding-top: 2rem; /* match .content */
 }
-
 
 .content.about > div {
   text-align: left;
-  max-width: none !important; /* allow full-width on the Info page so bio reaches the edge */
-  padding-left: 1rem !important; /* restore left gutter */
-  padding-right: 1rem !important; /* restore right gutter */
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Zero horizontal padding only for the inner info elements; keep page gutters intact */
-.about-inner,
-.info-row,
-.i-bio {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  margin: 0 !important;
-}
-
-/* Strong override: remove paragraph margins inside the Info bio so text is flush */
-html body .content.about .i-bio p {
-  margin: 0 0 0.8rem 0 !important; /* add vertical rhythm between paragraphs */
-  padding: 0 !important;
-}
-
-/* Avoid extra gap after the last paragraph */
-html body .content.about .i-bio p:last-child { margin-bottom: 0 !important; }
-
-/* ensure inner wrapper spans available width */
-.about-inner {
-  width: 100%;
-  padding: 0 !important; /* remove inner padding so text sits flush inside the page gutter */
-}
-
-.i-bio {
-  width: 100% !important;
-}
-
-/* Make Info bio large (300%) when developer requests it, and allow opt-out of autoscale via attribute */
-.content.about .i-bio { font-size: 120% !important; line-height: 1.36 !important; }
-
-.content.about h1 {
-  font-weight: 600;
-}
-
-/* Info page multi-column layout for cohesive text flow */
-
-/* Info page layout: two-column grid */
-.info-columns {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 2rem 2.4rem;
-  align-items: start;
-}
-
-/* Column child containers styling */
-.info-columns .col {
-  /* ensure proper padding and container alignment */
-  padding: 0 1.2rem;
-}
-
-/* Additional styling for left and right columns */
-.info-columns .col-left p {
-  margin: 0 0 1rem;
-}
-
-.info-columns .col-right {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-/* Social links styling */
-.info-columns .social.large {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-/* Credits styling */
-/* Three-column info row: left = bio, center = links, right = credits */
-.info-columns .credits {
-  text-align: right;
-}
-
-@media (max-width: 900px) {
-  .info-columns {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  .info-columns .col {
-    max-width: 100%;
-  }
-  /* Social links centered on narrow screens */
-  .info-columns .social.large {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-  }
-  .info-columns .col-right {
-    justify-content: flex-start;
-  }
+  max-width: 1000px;
 }
 
 @media (max-width: 900px) {
@@ -1317,174 +851,223 @@ html body .content.about .i-bio p:last-child { margin-bottom: 0 !important; }
     grid-template-columns: 21rem 1fr;
   }
 }
-
-/* Info page cleanup override */
-.content.about .info-columns {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: flex-start !important;
-}
-.content.about .info-columns .col-left {
-  padding-right: 1.2rem !important;
-}
-.content.about .info-columns .col-right {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 1rem !important;
-  text-align: right !important;
+/* Info page three-column layout */
+/* Info page three-column layout */
+.info-columns {
+  display: grid;
+  /* wider left column for the long about text, narrow center for links, medium right for credits */
+  grid-template-columns: 2fr 0.6fr 0.8fr;
+  gap: 2rem 2.4rem;
+  align-items: start; /* align cell content to the top */
+  align-content: start;
+  grid-auto-rows: min-content; /* keep rows sized to content so tops line up */
+  width: 100%;
 }
 
-/* Final override: force stable two-column layout for Info page */
-.content.about .info-columns {
-  display: grid !important;
-  grid-template-columns: 2fr 1fr !important;
-  gap: 2rem 2.4rem !important;
-  align-items: start !important;
+.info-columns .col {
+  max-width: 100%;
 }
 
-.content.about .info-columns .col-left {
-  padding-right: 1.2rem !important;
+/* Ensure the first visible item in each column shares a consistent top offset */
+.info-columns > .col > :first-child {
+  margin-top: 0.2rem;
 }
 
-.content.about .info-columns .col-right {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 1rem !important;
-  text-align: right !important;
+/* Ensure grid items align to the column edges: center starts at left, right column snaps to right */
+.info-columns {
+  justify-items: start;
 }
 
-/* === Strong override for /info: enforce 2-column layout (left 2fr, right 1fr) === */
-html body .content.about .info-columns {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: flex-start !important;
+.info-columns .col-center {
+  justify-self: start;
 }
 
-/* Ensure the entire info-columns block uses the same base type rhythm */
-html body .content.about .info-columns {
-  /* shared base values for the Info layout; change these to adjust both credits and links */
-  --info-line-fs: 0.98rem !important; /* font-size used for credits and links */
-  --info-line-gap: 0.9rem !important; /* vertical gap between lines */
-  font-size: var(--info-line-fs) !important; /* base paragraph size for this layout */
-  line-height: 1.36 !important;
+.info-columns .col-right {
+  justify-self: end;
 }
 
-/* Ensure column wrappers don't collapse; set explicit minimums */
-html body .content.about .info-columns .col-left { flex: 0 0 66.666% !important; min-width: 36ch; }
-html body .content.about .info-columns .col-right { flex: 0 0 33.333% !important; min-width: 220px; display:flex; flex-direction:column; justify-content:space-between; }
+.info-columns .col-left {
+  /* left column reads normally */
+  text-align: left;
+}
 
-/* right column sections */
-html body .content.about .info-columns .col-right .col-top { align-self: stretch; }
-html body .content.about .info-columns .col-right .col-bottom { align-self: stretch; }
+.info-columns .col-left p {
+  font-size: 0.98rem;
+  line-height: 1.32;
+  margin: 0 0 0.9rem 0;
+}
 
-html body .content.about .info-columns .col-right .col-top { display:block; }
-html body .content.about .info-columns .col-right .col-bottom { display:flex; justify-content:flex-end; align-items:flex-end; }
+.info-columns .col-left p:first-child {
+  /* small top offset so the first paragraph lines up with the other columns' first items */
+  margin-top: 0.2rem;
+}
 
-/* ensure links and credits inherit the info rhythm */
-html body .content.about .info-columns .social.large a { font-size: var(--info-line-fs) !important; line-height: 1.36 !important; margin: 0 0 var(--info-line-gap) 0 !important; }
-html body .content.about .info-columns .credits p { font-size: var(--info-line-fs) !important; margin-bottom: var(--info-line-gap) !important; }
+.info-columns .col-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* align to top so links line up with left text */
+  align-items: flex-start;
+  padding-top: 0.2rem;
+}
 
-/* Typography: ensure Manrope weights 400 and 600 are used */
-html body .content.about,
-html body .content.about p,
-html body .content.about .info-columns .col-left p {
-  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial !important;
-  font-weight: 400 !important;
+.info-columns .social-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+/* Normalize center and right column typography to match left column body text */
+.info-columns .col-center,
+.info-columns .col-right {
+  font-size: 0.98rem;
+  line-height: 1.32;
+  color: #111;
+  font-style: normal; /* left column uses <i> for italic, keep other columns normal */
+}
+
+.info-columns .col-center a {
+  font-size: 0.98rem;
+  line-height: 1.32;
+}
+
+.credits-list li {
+  font-size: 0.98rem;
+  line-height: 1.32;
+  margin-left: 0.6rem; /* keep bullet aligned visually */
+}
+
+/* High-specificity fallback in case global rules override sizes */
+.info-columns,
+.info-columns * {
+  font-size: inherit;
+}
+
+.info-columns p,
+.info-columns .col-center a,
+.info-columns .credits-list li {
+  font-size: 0.98rem !important;
+  line-height: 1.32 !important;
   font-style: normal !important;
-  line-height: 1.36 !important;
-  font-size: var(--info-line-fs) !important; /* exact pixel parity */
 }
 
-html body .content.about h1,
-html body .content.about .credits-name {
-  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial !important;
-  font-weight: 600 !important; /* semibold for header and credits-name */
+.info-columns .social-vertical a {
+  color: #111;
+  text-decoration: none;
+  font-size: 0.96rem;
+  padding: 2px 0;
 }
 
-/* Credits: remove bullets/markers and stack as simple lines */
-html body .content.about .credits { text-align: right !important; }
-html body .content.about .credits p { margin: 0 !important; padding: 0 !important; }
-
-/* Baseline alignment tweak: give first child of each column a small top offset so their first baselines match */
-html body .content.about .info-columns > .col > .col-inner > :first-child,
-html body .content.about .info-columns > .col > :first-child {
-  margin-top: 0.12rem !important;
+.info-columns .social-vertical a:hover {
+  text-decoration: underline;
 }
 
-/* Mobile fallback: collapse to single column */
+.info-columns .col-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.credits {
+  text-align: right;
+}
+
+.credits-title {
+  margin-top: 0.2rem; /* align title baseline with left column's first line */
+  font-size: 0.96rem;
+}
+
+.credits-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.credits-list li {
+  margin: 0 0 0.5rem 0;
+  padding: 0;
+}
+
+.contact-simple {
+  min-height: calc(100vh - 6rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 2rem 1rem;
+}
+
+.email-copy {
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 999px;
+  padding: 0.8rem 1.3rem;
+  font-size: clamp(1.3rem, 3.1vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: 0.02rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.email-copy:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+.email-copy-hint {
+  font-size: 0.75rem;
+  letter-spacing: 0.06rem;
+  text-transform: uppercase;
+  opacity: 0.7;
+  min-height: 1rem;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+  text-align: center;
+}
+
+.contact-links a {
+  font-size: 0.95rem;
+  color: inherit;
+  text-transform: lowercase;
+  letter-spacing: 0.05rem;
+}
+
+.contact-links a:hover {
+  text-decoration: underline;
+}
+
+.impressum-content {
+  max-width: 760px;
+  padding-right: 1.2rem;
+}
+
+.impressum-content h2 {
+  margin-bottom: 0.8rem;
+}
+
+.impressum-content p {
+  max-width: 100%;
+}
+
 @media (max-width: 900px) {
-  html body .content.about .info-columns {
-    grid-template-columns: 1fr !important;
-    gap: 1rem !important;
+  .info-columns {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
-  html body .content.about .info-columns .col-center {
-    justify-content: center !important;
-    align-items: center !important;
+  .info-columns .col {
+    max-width: 100%;
   }
-  html body .content.about .info-columns .col-right {
-    justify-content: flex-start !important;
-    text-align: left !important;
+  .info-columns .col-center .social.large {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
   }
 }
 
-/* Make social links use the same vertical rhythm as body paragraphs and align them to the right */
-html body .content.about .info-columns .col-center {
-  justify-content: flex-end !important; /* push the link column to the right edge */
-  align-items: flex-start !important;
-  padding-left: 0.6rem !important;
-}
-
-html body .content.about .info-columns .col-center .social.large {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-end !important; /* right-align link text */
-  gap: 0 !important; /* switch to explicit per-link margins to guarantee exact rhythm */
-}
-
-html body .content.about .info-columns .col-center .social.large a {
-  font-size: 0.98rem !important; /* match left-column paragraph size */
-  line-height: 1.36 !important; /* same vertical rhythm as paragraphs */
-  font-weight: 400 !important; /* regular weight */
-  padding: 0 !important;
-  margin: 0 0 0.9rem 0 !important; /* paragraph-equivalent spacing between links */
-  display: block !important;
-  text-align: right !important; /* align link text to the right */
-  color: inherit !important;
-}
-
-html body .content.about .info-columns .col-center .social.large a:last-child {
-  margin-bottom: 0 !important;
-}
-
-/* Ensure credits lines are tightly stacked and right-aligned */
-html body .content.about .info-columns .credits p {
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 1.36 !important;
-  text-align: right !important;
-  font-size: var(--info-line-fs) !important;
-  margin-bottom: var(--info-line-gap) !important;
-}
-
-/* Highest-priority override: neutralize earlier large link rules and force paragraph rhythm */
-.content.about .info-columns .social.large a,
-html body .content.about .info-columns .social.large a {
-  /* force these to use the same values as credits via CSS variables */
-  font-size: var(--info-line-fs) !important;
-  line-height: 1.36 !important;
-  font-weight: 400 !important;
-  padding: 0 !important;
-  margin: 0 0 var(--info-line-gap) 0 !important;
-  letter-spacing: 0 !important;
-  display: block !important;
-  text-align: right !important;
-}
-
-/* ensure any previously set larger padding is removed on the column wrapper */
-.content.about .info-columns .social.large {
-  padding: 0 !important;
-  gap: 0 !important;
-}
-
-
-/*# sourceMappingURL=style.css.map
+/*# sourceMappingURL=style.css.map */

@@ -29,6 +29,22 @@
   padding-bottom: 0.1rem;
   padding-top: 0.2rem;
   letter-spacing: 0.1rem;
+  font-size: 0.58rem;
+}
+
+.rights p {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.rights a {
+  color: inherit;
+  opacity: 0.82;
+}
+
+.rights a:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
 
 @media (max-width: 900px) {

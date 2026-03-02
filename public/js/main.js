@@ -84,3 +84,37 @@ window.addEventListener('load', function() {
 window.addEventListener('resize', function() {
 	autoscaleInfoBio();
 });
+
+function setupEmailCopy() {
+	try {
+		var emailButton = document.getElementById('email-copy');
+		var hint = document.getElementById('email-copy-hint');
+		if (!emailButton || !hint) return;
+
+		var emailText = emailButton.textContent.trim();
+
+		emailButton.addEventListener('mouseenter', function() {
+			hint.textContent = 'Click to copy';
+		});
+
+		emailButton.addEventListener('mouseleave', function() {
+			hint.textContent = 'Hover to copy';
+		});
+
+		emailButton.addEventListener('click', async function() {
+			try {
+				await navigator.clipboard.writeText(emailText);
+				hint.textContent = 'Copied';
+			} catch (copyError) {
+				hint.textContent = 'Copy failed';
+				console.error('Failed to copy email:', copyError);
+			}
+		});
+	} catch (e) {
+		console.error('setupEmailCopy error', e);
+	}
+}
+
+window.addEventListener('load', function() {
+	setupEmailCopy();
+});

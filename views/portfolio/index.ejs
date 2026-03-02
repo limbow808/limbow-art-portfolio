@@ -21,6 +21,10 @@
                                 <source media="(min-width: 901px) and (max-width: 2999px)" srcset="<%= image.path %>?w=480">
                                 <img loading="lazy" class="gallery-image" src="<%= image.path %>?w=650" alt="<%= image.name %>" onclick="openPreview('<%= image.path %>?w=1000')" />
                                 <div class="loading-overlay"></div>
+                                <div class="card-meta">
+                                    <h3 class="card-title"><%= image.name %></h3>
+                                    <p class="card-type"><%= image.workType %></p>
+                                </div>
                             </picture>
                         <% }); %>
                     <% } else { %>

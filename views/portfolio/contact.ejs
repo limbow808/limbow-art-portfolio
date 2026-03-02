@@ -1,28 +1,21 @@
 
 <%- include("header", {title: title}); %>
 
-<body style="margin:0; min-height:100vh;">
+<body>
     <div class="wrapper">
         <%- include('nav'); %>
 
         <div class="main" role="main" id="main">
-            <div class="content contact" style="position:relative; padding:0; margin:0;">
-                <script async src="https://tally.so/widgets/embed.js"></script>
-                <noscript>
-                    <div style="display:flex; align-items:center; justify-content:center; height:100vh;">
-                        <p>Please email <a href="mailto:prodlimbow@gmail.com">prodlimbow@gmail.com</a></p>
-                    </div>
-                </noscript>
-            </div>
-        </div>
+            <div class="content contact contact-simple">
+                <button class="email-copy" id="email-copy" type="button" aria-label="Copy email address">
+                    prodlimbow@gmail.com
+                </button>
+                <span class="email-copy-hint" id="email-copy-hint">Hover to copy</span>
 
-        <!-- Centered contact iframe (moved out of the content column so it isn't constrained by the left nav) -->
-        <div class="contact-centered" style="width:100%; display:block; padding:48px 0; pointer-events:none;">
-            <div style="max-width:920px; margin:0 auto; padding:0 18px;">
-                <div class="contact-nudge" style="width:100%;">
-                    <iframe data-tally-src="https://tally.so/r/nPoba0?transparentBackground=1"
-                        style="display:block; width:100%; min-height:720px; border:0; pointer-events:auto;"
-                        frameborder="0" marginheight="0" marginwidth="0" title="Contact form - limbow"></iframe>
+                <div class="contact-links" aria-label="Social media links">
+                    <a href="https://www.instagram.com/limmbow/" target="_blank" rel="noopener noreferrer">instagram</a>
+                    <a href="https://www.youtube.com/@limmbow" target="_blank" rel="noopener noreferrer">youtube</a>
+                    <a href="https://soundcloud.com/limbowmusic" target="_blank" rel="noopener noreferrer">soundcloud</a>
                 </div>
             </div>
         </div>
