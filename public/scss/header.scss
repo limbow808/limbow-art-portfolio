@@ -83,7 +83,7 @@
   display: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .header {
     height: $header-height;
   }
@@ -101,8 +101,4 @@
   }
 }
 
-@media (min-width: 3000px) {
-  .nav-item {
-    font-size: 1rem;
-  }
-}
+/* Removed ultrawide override to keep header sizing consistent */

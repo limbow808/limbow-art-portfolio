@@ -48,15 +48,17 @@ html {
 }
 
 .content {
-  margin: 0 1rem;
+  margin: 0 auto;
   background-color: #ffffff;
   padding: 2rem 1rem;
+  width: 100%;
 }
 
 .content.overview {
   padding: 2rem 1rem;
   margin: 0 auto;
   max-width: 1400px;
+  width: 100%;
 }
 
 .content p {
@@ -91,26 +93,18 @@ html {
 }
 
 
-@media (max-width: 900px) {
-  .nav-toggle {
-    display: block;
-  }
-
+@media (max-width: 768px) {
   .content p {
     max-width: 100%;
   }
 
-  .wrapper {
-    display: flex;
-    flex-direction: column;
+  .content {
+    padding: 1.5rem 0.8rem;
+    margin: 0 0.5rem;
   }
 
-  .content {
-    padding-top: 0;
-  }
-
-  .content {
-    margin: 0 1rem !important;
+  .content.overview {
+    padding: 1.5rem 0.8rem;
   }
 
   .about {
@@ -118,11 +112,7 @@ html {
   }
 }
 
-@media (min-width: 3000px) {
-  .wrapper {
-    grid-template-columns: 21rem 1fr;
-  }
-}
+/* Removed large-screen two-column layout to keep single-column header layout */
 
 /* Info page three-column layout */
 
