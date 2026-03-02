@@ -31,41 +31,32 @@ html {
 
 .wrapper {
   display: grid;
-  grid-template-columns: $sidebar-size 1fr;
-  grid-template-rows: auto 1.3fr;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
   gap: 0;
   grid-auto-flow: row;
   grid-template-areas:
-    'nav large'
-    'foot large';
-  transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.wrapper.nav-collapsed {
-  grid-template-columns: 0 1fr;
+    'header'
+    'large';
 }
 
 .main {
   grid-area: large;
   overflow-y: auto;
-  height: 100vh;
+  height: calc(100vh - $header-height);
   background-color: #ffffff;
-  margin-left: 0.8rem;
-  border-left: 1px solid #e0e0e0;
-  border-radius: 0;
 }
 
 .content {
-  margin: 0 1rem 0 0;
+  margin: 0 1rem;
   background-color: #ffffff;
-  padding-top: $top-padding;
+  padding: 2rem 1rem;
 }
 
 .content.overview {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: $top-padding 1.2rem;
-  margin: 1rem 1rem 1rem 0;
+  padding: 2rem 1rem;
+  margin: 0 auto;
+  max-width: 1400px;
 }
 
 .content p {
