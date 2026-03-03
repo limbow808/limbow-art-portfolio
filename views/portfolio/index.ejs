@@ -1,6 +1,12 @@
 <%- include("header", {title: title}); %>
 
 <body>
+    <div id="siteLoadingScreen" class="site-loading-screen">
+        <div class="loading-content">
+            <span class="loading-text">loading</span>
+            <span class="loading-emoticon">:)</span>
+        </div>
+    </div>
     <div id = "imageOverlay" class = "overlay" onclick="closePreview()"></div>
 
     <div class = "wrapper">
@@ -25,7 +31,7 @@
                 <div class = "gallery-container">
                     <% if (images && images.length > 0) { %>
                         <% images.forEach(function(image) { %>
-                            <picture class="<%= image.cssClass %>">
+                            <picture class="<%= image.cssClass %>" <% if (image.variants && image.variants.length > 1) { %>data-variants='<%= JSON.stringify(image.variants) %>'<% } %>>
                                 <source media="(max-width: 900px)" srcset="<%= image.path %>?w=650">
                                 <source media="(min-width: 3000px)" srcset="<%= image.path %>?w=800">
                                 <source media="(min-width: 901px) and (max-width: 2999px)" srcset="<%= image.path %>?w=480">
