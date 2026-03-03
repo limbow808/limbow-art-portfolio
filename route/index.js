@@ -8,6 +8,10 @@ const path = require('path');
 
 const sitename = "| limbow";
 
+function toSlug(name) {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
 function getHeroImages() {
     const imagesDir = path.join(__dirname, '..', 'images', 'index');
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
@@ -162,11 +166,20 @@ function getImagesWithLayout() {
                     }))
                 ];
                 
+                const slug = toSlug(group.base.name);
+                const projectDir = path.join(__dirname, '..', 'images', 'projects', slug);
+                let projectData = { title: group.base.name, software: '', workType: '3D Artwork', notes: '' };
+                const projectJsonPath = path.join(projectDir, 'project.json');
+                if (fs.existsSync(projectJsonPath)) {
+                    try { projectData = JSON.parse(fs.readFileSync(projectJsonPath, 'utf8')); } catch(e) {}
+                }
+
                 result.push({
                     filename: group.base.filename,
-                    name: group.base.name,
+                    name: projectData.title || group.base.name,
                     path: group.base.path,
-                    workType: '3D Artwork',
+                    workType: projectData.workType || '3D Artwork',
+                    slug: slug,
                     cssClass: '',
                     variants: allVariants
                 });
@@ -261,5 +274,67 @@ router.get("/discography", (req, res) => {
     res.render("portfolio/discography", {...data, currentURL: req.originalUrl });
 });
 
+/*
+ * project detail page
+ */
+router.get("/project/:slug", (req, res) => {
+    const slug = req.params.slug;
+    const projectDir = path.join(__dirname, '..', 'images', 'projects', slug);
+    const projectJsonPath = path.join(projectDir, 'project.json');
+
+    if (!fs.existsSync(projectJsonPath)) {
+        return res.status(404).render('portfolio/index', {
+            title: `Not Found ${sitename}`,
+            heroImages: [],
+            images: [],
+            currentURL: req.originalUrl
+        });
+    }
+
+    let projectData;
+    try {
+        projectData = JSON.parse(fs.readFileSync(projectJsonPath, 'utf8'));
+    } catch (e) {
+        return res.status(500).send('Error reading project data');
+    }
+
+    // Find the main gallery image matching this slug
+    const allImages = getImagesWithLayout();
+    const match = allImages.find(img => img.slug === slug);
+    const mainImagePath = match ? match.path : '';
+    const variants = match && match.variants ? match.variants : [];
+
+    // Read workflow images from project subfolder
+    const workflowDir = path.join(projectDir, 'workflow');
+    let workflowImages = [];
+    if (fs.existsSync(workflowDir)) {
+        const exts = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+        workflowImages = fs.readdirSync(workflowDir)
+            .filter(f => exts.includes(path.extname(f).toLowerCase()))
+            .sort()
+            .map(f => `/images/projects/${slug}/workflow/${f}`);
+    }
+
+    // Read any extra images directly inside the project folder (not workflow)
+    const exts = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+    let extraImages = [];
+    if (fs.existsSync(projectDir)) {
+        extraImages = fs.readdirSync(projectDir)
+            .filter(f => exts.includes(path.extname(f).toLowerCase()))
+            .sort()
+            .map(f => `/images/projects/${slug}/${f}`);
+    }
+
+    res.render('portfolio/project', {
+        title: `${projectData.title || slug} ${sitename}`,
+        project: projectData,
+        slug: slug,
+        mainImagePath: mainImagePath,
+        variants: variants,
+        workflowImages: workflowImages,
+        extraImages: extraImages,
+        currentURL: req.originalUrl
+    });
+});
+
 module.exports = router;
-// ...existing code...

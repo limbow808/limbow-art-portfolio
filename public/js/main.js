@@ -335,9 +335,6 @@ function setupImageVariants() {
 					img.setAttribute('src', variant.path + '?w=' + width[1]);
 				}
 				
-				// Update onclick preview
-				img.setAttribute('onclick', "openPreview('" + variant.path + "?w=1000')");
-				
 				// Update meta title if present
 				var titleEl = picture.querySelector('.card-title');
 				if (titleEl) {

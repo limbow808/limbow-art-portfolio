@@ -1,0 +1,96 @@
+<%- include("header", {title: title}); %>
+
+<body>
+    <div class="wrapper">
+        <%- include("nav"); %>
+        <div class="main" role="main" id="main">
+            <div class="content project-page">
+
+                <a href="/" class="back-link">&larr; Back to Gallery</a>
+
+                <!-- Hero image -->
+                <% if (mainImagePath) { %>
+                    <div class="project-hero">
+                        <img id="projectHeroImg" class="project-hero-image" src="<%= mainImagePath %>?w=2000" alt="<%= project.title %>" />
+                    </div>
+                <% } %>
+
+                <!-- Title -->
+                <h1 class="project-title"><%= project.title %></h1>
+
+                <!-- Info cards -->
+                <div class="project-info-cards">
+                    <% if (project.workType) { %>
+                        <div class="project-card">
+                            <h3 class="project-card-label">Type</h3>
+                            <p class="project-card-value"><%= project.workType %></p>
+                        </div>
+                    <% } %>
+                    <% if (project.software) { %>
+                        <div class="project-card">
+                            <h3 class="project-card-label">Software</h3>
+                            <p class="project-card-value"><%= project.software %></p>
+                        </div>
+                    <% } %>
+                    <% if (project.notes) { %>
+                        <div class="project-card">
+                            <h3 class="project-card-label">Notes</h3>
+                            <p class="project-card-value"><%= project.notes %></p>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- Variants -->
+                <% if (variants && variants.length > 1) { %>
+                    <h2 class="project-section-heading">Variants</h2>
+                    <div class="project-variants">
+                        <% variants.forEach(function(v, i) { %>
+                            <img class="project-variant-thumb<%= i === 0 ? ' active' : '' %>"
+                                 src="<%= v.path %>?w=400"
+                                 alt="<%= v.name %>"
+                                 data-full="<%= v.path %>?w=2000"
+                                 onclick="swapHero(this)" />
+                        <% }); %>
+                    </div>
+                <% } %>
+
+                <!-- Extra images from project folder -->
+                <% if (extraImages && extraImages.length > 0) { %>
+                    <h2 class="project-section-heading">More</h2>
+                    <div class="project-extra-images">
+                        <% extraImages.forEach(function(img) { %>
+                            <img class="project-extra-image" src="<%= img %>?w=800" alt="" loading="lazy" />
+                        <% }); %>
+                    </div>
+                <% } %>
+
+                <!-- Workflow / process images -->
+                <% if (workflowImages && workflowImages.length > 0) { %>
+                    <h2 class="project-section-heading">Process</h2>
+                    <div class="project-workflow">
+                        <% workflowImages.forEach(function(img) { %>
+                            <img class="project-workflow-image" src="<%= img %>?w=800" alt="" loading="lazy" />
+                        <% }); %>
+                    </div>
+                <% } %>
+
+            </div>
+            <%- include("footer"); %>
+        </div>
+    </div>
+
+    <script>
+        function swapHero(thumb) {
+            var hero = document.getElementById('projectHeroImg');
+            if (hero && thumb.dataset.full) {
+                hero.src = thumb.dataset.full;
+            }
+            // update active class
+            var thumbs = document.querySelectorAll('.project-variant-thumb');
+            thumbs.forEach(function(t) { t.classList.remove('active'); });
+            thumb.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

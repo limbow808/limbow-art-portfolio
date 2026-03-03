@@ -1823,4 +1823,146 @@ picture:hover .variant-nav {
   }
 }
 
+/* ============================================
+   Gallery links (overview page)
+   ============================================ */
+.gallery-link {
+  display: contents;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ============================================
+   Project page
+   ============================================ */
+.project-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.back-link:hover {
+  opacity: 1;
+}
+
+.project-hero {
+  width: 100%;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.project-hero-image {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.project-title {
+  font-size: 2.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.project-info-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.project-card {
+  background-color: #666666;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 1.2rem 1.6rem;
+  flex: 1 1 200px;
+  min-width: 180px;
+}
+
+[data-theme="dark"] .project-card {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.project-card-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 0.4rem;
+  opacity: 0.7;
+  color: inherit;
+}
+
+.project-card-value {
+  font-size: 1rem;
+  margin: 0;
+  color: inherit;
+}
+
+.project-section-heading {
+  font-size: 1.4rem;
+  margin: 2.5rem 0 1rem;
+}
+
+.project-variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.project-variant-thumb {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s, outline 0.2s;
+  outline: 2px solid transparent;
+}
+.project-variant-thumb:hover {
+  opacity: 0.9;
+}
+.project-variant-thumb.active {
+  opacity: 1;
+  outline: 2px solid currentColor;
+}
+
+.project-extra-images,
+.project-workflow {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.project-extra-image,
+.project-workflow-image {
+  width: 100%;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+@media (max-width: 600px) {
+  .project-page {
+    padding: 1rem 1rem 3rem;
+  }
+  .project-title {
+    font-size: 1.8rem;
+  }
+  .project-info-cards {
+    flex-direction: column;
+  }
+  .project-variant-thumb {
+    width: 72px;
+    height: 72px;
+  }
+}
+
 /*# sourceMappingURL=style.css.map */
