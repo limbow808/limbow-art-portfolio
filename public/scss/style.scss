@@ -456,8 +456,8 @@ picture:hover .variant-nav {
     position: fixed;
     top: var(--cursor-y, 0);
     left: var(--cursor-x, 0);
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     background-color: #ffffff;
     mix-blend-mode: difference;
@@ -474,25 +474,13 @@ picture:hover .variant-nav {
   }
 
   .custom-cursor.active {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
     transform: translate(-50%, -50%) scale(1.05);
   }
 
   .custom-cursor.clicked {
-    animation: cursorClick 300ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
-
-  @keyframes cursorClick {
-    0% {
-      transform: translate(-50%, -50%) scale(1);
-    }
-    50% {
-      transform: translate(-50%, -50%) scale(1.4);
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(1);
-    }
+    transform: translate(-50%, -50%) scale(1.4);
   }
 }
 

@@ -120,35 +120,47 @@ function setupCustomCursor() {
 
 		var cursor = document.createElement('div');
 		cursor.className = 'custom-cursor';
-		// ensure initial visibility
-		cursor.style.opacity = '1';
+		// keep hidden until first movement so it doesn't appear at 0,0
+		cursor.style.opacity = '0';
 		document.body.appendChild(cursor);
 
 		// Move the cursor element to mouse position using CSS custom properties
 		document.addEventListener('mousemove', function(event) {
 			cursor.style.setProperty('--cursor-x', event.clientX + 'px');
 			cursor.style.setProperty('--cursor-y', event.clientY + 'px');
+			cursor.style.opacity = '1';
 		});
 
-		// hide when leaving the window
+		// hide when leaving the document/page area
 		document.addEventListener('mouseleave', function() {
 			cursor.style.opacity = '0';
+			cursor.classList.remove('clicked');
 		});
 
 		document.addEventListener('mouseenter', function() {
 			cursor.style.opacity = '1';
 		});
 
-		// Subtle kick animation on any click
-		document.addEventListener('click', function() {
-			cursor.classList.remove('clicked');
-			// Trigger reflow to restart animation
-			void cursor.offsetWidth;
-			cursor.classList.add('clicked');
-			// Remove the class after animation completes
-			setTimeout(function() {
+		// extra guard for leaving the browser viewport/window
+		window.addEventListener('mouseout', function(event) {
+			if (!event.relatedTarget && !event.toElement) {
+				cursor.style.opacity = '0';
 				cursor.classList.remove('clicked');
-			}, 300);
+			}
+		});
+
+		window.addEventListener('blur', function() {
+			cursor.style.opacity = '0';
+			cursor.classList.remove('clicked');
+		});
+
+		// Keep the cursor enlarged while mouse button is held down
+		document.addEventListener('mousedown', function() {
+			cursor.classList.add('clicked');
+		});
+
+		document.addEventListener('mouseup', function() {
+			cursor.classList.remove('clicked');
 		});
 
 		// Helper: walk up to find a non-transparent background color
