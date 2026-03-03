@@ -1,39 +1,43 @@
-<div class="header" id = "header" role="banner" style="position:relative; z-index:2000;">
-    <div class="site-header">
-        <div class="logo">
-            <a href="/" id = "nav-link">
-                <img src="/images/web-min.png" alt="Home" />
-            </a>
-        </div>
-    </div>
+<div class="header" id="header" role="banner">
     <div class="nav" id="outer-nav">
-        <div id="nav" role="navigation" tabindex="-1">
-            <ul class = "nav-list">
-                <li class="<%= (currentURL === '/') ? 'active' : ' '%>">
-                    <a class = "nav-item" href="/" id = "nav-link">Overview</a>
+        <div id="nav" role="navigation">
+            <ul class="nav-list">
+                <li class="<%= (currentURL === '/') ? 'active' : '' %>">
+                    <a class="nav-item" href="/">Overview</a>
                 </li>
-                <li class="<%= (currentURL === '/info') ? 'active' : ' '%>">
-                    <a class="nav-item" href="/info" id = "nav-link">Info</a>
+                <li class="<%= (currentURL === '/info') ? 'active' : '' %>">
+                    <a class="nav-item" href="/info">Info</a>
                 </li>
-                <li class="<%= (currentURL === '/contact') ? 'active' : ' '%>">
-                    <a class="nav-item" href="/contact" id = "nav-link">Contact</a>
+                <li class="<%= (currentURL === '/contact') ? 'active' : '' %>">
+                    <a class="nav-item" href="/contact">Contact</a>
                 </li>
-                <!----
-                <li>
-                    <a class = "nav-item" href="" id = "highlight-link">Highlight
-                        <i class="fa fa-caret-down" aria-hidden="true" id="highlight-caret"></i>
-                    </a>
-                    <ul class = "highlight-dropdown" id = "highlight-dropdown">
-                        <li class="nav-item sub <%= (currentURL.startsWith('/commissions')) ? 'active' : '' %>">
-                            <a href = "/commissions" id = "nav-link">commissions <%=currentURL %></a>
-                        </li>
-                        <li class="nav-item sub <%= (currentURL.startsWith('/discography')) ? 'active' : '' %>">
-                            <a href = "/discography" id = "nav-link">discography</a>
-                        </li>
-                    </ul>
-                </li>
-                ---->
             </ul>
         </div>
+        <button
+            class="theme-toggle"
+            type="button"
+            id="theme-toggle-btn"
+            title="Toggle theme"
+            aria-label="Toggle theme"
+        >
+            <div class="theme-toggle__icon">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    width="1em"
+                    height="1em"
+                    class="theme-toggle__simple"
+                    fill="currentColor"
+                    viewBox="0 0 32 32"
+                >
+                    <clipPath id="theme-toggle__simple__cutout">
+                        <path d="M0-5h55v37h-55zm32 12a1 1 0 0025 0 1 1 0 00-25 0" />
+                    </clipPath>
+                    <g clip-path="url(#theme-toggle__simple__cutout)">
+                        <circle cx="16" cy="16" r="15" />
+                    </g>
+                </svg>
+            </div>
+        </button>
     </div>
 </div>

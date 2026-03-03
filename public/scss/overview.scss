@@ -1,5 +1,42 @@
 
 // as seen on https://medium.com/@MilesOfRoses/css-image-gallery-for-pictures-with-different-aspect-ratios-a20ffecb75d5
+
+.section-heading {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.01rem;
+  text-transform: none;
+  color: #666666;
+  margin: 0 0 1.5rem 0;
+  padding: 0;
+  position: relative;
+  z-index: 0;
+  line-height: 1.3;
+}
+
+.section-heading.gallery-heading {
+  padding-top: 2rem;
+  margin-top: 1.5rem;
+  position: relative;
+  overflow-x: clip;
+}
+
+.section-heading.gallery-heading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100vw;
+  right: -100vw;
+  height: 1px;
+  background-color: #f0f0f0;
+  z-index: -1;
+}
+
+.hero-image {
+  display: block;
+  margin-bottom: 2.5rem;
+}
+
 .gallery-container {
   $count: 3;
   $col-gap: 0.6rem;
@@ -27,9 +64,27 @@ picture {
   width: 100%;
   height: 430px;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 12px;
   margin-bottom: 0.75rem;
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+  /* soften shadow to avoid visible corner artifacts */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  isolation: isolate;
+  contain: paint;
+  -webkit-border-radius: 12px;
+}
+
+picture::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 1;
+  -webkit-border-radius: 12px;
 }
 
 .gallery-image {
@@ -37,42 +92,69 @@ picture {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: opacity 0.3s ease, filter 0.28s ease;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-border-radius: 12px;
+  clip-path: inset(0 round 12px);
+  -webkit-clip-path: inset(0 round 12px);
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.1);
 }
 
 picture:hover .gallery-image {
-  transform: scale(1.02);
-  transition: transform 0.25s ease;
+  filter: opacity(0.92);
 }
 
 .card-meta {
   position: absolute;
   left: 0;
-  bottom: 0;
+  top: 0;
   width: 100%;
+  height: 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 0.8rem;
-  padding: 0.7rem 0.8rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0));
-  color: #fff;
+  min-height: 3rem;
+  padding: 0.55rem 0.7rem;
+  background-color: #f7f7f7;
   pointer-events: none;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  z-index: 2;
+  background-clip: padding-box;
+}
+
+picture:hover .card-meta {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .card-title {
   margin: 0;
-  font-size: 0.9rem;
-  font-weight: 500;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.86rem;
+  font-weight: 700;
   line-height: 1.2;
   text-transform: capitalize;
+  color: #1e1e1e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-type {
   margin: 0;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
+  font-weight: 600;
   letter-spacing: 0.08rem;
   text-transform: uppercase;
-  opacity: 0.92;
+  color: #666666;
   white-space: nowrap;
 }
 
@@ -106,7 +188,6 @@ picture .gallery-image.loaded {
 
 .gallery-image {
   opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
 .overlay {
@@ -131,12 +212,12 @@ picture .gallery-image.loaded {
 
 
 // mobile
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .gallery-container {
     padding-bottom: 5rem;
-    $count: 1;
+    $count: 2;
     $col-gap: 0.3rem;
-    line-height: 2rem;
+    line-height: 1rem;
     column-count: $count;
     column-gap: $col-gap;
     -webkit-row-gap: $col-gap;
@@ -149,11 +230,15 @@ picture .gallery-image.loaded {
   }
 
   picture {
-    border-radius: 12px;
+    border-radius: 10px;
   }
 
   .card-title {
-    font-size: 0.86rem;
+    font-size: 0.8rem;
+  }
+
+  .card-type {
+    font-size: 0.62rem;
   }
 
   //.hero-image {display: none;}

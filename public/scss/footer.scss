@@ -3,21 +3,19 @@
 
 
 .footer {
-  grid-area: foot;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  padding: 0 0 0 $left-padding;
-
+  width: 100%;
+  height: $header-height;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0;
+  margin-top: 3rem;
 }
 
 .social a {
   text-decoration: none;
-}
-
-.social,
-.rights {
-  // line-height: 1.1rem;
 }
 
 .social a {
@@ -26,15 +24,19 @@
 }
 
 .rights {
-  padding-bottom: 0.1rem;
-  padding-top: 0.2rem;
-  letter-spacing: 0.1rem;
-  font-size: 0.58rem;
+  padding: 0;
+  letter-spacing: 0.06rem;
+  font-size: 0.48rem;
+  line-height: 1rem;
 }
 
 .rights p {
   margin: 0;
   white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  align-items: center;
 }
 
 .rights a {
@@ -51,14 +53,10 @@
   .footer {
     display: flex;
     width: 100%;
-    padding: 0.25rem 1rem;
-    justify-content: space-between;
+    padding: 0;
+    justify-content: center;
   }
 
 }
 
-@media (min-width: 3000px) {
-  .footer {
-    padding: 0 0 0 2rem;
-  }
-}
+/* Removed ultrawide footer override */

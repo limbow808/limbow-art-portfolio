@@ -8,6 +8,57 @@ const path = require('path');
 
 const sitename = "| limbow";
 
+function getHeroImages() {
+    const imagesDir = path.join(__dirname, '..', 'images', 'index');
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+    const heroPattern = /^hero(\d+)$/i;
+
+    try {
+        const files = fs.readdirSync(imagesDir);
+
+        const numberedHeroFiles = files
+            .filter(file => imageExtensions.includes(path.extname(file).toLowerCase()))
+            .map((file) => {
+                const parsed = path.parse(file).name;
+                const match = parsed.match(heroPattern);
+
+                if (!match) {
+                    return null;
+                }
+
+                return {
+                    filename: file,
+                    name: parsed,
+                    number: parseInt(match[1], 10),
+                    path: `/images/index/${file}`,
+                    workType: '3D Artwork'
+                };
+            })
+            .filter(Boolean)
+            .sort((a, b) => a.number - b.number);
+
+        if (numberedHeroFiles.length > 0) {
+            return numberedHeroFiles;
+        }
+
+        const fallbackHero = files.find(file => /^hero\.[a-z0-9]+$/i.test(file));
+        if (fallbackHero) {
+            return [{
+                filename: fallbackHero,
+                name: path.parse(fallbackHero).name,
+                number: 0,
+                path: `/images/index/${fallbackHero}`,
+                workType: '3D Artwork'
+            }];
+        }
+
+        return [];
+    } catch (error) {
+        console.error('Error reading hero images directory:', error);
+        return [];
+    }
+}
+
 function getImagesWithLayout() {
     const imagesDir = path.join(__dirname, '..', 'images', 'index');
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
@@ -37,20 +88,98 @@ function getImagesWithLayout() {
         'span-1col span-1row'
     ];
     
+    const heroNamePattern = /^hero(\d+)?$/i;
+    const variantPattern = /^(.+)_v(\d+)$/i;
+
     try {
         const files = fs.readdirSync(imagesDir);
         const imageFiles = files
             .filter(file => imageExtensions.includes(path.extname(file).toLowerCase()))
-            .filter(file => file !== 'hero.png')
+            .filter(file => !heroNamePattern.test(path.parse(file).name))
             .sort();
         
-        return imageFiles.map((file, index) => ({
-            filename: file,
-            name: path.parse(file).name,
-            path: `/images/index/${file}`,
-            workType: '3D Artwork',
-            cssClass: layoutPatterns[index % layoutPatterns.length] || 'span-1col span-1row'
-        }));
+        // Group images by base name (handle variants)
+        const imageGroups = new Map();
+        
+        imageFiles.forEach(file => {
+            const parsed = path.parse(file);
+            const baseName = parsed.name;
+            const variantMatch = baseName.match(variantPattern);
+            
+            if (variantMatch) {
+                // This is a variant (_v2, _v3, etc.)
+                const baseImageName = variantMatch[1];
+                const variantNum = parseInt(variantMatch[2]);
+                
+                if (!imageGroups.has(baseImageName)) {
+                    imageGroups.set(baseImageName, {
+                        base: null,
+                        variants: []
+                    });
+                }
+                
+                imageGroups.get(baseImageName).variants.push({
+                    filename: file,
+                    name: baseName,
+                    path: `/images/index/${file}`,
+                    variantNum: variantNum
+                });
+            } else {
+                // This is a base image (no variant suffix)
+                if (!imageGroups.has(baseName)) {
+                    imageGroups.set(baseName, {
+                        base: null,
+                        variants: []
+                    });
+                }
+                
+                imageGroups.get(baseName).base = {
+                    filename: file,
+                    name: baseName,
+                    path: `/images/index/${file}`
+                };
+            }
+        });
+        
+        // Build final image list with variants attached
+        const result = [];
+        imageGroups.forEach((group, baseName) => {
+            if (group.base) {
+                // Sort variants by number
+                group.variants.sort((a, b) => a.variantNum - b.variantNum);
+                
+                // Include base image as first item in variants array for cycling
+                const allVariants = [
+                    {
+                        filename: group.base.filename,
+                        name: group.base.name,
+                        path: group.base.path
+                    },
+                    ...group.variants.map(v => ({
+                        filename: v.filename,
+                        name: v.name,
+                        path: v.path
+                    }))
+                ];
+                
+                result.push({
+                    filename: group.base.filename,
+                    name: group.base.name,
+                    path: group.base.path,
+                    workType: '3D Artwork',
+                    cssClass: '',
+                    variants: allVariants
+                });
+            }
+        });
+        
+        // Sort by filename and apply layout patterns
+        result.sort((a, b) => a.filename.localeCompare(b.filename));
+        result.forEach((img, index) => {
+            img.cssClass = layoutPatterns[index % layoutPatterns.length] || 'span-1col span-1row';
+        });
+        
+        return result;
         
     } catch (error) {
         console.error('Error reading images directory:', error);
@@ -60,9 +189,22 @@ function getImagesWithLayout() {
 
 // Add a route for the path /
 router.get("/", (req, res) => {
+    const heroImages = getHeroImages();
     const images = getImagesWithLayout();
+    
+    // Debug: log images with variants
+    const imagesWithVariants = images.filter(img => img.variants && img.variants.length > 0);
+    if (imagesWithVariants.length > 0) {
+        console.log('Images with variants:', imagesWithVariants.map(img => ({
+            name: img.name,
+            variantCount: img.variants.length,
+            variants: img.variants.map(v => v.name)
+        })));
+    }
+    
     let data = {
         title: `Overview ${sitename}`,
+        heroImages: heroImages,
         images: images
     };
 
