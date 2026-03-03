@@ -4,18 +4,18 @@
 
 .footer {
   width: 100%;
+  height: $header-height;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  padding: 2rem 0 1.5rem;
+  padding: 0;
   margin-top: 3rem;
 }
 
 .social a {
   text-decoration: none;
-}
-
-.social,
-.rights {
-  // line-height: 1.1rem;
 }
 
 .social a {
@@ -24,8 +24,7 @@
 }
 
 .rights {
-  padding-bottom: 0.3rem;
-  padding-top: 0rem;
+  padding: 0;
   letter-spacing: 0.06rem;
   font-size: 0.48rem;
   line-height: 1rem;
@@ -35,6 +34,7 @@
   margin: 0;
   white-space: nowrap;
   display: flex;
+  justify-content: center;
   gap: 0.4rem;
   align-items: center;
 }
@@ -53,8 +53,8 @@
   .footer {
     display: flex;
     width: 100%;
-    padding: 0.25rem 1rem;
-    justify-content: space-between;
+    padding: 0;
+    justify-content: center;
   }
 
 }
