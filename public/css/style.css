@@ -836,10 +836,18 @@ html {
   height: 100%;
   background: #ffffff;
   z-index: 9999;
-  display: flex;
+  display: none;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   transition: opacity 0.5s ease-out;
+  opacity: 0;
+  pointer-events: none;
+}
+.site-loading-screen.is-visible {
+  display: flex;
+  opacity: 1;
+  pointer-events: auto;
 }
 @media (prefers-color-scheme: dark) {
   .site-loading-screen {
@@ -850,21 +858,48 @@ html {
   opacity: 0;
 }
 
-.loading-content {
-  font-family: "Manrope", "Roboto", sans-serif;
-  font-size: 1.5rem;
-  color: #666666;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
 .loading-emoticon {
-  display: inline-block;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", "Roboto", sans-serif;
+  font-size: 5rem;
+  color: #111111;
   min-width: 2ch;
   text-align: center;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  opacity: 1;
+  animation: pulse 0.9s ease-in-out infinite;
+}
+@media (prefers-color-scheme: dark) {
+  .loading-emoticon {
+    color: #ffffff;
+  }
 }
 
+.loading-text {
+  font-family: "Manrope", "Roboto", sans-serif;
+  font-size: 1.2rem;
+  color: #666666;
+  position: absolute;
+  bottom: 4rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@media (prefers-color-scheme: dark) {
+  .loading-text {
+    color: #999999;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
 .variant-nav {
   position: absolute;
   top: 0;

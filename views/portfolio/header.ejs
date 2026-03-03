@@ -7,6 +7,132 @@
     <title><%= title %></title>
 
     <link rel="icon" href="/images/favicon.ico">
+    
+    <!-- Critical loading screen styles to prevent FOUC -->
+    <style>
+        .site-loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .site-loading-screen.is-visible {
+            display: flex;
+            opacity: 1;
+            pointer-events: auto;
+        }
+        @media (prefers-color-scheme: dark) {
+            .site-loading-screen {
+                background: #000000;
+            }
+        }
+        .loading-emoticon {
+            font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Roboto', sans-serif;
+            font-size: 5rem;
+            color: #111111;
+            text-align: center;
+            display: block;
+            margin-bottom: 2rem;
+            line-height: 1;
+            opacity: 1;
+            animation: pulse 0.9s ease-in-out infinite;
+        }
+        @media (prefers-color-scheme: dark) {
+            .loading-emoticon {
+                color: #ffffff;
+            }
+        }
+        .loading-text {
+            font-family: 'Manrope', 'Roboto', sans-serif;
+            font-size: 1.2rem;
+            color: #666666;
+            position: absolute;
+            bottom: 4rem;
+            animation: pulse 1.5s ease-in-out infinite;
+            display: none;
+        }
+        @media (prefers-color-scheme: dark) {
+            .loading-text {
+                color: #999999;
+            }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        .site-loading-screen.fade-out {
+            opacity: 0;
+        }
+    </style>
+
+    <script>
+        (function () {
+            var emoticons = [':)', ':3', ':D', 'xD', ':]', '>:3', ':P', '<3', ':O', '( ͡° ͜ʖ ͡°)', '(>w<)', 'UwU'];
+            var currentIndex = 0;
+            var intervalId;
+            var started = false;
+            var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            var effectiveType = connection && connection.effectiveType ? connection.effectiveType : '';
+            var saveData = !!(connection && connection.saveData);
+            var isBadConnection = saveData || effectiveType === 'slow-2g' || effectiveType === '2g' || effectiveType === '3g';
+            var shouldActivateEarly = isBadConnection;
+
+            function startEarlyLoader() {
+                if (started) return;
+
+                var loadingScreen = document.getElementById('siteLoadingScreen');
+                var emoticonEl = document.querySelector('.loading-emoticon');
+                var loadingText = document.querySelector('.loading-text');
+                if (!loadingScreen || !emoticonEl) return;
+
+                started = true;
+                window.__earlyLoaderActive = true;
+                loadingScreen.classList.add('is-visible');
+
+                if (loadingText) {
+                    loadingText.style.display = 'block';
+                    loadingText.textContent = '0%';
+                }
+
+                intervalId = window.setInterval(function () {
+                    if (loadingScreen.classList.contains('fade-out') || loadingScreen.style.display === 'none') {
+                        window.clearInterval(intervalId);
+                        return;
+                    }
+
+                    currentIndex = (currentIndex + 1) % emoticons.length;
+                    emoticonEl.textContent = emoticons[currentIndex];
+                }, 120);
+
+                window.__earlyLoaderInterval = intervalId;
+            }
+
+            if (shouldActivateEarly) {
+                var pollId = window.setInterval(function () {
+                    startEarlyLoader();
+                    if (started) {
+                        window.clearInterval(pollId);
+                    }
+                }, 50);
+
+                window.setTimeout(function () {
+                    window.clearInterval(pollId);
+                    startEarlyLoader();
+                }, 5000);
+            }
+        })();
+    </script>
+    
     <link rel="stylesheet" href="/css/style.css?v=db7fa9e" type="text/css" />
     <link rel="stylesheet" href="/css/mobile-menu.css" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

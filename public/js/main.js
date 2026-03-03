@@ -357,5 +357,5 @@ window.addEventListener('load', function() {
 	setupLoadingScreen();
 	setupEmailCopy();
 	setupCustomCursor();
-	setupImageVariants();
+	// setupImageVariants();
 });
