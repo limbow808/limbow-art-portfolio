@@ -298,9 +298,19 @@ router.get("/project/:slug", (req, res) => {
         return res.status(500).send('Error reading project data');
     }
 
-    // Find the main gallery image matching this slug
+    // Find the main gallery image matching this slug (check gallery + hero images)
     const allImages = getImagesWithLayout();
-    const match = allImages.find(img => img.slug === slug);
+    let match = allImages.find(img => img.slug === slug);
+    
+    // If not found in gallery, check hero images
+    if (!match) {
+        const heroImages = getHeroImages();
+        const heroMatch = heroImages.find(h => toSlug(h.name) === slug);
+        if (heroMatch) {
+            match = { path: heroMatch.path, variants: [] };
+        }
+    }
+    
     const mainImagePath = match ? match.path : '';
     const variants = match && match.variants ? match.variants : [];
 

@@ -512,9 +512,9 @@ picture:hover .variant-nav {
    Project page
    ============================================ */
 .project-page {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 2rem 1rem 4rem;
 }
 
 .back-link {
@@ -525,101 +525,189 @@ picture:hover .variant-nav {
   color: inherit;
   opacity: 0.7;
   transition: opacity 0.2s;
-}
-.back-link:hover {
-  opacity: 1;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
-.project-hero {
-  width: 100%;
-  margin-bottom: 2rem;
-  border-radius: 8px;
-  overflow: hidden;
+.project-title {
+  font-size: 2.2rem;
+  margin: 0 0 1.2rem;
 }
-.project-hero-image {
+
+/* ---------- Smart panels ---------- */
+.project-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 2rem;
+}
+
+.project-panel {
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  padding: 1rem 1.4rem;
+}
+
+[data-theme="dark"] .project-panel {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.project-panel--info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+}
+
+.project-panel-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.project-panel-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+  color: inherit;
+}
+
+.project-panel-value {
+  font-size: 0.95rem;
+  color: inherit;
+}
+
+.project-panel-text {
+  font-size: 0.95rem;
+  margin: 0.35rem 0 0;
+  color: inherit;
+  line-height: 1.55;
+  max-width: 100%;
+  width: 100%;
+}
+
+.project-tools-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+
+.project-tool-tag {
+  display: inline-block;
+  font-size: 0.82rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.07);
+  color: inherit;
+}
+
+[data-theme="dark"] .project-tool-tag {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- Image viewer ---------- */
+.project-viewer {
+  position: relative;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+}
+
+.project-viewer-image {
   width: 100%;
   display: block;
   object-fit: cover;
 }
 
-.project-title {
-  font-size: 2.4rem;
-  margin-bottom: 1.5rem;
-}
-
-.project-info-cards {
+.project-viewer-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 5rem;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.6rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 2;
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
+  align-items: center;
+
+  &--left {
+    left: 0;
+    justify-content: flex-start;
+    padding-left: 0.8rem;
+    background: linear-gradient(to right, rgba(0,0,0,0.25), transparent);
+  }
+  &--right {
+    right: 0;
+    justify-content: flex-end;
+    padding-right: 0.8rem;
+    background: linear-gradient(to left, rgba(0,0,0,0.25), transparent);
+  }
 }
 
-.project-card {
-  background-color: #666666;
-  color: #ffffff;
-  border-radius: 8px;
-  padding: 1.2rem 1.6rem;
-  flex: 1 1 200px;
-  min-width: 180px;
+.project-viewer:hover .project-viewer-arrow {
+  opacity: 1;
 }
 
-[data-theme="dark"] .project-card {
-  background-color: #2a2a2a;
-  color: #e0e0e0;
+.project-viewer-thumbs {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.6rem 0.8rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.45));
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.25s;
 }
 
-.project-card-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin: 0 0 0.4rem;
-  opacity: 0.7;
-  color: inherit;
+.project-viewer:hover .project-viewer-thumbs {
+  opacity: 1;
 }
 
-.project-card-value {
-  font-size: 1rem;
-  margin: 0;
-  color: inherit;
+.project-viewer-thumb {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity 0.2s, outline 0.2s;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+
+  &:hover { opacity: 0.9; }
+  &.active {
+    opacity: 1;
+    outline-color: #fff;
+  }
 }
 
+/* ---------- Section headings & grids ---------- */
 .project-section-heading {
   font-size: 1.4rem;
   margin: 2.5rem 0 1rem;
 }
 
-/* Variant thumbnails */
-.project-variants {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.project-variant-thumb {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 6px;
-  cursor: pointer;
-  opacity: 0.6;
-  transition: opacity 0.2s, outline 0.2s;
-  outline: 2px solid transparent;
-}
-.project-variant-thumb:hover {
-  opacity: 0.9;
-}
-.project-variant-thumb.active {
-  opacity: 1;
-  outline: 2px solid currentColor;
-}
-
-/* Extra images and workflow grids */
 .project-extra-images,
 .project-workflow {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
 }
+
 .project-extra-image,
 .project-workflow-image {
   width: 100%;
@@ -627,19 +715,23 @@ picture:hover .variant-nav {
   object-fit: cover;
 }
 
-/* Mobile adjustments */
 @media (max-width: 600px) {
   .project-page {
     padding: 1rem 1rem 3rem;
   }
   .project-title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
-  .project-info-cards {
+  .project-panel--info {
     flex-direction: column;
+    gap: 0.6rem;
   }
-  .project-variant-thumb {
-    width: 72px;
-    height: 72px;
+  .project-viewer-thumb {
+    width: 40px;
+    height: 40px;
+  }
+  .project-viewer-arrow {
+    width: 3rem;
+    font-size: 1.3rem;
   }
 }

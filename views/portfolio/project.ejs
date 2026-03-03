@@ -8,49 +8,72 @@
 
                 <a href="/" class="back-link">&larr; Back to Gallery</a>
 
-                <!-- Hero image -->
-                <% if (mainImagePath) { %>
-                    <div class="project-hero">
-                        <img id="projectHeroImg" class="project-hero-image" src="<%= mainImagePath %>?w=2000" alt="<%= project.title %>" />
-                    </div>
-                <% } %>
-
                 <!-- Title -->
                 <h1 class="project-title"><%= project.title %></h1>
 
-                <!-- Info cards -->
-                <div class="project-info-cards">
-                    <% if (project.workType) { %>
-                        <div class="project-card">
-                            <h3 class="project-card-label">Type</h3>
-                            <p class="project-card-value"><%= project.workType %></p>
+                <!-- Smart info panels — only rendered when data exists -->
+                <div class="project-panels">
+
+                    <%
+                        // Collect detail items for the info strip
+                        var infoItems = [];
+                        if (project.title) infoItems.push({ label: 'Project', value: project.title });
+                        if (project.date) infoItems.push({ label: 'Date', value: project.date });
+                        if (project.scope) infoItems.push({ label: 'Scope', value: project.scope });
+                        if (project.category) infoItems.push({ label: 'Category', value: project.category });
+                        if (project.workType) infoItems.push({ label: 'Type', value: project.workType });
+                    %>
+                    <% if (infoItems.length > 0) { %>
+                        <div class="project-panel project-panel--info">
+                            <% infoItems.forEach(function(item) { %>
+                                <div class="project-panel-item">
+                                    <span class="project-panel-label"><%= item.label %></span>
+                                    <span class="project-panel-value"><%= item.value %></span>
+                                </div>
+                            <% }); %>
                         </div>
                     <% } %>
-                    <% if (project.software) { %>
-                        <div class="project-card">
-                            <h3 class="project-card-label">Software</h3>
-                            <p class="project-card-value"><%= project.software %></p>
-                        </div>
-                    <% } %>
+
                     <% if (project.notes) { %>
-                        <div class="project-card">
-                            <h3 class="project-card-label">Notes</h3>
-                            <p class="project-card-value"><%= project.notes %></p>
+                        <div class="project-panel project-panel--notes">
+                            <span class="project-panel-label">Notes</span>
+                            <p class="project-panel-text"><%= project.notes %></p>
                         </div>
                     <% } %>
+
+                    <% if (project.tools && project.tools.length > 0) { %>
+                        <div class="project-panel project-panel--tools">
+                            <span class="project-panel-label">Tools</span>
+                            <div class="project-tools-list">
+                                <% project.tools.forEach(function(tool) { %>
+                                    <span class="project-tool-tag"><%= tool %></span>
+                                <% }); %>
+                            </div>
+                        </div>
+                    <% } %>
+
                 </div>
 
-                <!-- Variants -->
-                <% if (variants && variants.length > 1) { %>
-                    <h2 class="project-section-heading">Variants</h2>
-                    <div class="project-variants">
-                        <% variants.forEach(function(v, i) { %>
-                            <img class="project-variant-thumb<%= i === 0 ? ' active' : '' %>"
-                                 src="<%= v.path %>?w=400"
-                                 alt="<%= v.name %>"
-                                 data-full="<%= v.path %>?w=2000"
-                                 onclick="swapHero(this)" />
-                        <% }); %>
+                <!-- Image viewer with variant overlay -->
+                <% if (mainImagePath) { %>
+                    <div class="project-viewer" id="projectViewer">
+                        <img id="projectHeroImg" class="project-viewer-image" src="<%= mainImagePath %>?w=2000" alt="<%= project.title %>" />
+
+                        <% if (variants && variants.length > 1) { %>
+                            <button class="project-viewer-arrow project-viewer-arrow--left" onclick="cycleVariant(-1)" aria-label="Previous variant">&#8249;</button>
+                            <button class="project-viewer-arrow project-viewer-arrow--right" onclick="cycleVariant(1)" aria-label="Next variant">&#8250;</button>
+
+                            <div class="project-viewer-thumbs">
+                                <% variants.forEach(function(v, i) { %>
+                                    <img class="project-viewer-thumb<%= i === 0 ? ' active' : '' %>"
+                                         src="<%= v.path %>?w=200"
+                                         alt="<%= v.name %>"
+                                         data-index="<%= i %>"
+                                         data-full="<%= v.path %>?w=2000"
+                                         onclick="goToVariant(<%= i %>)" />
+                                <% }); %>
+                            </div>
+                        <% } %>
                     </div>
                 <% } %>
 
@@ -80,15 +103,26 @@
     </div>
 
     <script>
-        function swapHero(thumb) {
-            var hero = document.getElementById('projectHeroImg');
-            if (hero && thumb.dataset.full) {
-                hero.src = thumb.dataset.full;
+        var currentVariantIndex = 0;
+        var variantThumbs = document.querySelectorAll('.project-viewer-thumb');
+        var heroImg = document.getElementById('projectHeroImg');
+
+        function goToVariant(index) {
+            if (!variantThumbs.length) return;
+            currentVariantIndex = index;
+            var thumb = variantThumbs[index];
+            if (heroImg && thumb && thumb.dataset.full) {
+                heroImg.src = thumb.dataset.full;
             }
-            // update active class
-            var thumbs = document.querySelectorAll('.project-variant-thumb');
-            thumbs.forEach(function(t) { t.classList.remove('active'); });
-            thumb.classList.add('active');
+            variantThumbs.forEach(function(t) { t.classList.remove('active'); });
+            if (thumb) thumb.classList.add('active');
+        }
+
+        function cycleVariant(direction) {
+            var total = variantThumbs.length;
+            if (!total) return;
+            currentVariantIndex = (currentVariantIndex + direction + total) % total;
+            goToVariant(currentVariantIndex);
         }
     </script>
 </body>
