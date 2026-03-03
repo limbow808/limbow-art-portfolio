@@ -68,3 +68,117 @@ picture {
     background-color: $background-color;
   }
 }
+
+/* Dark mode */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  background-color: #1a1a1a ;
+}
+
+html[data-theme="dark"] body {
+  background-color: #1a1a1a ;
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] .main {
+  background-color: #1a1a1a ;
+}
+
+html[data-theme="dark"] .content {
+  background-color: #1a1a1a ;
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6,
+html[data-theme="dark"] p {
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] code {
+  background-color: #2a2a2a;
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] .header {
+  background-color: #1a1a1a;
+  border-bottom-color: #333333;
+}
+
+html[data-theme="dark"] .social a {
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] .commissions-picture {
+  background-color: #1a1a1a;
+}
+
+html[data-theme="dark"] .commission-artist-title a {
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] .social {
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] picture {
+  background-color: #2a2a2a;
+}
+
+html[data-theme="dark"] .discography-loading-overlay {
+  background-color: #444444;
+}
+
+html[data-theme="dark"] .loading-overlay {
+  background: linear-gradient(100deg, #444444 25%, #2a2a2a 50%, #333333 75%);
+}
+
+html[data-theme="dark"] .nav a,
+html[data-theme="dark"] .nav-toggle {
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] .footer {
+  background-color: #1a1a1a;
+  border-top-color: #333333;
+}
+
+html[data-theme="dark"] .section-heading {
+  color: #aaaaaa;
+}
+
+html[data-theme="dark"] .section-heading.gallery-heading::before {
+  background-color: #333333;
+}
+
+html[data-theme="dark"] .card-meta {
+  background-color: #2a2a2a;
+}
+
+html[data-theme="dark"] .card-title {
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] .card-type {
+  color: #aaaaaa;
+}
+
+html[data-theme="dark"] .rights a {
+  color: #f0f0f0;
+}
+
+html[data-theme="dark"] a {
+  color: #b3b3f0;
+}
+
+html[data-theme="dark"] .overlay {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+html[data-theme="dark"] .theme-toggle__simple {
+  color: #f0f0f0;
+}

@@ -163,6 +163,120 @@ picture {
     background-color: #ffffff;
   }
 }
+/* Dark mode */
+html[data-theme=dark] {
+  color-scheme: dark;
+  background-color: #1a1a1a;
+}
+
+html[data-theme=dark] body {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+}
+
+html[data-theme=dark] .main {
+  background-color: #1a1a1a;
+}
+
+html[data-theme=dark] .content {
+  background-color: #1a1a1a;
+  color: #f0f0f0;
+}
+
+html[data-theme=dark] h1,
+html[data-theme=dark] h2,
+html[data-theme=dark] h3,
+html[data-theme=dark] h4,
+html[data-theme=dark] h5,
+html[data-theme=dark] h6,
+html[data-theme=dark] p {
+  color: #f0f0f0;
+}
+
+html[data-theme=dark] code {
+  background-color: #2a2a2a;
+  color: #f0f0f0;
+}
+
+html[data-theme=dark] .header {
+  background-color: #1a1a1a;
+  border-bottom-color: #333333;
+}
+
+html[data-theme=dark] .social a {
+  color: #f0f0f0;
+}
+
+html[data-theme=dark] .commissions-picture {
+  background-color: #1a1a1a;
+}
+
+html[data-theme=dark] .commission-artist-title a {
+  color: #f0f0f0;
+}
+
+html[data-theme=dark] .social {
+  color: #f0f0f0;
+}
+
+html[data-theme=dark] picture {
+  background-color: #2a2a2a;
+}
+
+html[data-theme=dark] .discography-loading-overlay {
+  background-color: #444444;
+}
+
+html[data-theme=dark] .loading-overlay {
+  background: linear-gradient(100deg, #444444 25%, #2a2a2a 50%, #333333 75%);
+}
+
+html[data-theme=dark] .nav a,
+html[data-theme=dark] .nav-toggle {
+  color: #f0f0f0;
+}
+
+html[data-theme=dark] .footer {
+  background-color: #1a1a1a;
+  border-top-color: #333333;
+}
+
+html[data-theme=dark] .section-heading {
+  color: #aaaaaa;
+}
+
+html[data-theme=dark] .section-heading.gallery-heading::before {
+  background-color: #333333;
+}
+
+html[data-theme=dark] .card-meta {
+  background-color: #2a2a2a;
+}
+
+html[data-theme=dark] .card-title {
+  color: #f0f0f0;
+}
+
+html[data-theme=dark] .card-type {
+  color: #aaaaaa;
+}
+
+html[data-theme=dark] .rights a {
+  color: #f0f0f0;
+}
+
+html[data-theme=dark] a {
+  color: #b3b3f0;
+}
+
+html[data-theme=dark] .overlay {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+html[data-theme=dark] .theme-toggle__simple {
+  color: #f0f0f0;
+}
+
 /* Header */
 .header {
   grid-area: header;
@@ -191,11 +305,13 @@ picture {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 2rem;
-  padding: 0;
+  padding: 0 1rem;
   height: 100%;
   width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .nav ul {
@@ -245,6 +361,46 @@ picture {
   display: none;
 }
 
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  color: inherit;
+  font-size: 1.2em;
+  transition: opacity 0.2s ease;
+  position: relative;
+}
+
+.theme-toggle:hover {
+  opacity: 0.6;
+}
+
+.theme-toggle input {
+  display: none;
+}
+
+.theme-toggle-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.theme-toggle__simple {
+  display: block;
+  transition: transform 0.3s ease;
+}
+
 @media (max-width: 768px) {
   .header {
     height: 3rem;
@@ -257,6 +413,10 @@ picture {
   }
   .nav-item {
     font-size: 0.85rem;
+  }
+  .theme-toggle {
+    font-size: 1rem;
+    padding: 0.3rem;
   }
 }
 /* Removed ultrawide override to keep header sizing consistent */
@@ -425,12 +585,12 @@ picture:hover .gallery-image {
   left: 0;
   top: 0;
   width: 100%;
-  height: 3.7rem;
+  height: 3rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 0.8rem;
-  min-height: 3.7rem;
+  min-height: 3rem;
   padding: 0.55rem 0.7rem;
   background-color: #f7f7f7;
   pointer-events: none;

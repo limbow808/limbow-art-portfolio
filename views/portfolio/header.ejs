@@ -8,6 +8,25 @@
 
     <link rel="icon" href="/images/favicon.ico">
     
+    <!-- Early theme initialization to prevent flash -->
+    <script>
+        (function() {
+            const STORAGE_KEY = 'limbow-theme';
+            let theme = localStorage.getItem(STORAGE_KEY);
+            
+            if (!theme) {
+                // Check system preference
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    theme = 'dark';
+                } else {
+                    theme = 'light';
+                }
+            }
+            
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
     <!-- Critical loading screen styles to prevent FOUC -->
     <style>
         .site-loading-screen {
@@ -26,15 +45,13 @@
             opacity: 0;
             pointer-events: none;
         }
+        html[data-theme="dark"] .site-loading-screen {
+            background: #000000;
+        }
         .site-loading-screen.is-visible {
             display: flex;
             opacity: 1;
             pointer-events: auto;
-        }
-        @media (prefers-color-scheme: dark) {
-            .site-loading-screen {
-                background: #000000;
-            }
         }
         .loading-emoticon {
             font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Roboto', sans-serif;
@@ -47,10 +64,8 @@
             opacity: 1;
             animation: pulse 0.9s ease-in-out infinite;
         }
-        @media (prefers-color-scheme: dark) {
-            .loading-emoticon {
-                color: #ffffff;
-            }
+        html[data-theme="dark"] .loading-emoticon {
+            color: #ffffff;
         }
         .loading-text {
             font-family: 'Manrope', 'Roboto', sans-serif;
@@ -61,10 +76,8 @@
             animation: pulse 1.5s ease-in-out infinite;
             display: none;
         }
-        @media (prefers-color-scheme: dark) {
-            .loading-text {
-                color: #999999;
-            }
+        html[data-theme="dark"] .loading-text {
+            color: #999999;
         }
         @keyframes pulse {
             0%, 100% { opacity: 0.6; }
