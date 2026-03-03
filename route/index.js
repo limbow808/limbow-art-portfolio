@@ -13,58 +13,52 @@ function toSlug(name) {
 }
 
 function getHeroImages() {
-    const imagesDir = path.join(__dirname, '..', 'images', 'index');
+    const projectsDir = path.join(__dirname, '..', 'images', 'projects');
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
     const heroPattern = /^hero(\d+)$/i;
 
     try {
-        const files = fs.readdirSync(imagesDir);
+        const folders = fs.readdirSync(projectsDir, { withFileTypes: true })
+            .filter(d => d.isDirectory())
+            .map(d => d.name);
 
-        const numberedHeroFiles = files
-            .filter(file => imageExtensions.includes(path.extname(file).toLowerCase()))
-            .map((file) => {
-                const parsed = path.parse(file).name;
-                const match = parsed.match(heroPattern);
-
-                if (!match) {
-                    return null;
-                }
-
-                return {
-                    filename: file,
-                    name: parsed,
-                    number: parseInt(match[1], 10),
-                    path: `/images/index/${file}`,
-                    workType: '3D Artwork'
-                };
+        const heroFolders = folders
+            .map(folder => {
+                const match = folder.match(heroPattern);
+                if (!match) return null;
+                return { folder, number: parseInt(match[1], 10) };
             })
             .filter(Boolean)
             .sort((a, b) => a.number - b.number);
 
-        if (numberedHeroFiles.length > 0) {
-            return numberedHeroFiles;
+        const results = [];
+        for (const hero of heroFolders) {
+            const folderPath = path.join(projectsDir, hero.folder);
+            const files = fs.readdirSync(folderPath)
+                .filter(f => imageExtensions.includes(path.extname(f).toLowerCase()))
+                .filter(f => !/_v\d+/i.test(path.parse(f).name))
+                .sort();
+            if (files.length > 0) {
+                const file = files[0];
+                results.push({
+                    filename: file,
+                    name: hero.folder,
+                    number: hero.number,
+                    path: `/images/projects/${hero.folder}/${file}`,
+                    workType: '3D Artwork'
+                });
+            }
         }
 
-        const fallbackHero = files.find(file => /^hero\.[a-z0-9]+$/i.test(file));
-        if (fallbackHero) {
-            return [{
-                filename: fallbackHero,
-                name: path.parse(fallbackHero).name,
-                number: 0,
-                path: `/images/index/${fallbackHero}`,
-                workType: '3D Artwork'
-            }];
-        }
-
-        return [];
+        return results;
     } catch (error) {
-        console.error('Error reading hero images directory:', error);
+        console.error('Error reading hero images:', error);
         return [];
     }
 }
 
 function getImagesWithLayout() {
-    const imagesDir = path.join(__dirname, '..', 'images', 'index');
+    const projectsDir = path.join(__dirname, '..', 'images', 'projects');
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
     
     const layoutPatterns = [
@@ -96,95 +90,71 @@ function getImagesWithLayout() {
     const variantPattern = /^(.+)_v(\d+)$/i;
 
     try {
-        const files = fs.readdirSync(imagesDir);
-        const imageFiles = files
-            .filter(file => imageExtensions.includes(path.extname(file).toLowerCase()))
-            .filter(file => !heroNamePattern.test(path.parse(file).name))
+        const folders = fs.readdirSync(projectsDir, { withFileTypes: true })
+            .filter(d => d.isDirectory())
+            .map(d => d.name)
+            .filter(name => !heroNamePattern.test(name))
             .sort();
-        
-        // Group images by base name (handle variants)
-        const imageGroups = new Map();
-        
-        imageFiles.forEach(file => {
-            const parsed = path.parse(file);
-            const baseName = parsed.name;
-            const variantMatch = baseName.match(variantPattern);
-            
-            if (variantMatch) {
-                // This is a variant (_v2, _v3, etc.)
-                const baseImageName = variantMatch[1];
-                const variantNum = parseInt(variantMatch[2]);
-                
-                if (!imageGroups.has(baseImageName)) {
-                    imageGroups.set(baseImageName, {
-                        base: null,
-                        variants: []
-                    });
-                }
-                
-                imageGroups.get(baseImageName).variants.push({
-                    filename: file,
-                    name: baseName,
-                    path: `/images/index/${file}`,
-                    variantNum: variantNum
-                });
-            } else {
-                // This is a base image (no variant suffix)
-                if (!imageGroups.has(baseName)) {
-                    imageGroups.set(baseName, {
-                        base: null,
-                        variants: []
-                    });
-                }
-                
-                imageGroups.get(baseName).base = {
-                    filename: file,
-                    name: baseName,
-                    path: `/images/index/${file}`
-                };
-            }
-        });
-        
-        // Build final image list with variants attached
-        const result = [];
-        imageGroups.forEach((group, baseName) => {
-            if (group.base) {
-                // Sort variants by number
-                group.variants.sort((a, b) => a.variantNum - b.variantNum);
-                
-                // Include base image as first item in variants array for cycling
-                const allVariants = [
-                    {
-                        filename: group.base.filename,
-                        name: group.base.name,
-                        path: group.base.path
-                    },
-                    ...group.variants.map(v => ({
-                        filename: v.filename,
-                        name: v.name,
-                        path: v.path
-                    }))
-                ];
-                
-                const slug = toSlug(group.base.name);
-                const projectDir = path.join(__dirname, '..', 'images', 'projects', slug);
-                let projectData = { title: group.base.name, software: '', workType: '3D Artwork', notes: '' };
-                const projectJsonPath = path.join(projectDir, 'project.json');
-                if (fs.existsSync(projectJsonPath)) {
-                    try { projectData = JSON.parse(fs.readFileSync(projectJsonPath, 'utf8')); } catch(e) {}
-                }
 
-                result.push({
-                    filename: group.base.filename,
-                    name: projectData.title || group.base.name,
-                    path: group.base.path,
-                    workType: projectData.workType || '3D Artwork',
-                    slug: slug,
-                    cssClass: '',
-                    variants: allVariants
-                });
+        const result = [];
+
+        for (const slug of folders) {
+            const folderPath = path.join(projectsDir, slug);
+            const files = fs.readdirSync(folderPath)
+                .filter(f => imageExtensions.includes(path.extname(f).toLowerCase()))
+                .sort();
+
+            if (files.length === 0) continue;
+
+            // Group into base + variants
+            let baseFile = null;
+            const variants = [];
+
+            files.forEach(file => {
+                const baseName = path.parse(file).name;
+                const variantMatch = baseName.match(variantPattern);
+                if (variantMatch) {
+                    variants.push({
+                        filename: file,
+                        name: baseName,
+                        path: `/images/projects/${slug}/${file}`,
+                        variantNum: parseInt(variantMatch[2])
+                    });
+                } else if (!baseFile) {
+                    baseFile = {
+                        filename: file,
+                        name: baseName,
+                        path: `/images/projects/${slug}/${file}`
+                    };
+                }
+            });
+
+            if (!baseFile) continue;
+
+            variants.sort((a, b) => a.variantNum - b.variantNum);
+
+            const allVariants = [
+                { filename: baseFile.filename, name: baseFile.name, path: baseFile.path },
+                ...variants.map(v => ({ filename: v.filename, name: v.name, path: v.path }))
+            ];
+
+            // Read project.json
+            let projectData = { title: baseFile.name, workType: '3D Artwork' };
+            const projectJsonPath = path.join(folderPath, 'project.json');
+            if (fs.existsSync(projectJsonPath)) {
+                try { projectData = JSON.parse(fs.readFileSync(projectJsonPath, 'utf8')); } catch(e) {}
             }
-        });
+
+            result.push({
+                filename: baseFile.filename,
+                name: projectData.title || baseFile.name,
+                path: baseFile.path,
+                workType: projectData.workType || '3D Artwork',
+                slug: slug,
+                cssClass: '',
+                variants: allVariants
+            });
+        }
         
         // Sort by filename and apply layout patterns
         result.sort((a, b) => a.filename.localeCompare(b.filename));
@@ -195,7 +165,7 @@ function getImagesWithLayout() {
         return result;
         
     } catch (error) {
-        console.error('Error reading images directory:', error);
+        console.error('Error reading project images:', error);
         return [];
     }
 }
@@ -326,11 +296,25 @@ router.get("/project/:slug", (req, res) => {
     }
 
     // Read any extra images directly inside the project folder (not workflow)
+    // Exclude the main image and its variants so they don't appear twice
     const exts = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+    const mainAndVariantFiles = new Set();
+    if (variants && variants.length > 0) {
+        variants.forEach(v => { if (v.filename) mainAndVariantFiles.add(v.filename); });
+    }
+    // Also exclude the main image filename itself
+    if (match && match.filename) mainAndVariantFiles.add(match.filename);
+    // Fallback: derive filename from mainImagePath
+    if (mainImagePath) {
+        const mainFilename = path.basename(mainImagePath);
+        mainAndVariantFiles.add(mainFilename);
+    }
+
     let extraImages = [];
     if (fs.existsSync(projectDir)) {
         extraImages = fs.readdirSync(projectDir)
             .filter(f => exts.includes(path.extname(f).toLowerCase()))
+            .filter(f => !mainAndVariantFiles.has(f))
             .sort()
             .map(f => `/images/projects/${slug}/${f}`);
     }

@@ -588,6 +588,11 @@ picture:hover .variant-nav {
   line-height: 1.55;
   max-width: 100%;
   width: 100%;
+  padding: 0;
+}
+
+.project-page p {
+  max-width: 100%;
 }
 
 .project-tools-list {
@@ -692,6 +697,35 @@ picture:hover .variant-nav {
   &.active {
     opacity: 1;
     outline-color: #fff;
+  }
+}
+
+/* ---------- Gallery grid ---------- */
+.project-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.project-gallery-cell {
+  border-radius: 10px;
+  overflow: hidden;
+
+  &.gallery-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.project-gallery-img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+@media (max-width: 600px) {
+  .project-gallery {
+    grid-template-columns: 1fr;
   }
 }
 

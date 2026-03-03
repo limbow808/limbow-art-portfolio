@@ -42,20 +42,47 @@
                     <% } %>
 
                     <% if (project.tools && project.tools.length > 0) { %>
-                        <div class="project-panel project-panel--tools">
-                            <span class="project-panel-label">Tools</span>
-                            <div class="project-tools-list">
-                                <% project.tools.forEach(function(tool) { %>
-                                    <span class="project-tool-tag"><%= tool %></span>
-                                <% }); %>
+                        <%
+                            // Flatten: split any comma-separated entries into individual tool names
+                            var allTools = [];
+                            project.tools.forEach(function(t) {
+                                t.split(',').forEach(function(s) {
+                                    var trimmed = s.trim();
+                                    if (trimmed) allTools.push(trimmed);
+                                });
+                            });
+                        %>
+                        <% if (allTools.length > 0) { %>
+                            <div class="project-panel project-panel--tools">
+                                <span class="project-panel-label">Tools</span>
+                                <div class="project-tools-list">
+                                    <% allTools.forEach(function(tool) { %>
+                                        <span class="project-tool-tag"><%= tool %></span>
+                                    <% }); %>
+                                </div>
                             </div>
-                        </div>
+                        <% } %>
                     <% } %>
 
                 </div>
 
+                <%
+                    // Determine display mode: "viewer" (default), "gallery", or "both"
+                    var displayMode = (project.displayMode || 'viewer').toLowerCase();
+                    var showViewer  = (displayMode === 'viewer' || displayMode === 'both');
+                    var showGallery = (displayMode === 'gallery' || displayMode === 'both');
+
+                    // Collect all images for the gallery grid
+                    var galleryImages = [];
+                    if (showGallery && variants && variants.length > 0) {
+                        galleryImages = variants.map(function(v) { return v.path; });
+                    } else if (showGallery && mainImagePath) {
+                        galleryImages = [mainImagePath];
+                    }
+                %>
+
                 <!-- Image viewer with variant overlay -->
-                <% if (mainImagePath) { %>
+                <% if (showViewer && mainImagePath) { %>
                     <div class="project-viewer" id="projectViewer">
                         <img id="projectHeroImg" class="project-viewer-image" src="<%= mainImagePath %>?w=2000" alt="<%= project.title %>" />
 
@@ -74,6 +101,17 @@
                                 <% }); %>
                             </div>
                         <% } %>
+                    </div>
+                <% } %>
+
+                <!-- Gallery grid — smart layout based on aspect ratio -->
+                <% if (showGallery && galleryImages.length > 0) { %>
+                    <div class="project-gallery" id="projectGallery">
+                        <% galleryImages.forEach(function(imgPath) { %>
+                            <div class="project-gallery-cell">
+                                <img class="project-gallery-img" src="<%= imgPath %>?w=1400" alt="" loading="lazy" />
+                            </div>
+                        <% }); %>
                     </div>
                 <% } %>
 
@@ -124,6 +162,30 @@
             currentVariantIndex = (currentVariantIndex + direction + total) % total;
             goToVariant(currentVariantIndex);
         }
+
+        // ---------- Gallery grid: classify cells by aspect ratio ----------
+        (function() {
+            var gallery = document.getElementById('projectGallery');
+            if (!gallery) return;
+
+            var imgs = gallery.querySelectorAll('.project-gallery-img');
+            imgs.forEach(function(img) {
+                function classify() {
+                    var ratio = img.naturalWidth / img.naturalHeight;
+                    var cell = img.closest('.project-gallery-cell');
+                    if (!cell) return;
+                    // Wide: 16:9 or wider (ratio >= ~1.78)
+                    if (ratio >= 1.78) {
+                        cell.classList.add('gallery-wide');
+                    }
+                }
+                if (img.complete && img.naturalWidth) {
+                    classify();
+                } else {
+                    img.addEventListener('load', classify);
+                }
+            });
+        })();
     </script>
 </body>
 
