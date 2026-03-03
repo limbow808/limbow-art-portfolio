@@ -24,6 +24,42 @@
             }
             
             document.documentElement.setAttribute('data-theme', theme);
+
+            function syncToggleButton(currentTheme) {
+                const button = document.getElementById('theme-toggle-btn');
+                if (!button) {
+                    return;
+                }
+                button.classList.toggle('theme-toggle--toggled', currentTheme === 'dark');
+            }
+            
+            // Theme toggle handler
+            window.toggleTheme = function() {
+                const current = document.documentElement.getAttribute('data-theme');
+                const newTheme = current === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem(STORAGE_KEY, newTheme);
+
+                syncToggleButton(newTheme);
+            };
+            
+            // Attach handler immediately
+            function attachHandler() {
+                const btn = document.getElementById('theme-toggle-btn');
+                if (btn) {
+                    btn.onclick = window.toggleTheme;
+                    syncToggleButton(document.documentElement.getAttribute('data-theme') || theme);
+                } else {
+                    setTimeout(attachHandler, 500);
+                }
+            }
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', attachHandler);
+            } else {
+                attachHandler();
+            }
         })();
     </script>
     
@@ -46,7 +82,7 @@
             pointer-events: none;
         }
         html[data-theme="dark"] .site-loading-screen {
-            background: #000000;
+            background: #1a1a1a;
         }
         .site-loading-screen.is-visible {
             display: flex;

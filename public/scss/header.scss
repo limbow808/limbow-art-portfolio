@@ -86,6 +86,7 @@
 }
 
 .theme-toggle {
+  --theme-toggle__simple--duration: 500ms;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -104,10 +105,6 @@
   opacity: 0.6;
 }
 
-.theme-toggle input {
-  display: none;
-}
-
 .theme-toggle-sr {
   position: absolute;
   width: 1px;
@@ -120,9 +117,38 @@
   border-width: 0;
 }
 
+.theme-toggle__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .theme-toggle__simple {
-  display: block;
-  transition: transform 0.3s ease;
+  :first-child {
+    path {
+      transition-property: transform, d;
+      transition-duration: calc(var(--theme-toggle__simple--duration));
+      transition-timing-function: cubic-bezier(0, 0, 0.15, 1.25);
+    }
+  }
+}
+
+.theme-toggle--toggled .theme-toggle__simple {
+  :first-child {
+    path {
+      d: path("M-18-1h55v37h-55zm32 12a1 1 0 0025 0 1 1 0 00-25 0");
+    }
+  }
+}
+
+@supports not (d: path("")) {
+  .theme-toggle--toggled .theme-toggle__simple {
+    :first-child {
+      path {
+        transform: translate3d(-19px, 5px, 0);
+      }
+    }
+  }
 }
 
 @media (max-width: 768px) {

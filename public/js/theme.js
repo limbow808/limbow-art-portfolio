@@ -1,8 +1,9 @@
 // Theme toggle functionality
+console.log('theme.js loaded');
+
 (function() {
   const HTML = document.documentElement;
   const STORAGE_KEY = 'limbow-theme';
-  const THEME_TOGGLE = document.getElementById('theme-toggle-input');
 
   // Allowed themes
   const THEMES = {
@@ -31,27 +32,60 @@
       return;
     }
 
+    console.log('Setting theme to:', theme);
     HTML.setAttribute('data-theme', theme);
     localStorage.setItem(STORAGE_KEY, theme);
-
-    // Update checkbox state
-    if (THEME_TOGGLE) {
-      THEME_TOGGLE.checked = theme === THEMES.dark;
+    
+    // Apply transform to the icon container
+    const iconContainer = document.querySelector('.theme-toggle__icon');
+    console.log('Icon container found:', iconContainer);
+    if (iconContainer) {
+      if (theme === THEMES.dark) {
+        iconContainer.style.transform = 'rotate(180deg)';
+        console.log('Applied 180deg rotation');
+      } else {
+        iconContainer.style.transform = 'rotate(0deg)';
+        console.log('Applied 0deg rotation');
+      }
+    } else {
+      console.warn('Icon container not found!');
     }
+  }
+
+  // Toggle theme
+  function toggleTheme() {
+    console.log('toggleTheme called');
+    const currentTheme = HTML.getAttribute('data-theme') || getPreferredTheme();
+    console.log('Current theme:', currentTheme);
+    const newTheme = currentTheme === THEMES.dark ? THEMES.light : THEMES.dark;
+    console.log('New theme:', newTheme);
+    setTheme(newTheme);
   }
 
   // Initialize theme on page load
   function init() {
+    console.log('Theme init starting...');
     const preferredTheme = getPreferredTheme();
     setTheme(preferredTheme);
+    console.log('Theme initialized:', preferredTheme);
 
-    // Add toggle listener
-    if (THEME_TOGGLE) {
-      THEME_TOGGLE.addEventListener('change', function() {
-        const newTheme = this.checked ? THEMES.dark : THEMES.light;
-        setTheme(newTheme);
-      });
-    }
+    // Use setTimeout to ensure DOM is really ready
+    setTimeout(function() {
+      const THEME_TOGGLE_BTN = document.getElementById('theme-toggle-btn');
+      console.log('Button element found:', !!THEME_TOGGLE_BTN);
+
+      if (THEME_TOGGLE_BTN) {
+        THEME_TOGGLE_BTN.addEventListener('click', function(e) {
+          console.log('Button clicked!');
+          e.preventDefault();
+          e.stopPropagation();
+          toggleTheme();
+        });
+        console.log('Click listener attached');
+      } else {
+        console.warn('Theme toggle button not found!');
+      }
+    }, 100);
 
     // Listen for system theme changes
     if (window.matchMedia) {
@@ -67,8 +101,12 @@
 
   // Run on DOM ready
   if (document.readyState === 'loading') {
+    console.log('Document still loading, attaching DOMContentLoaded listener');
     document.addEventListener('DOMContentLoaded', init);
   } else {
+    console.log('Document already ready, running init immediately');
     init();
   }
 })();
+
+console.log('theme.js execution complete');

@@ -1,4 +1,4 @@
-//@use "../../node_modules/normalize.css/normalize.css";
+@use "../../node_modules/normalize.css/normalize.css";
 
 @use 'vars' as *;
 @use 'typography';
@@ -11,7 +11,7 @@
 @use 'commissions';
 @use 'discography';
 
-@import "normalize.css";
+/* normalize.css is included via @use above */
 
 body,
 html {

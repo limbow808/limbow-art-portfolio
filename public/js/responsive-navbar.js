@@ -29,8 +29,12 @@ function main()
     // responsive menu
     var menu = document.getElementById('nav'),
         menuToggle = document.getElementById('nav-toggle'),
-        navIcon = document.getElementById('toggler')
+        navIcon = document.getElementById('toggler'),
         toggleMenuEvent = function (event) {
+            if (!menu || !menuToggle || !navIcon) {
+                return;
+            }
+
             if (event.type === 'keydown') {
                 if ((event.keyCode != 13) && (event.keyCode != 32)) {
                     return;
@@ -55,6 +59,10 @@ function main()
             }
         },
         onResizeEvent = function () {
+            if (!menu || !menuToggle || !navIcon) {
+                return;
+            }
+
             if (utils.isElementVisible(menuToggle)) {
                 menu.className = 'hidden';
                 navIcon.className = 'fa fa-caret-down';
@@ -68,6 +76,10 @@ function main()
                 menuToggle.removeEventListener('keydown', toggleMenuEvent);
             }
         };
+
+    if (!menu || !menuToggle || !navIcon) {
+        return;
+    }
 
     window.addEventListener('resize', onResizeEvent);
     onResizeEvent();
