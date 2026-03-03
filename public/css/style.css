@@ -1919,7 +1919,7 @@ picture:hover .variant-nav {
   max-width: 100%;
 }
 
-/* Tools tags */
+/* Software tags */
 .project-tools-list {
   display: flex;
   flex-wrap: wrap;
@@ -2046,6 +2046,26 @@ picture:hover .variant-nav {
   width: 100%;
   display: block;
   object-fit: cover;
+}
+
+.project-gallery-note {
+  grid-column: 1 / -1;
+  padding: 1.2rem 1.6rem;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+}
+
+.project-gallery-note p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: inherit;
+  max-width: 100%;
+}
+
+[data-theme="dark"] .project-gallery-note {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
 }
 
 @media (max-width: 600px) {

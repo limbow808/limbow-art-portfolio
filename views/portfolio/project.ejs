@@ -41,23 +41,26 @@
                         </div>
                     <% } %>
 
-                    <% if (project.tools && project.tools.length > 0) { %>
+                    <% 
+                        var softwareList = project.software || project.tools || [];
+                    %>
+                    <% if (softwareList && softwareList.length > 0) { %>
                         <%
-                            // Flatten: split any comma-separated entries into individual tool names
-                            var allTools = [];
-                            project.tools.forEach(function(t) {
+                            // Flatten: split any comma-separated entries into individual names
+                            var allSoftware = [];
+                            softwareList.forEach(function(t) {
                                 t.split(',').forEach(function(s) {
                                     var trimmed = s.trim();
-                                    if (trimmed) allTools.push(trimmed);
+                                    if (trimmed) allSoftware.push(trimmed);
                                 });
                             });
                         %>
-                        <% if (allTools.length > 0) { %>
+                        <% if (allSoftware.length > 0) { %>
                             <div class="project-panel project-panel--tools">
-                                <span class="project-panel-label">Tools</span>
+                                <span class="project-panel-label">Software</span>
                                 <div class="project-tools-list">
-                                    <% allTools.forEach(function(tool) { %>
-                                        <span class="project-tool-tag"><%= tool %></span>
+                                    <% allSoftware.forEach(function(sw) { %>
+                                        <span class="project-tool-tag"><%= sw %></span>
                                     <% }); %>
                                 </div>
                             </div>
@@ -66,61 +69,55 @@
 
                 </div>
 
-                <%
-                    // Determine display mode: "viewer" (default), "gallery", or "both"
-                    var displayMode = (project.displayMode || 'viewer').toLowerCase();
-                    var showViewer  = (displayMode === 'viewer' || displayMode === 'both');
-                    var showGallery = (displayMode === 'gallery' || displayMode === 'both');
-
-                    // Collect all images for the gallery grid
-                    var galleryImages = [];
-                    if (showGallery && variants && variants.length > 0) {
-                        galleryImages = variants.map(function(v) { return v.path; });
-                    } else if (showGallery && mainImagePath) {
-                        galleryImages = [mainImagePath];
-                    }
-                %>
-
-                <!-- Image viewer with variant overlay -->
-                <% if (showViewer && mainImagePath) { %>
+                <!-- Main image (always shown if no viewer/gallery folders exist) -->
+                <% if (mainImagePath && (!viewerSections || viewerSections.length === 0) && (!galleryItems || galleryItems.length === 0)) { %>
                     <div class="project-viewer" id="projectViewer">
                         <img id="projectHeroImg" class="project-viewer-image" src="<%= mainImagePath %>?w=2000" alt="<%= project.title %>" />
+                    </div>
+                <% } %>
 
-                        <% if (variants && variants.length > 1) { %>
-                            <button class="project-viewer-arrow project-viewer-arrow--left" onclick="cycleVariant(-1)" aria-label="Previous variant">&#8249;</button>
-                            <button class="project-viewer-arrow project-viewer-arrow--right" onclick="cycleVariant(1)" aria-label="Next variant">&#8250;</button>
-
-                            <div class="project-viewer-thumbs">
-                                <% variants.forEach(function(v, i) { %>
-                                    <img class="project-viewer-thumb<%= i === 0 ? ' active' : '' %>"
-                                         src="<%= v.path %>?w=200"
-                                         alt="<%= v.name %>"
-                                         data-index="<%= i %>"
-                                         data-full="<%= v.path %>?w=2000"
-                                         onclick="goToVariant(<%= i %>)" />
-                                <% }); %>
-                            </div>
+                <!-- Viewer sections — arrow-cycling through images in viewer/ folders -->
+                <% if (viewerSections && viewerSections.length > 0) { %>
+                    <% viewerSections.forEach(function(section, sIdx) { %>
+                        <% if (viewerSections.length > 1) { %>
+                            <h2 class="project-section-heading"><%= section.label %></h2>
                         <% } %>
-                    </div>
+                        <div class="project-viewer" id="projectViewer<%= sIdx %>">
+                            <img class="project-viewer-image viewer-hero" src="<%= section.images[0].path %>?w=2000" alt="<%= project.title %>" />
+
+                            <% if (section.images.length > 1) { %>
+                                <button class="project-viewer-arrow project-viewer-arrow--left" onclick="cycleViewer(<%= sIdx %>, -1)" aria-label="Previous">&#8249;</button>
+                                <button class="project-viewer-arrow project-viewer-arrow--right" onclick="cycleViewer(<%= sIdx %>, 1)" aria-label="Next">&#8250;</button>
+
+                                <div class="project-viewer-thumbs">
+                                    <% section.images.forEach(function(v, i) { %>
+                                        <img class="project-viewer-thumb<%= i === 0 ? ' active' : '' %>"
+                                             src="<%= v.path %>?w=200"
+                                             alt="<%= v.name %>"
+                                             data-section="<%= sIdx %>"
+                                             data-index="<%= i %>"
+                                             data-full="<%= v.path %>?w=2000"
+                                             onclick="goToViewerImage(<%= sIdx %>, <%= i %>)" />
+                                    <% }); %>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% }); %>
                 <% } %>
 
-                <!-- Gallery grid — smart layout based on aspect ratio -->
-                <% if (showGallery && galleryImages.length > 0) { %>
+                <!-- Gallery — smart layout with optional notes from gallery.json -->
+                <% if (galleryItems && galleryItems.length > 0) { %>
                     <div class="project-gallery" id="projectGallery">
-                        <% galleryImages.forEach(function(imgPath) { %>
-                            <div class="project-gallery-cell">
-                                <img class="project-gallery-img" src="<%= imgPath %>?w=1400" alt="" loading="lazy" />
-                            </div>
-                        <% }); %>
-                    </div>
-                <% } %>
-
-                <!-- Extra images from project folder -->
-                <% if (extraImages && extraImages.length > 0) { %>
-                    <h2 class="project-section-heading">More</h2>
-                    <div class="project-extra-images">
-                        <% extraImages.forEach(function(img) { %>
-                            <img class="project-extra-image" src="<%= img %>?w=800" alt="" loading="lazy" />
+                        <% galleryItems.forEach(function(item) { %>
+                            <% if (item.type === 'image') { %>
+                                <div class="project-gallery-cell">
+                                    <img class="project-gallery-img" src="<%= item.src %>?w=1400" alt="" loading="lazy" />
+                                </div>
+                            <% } else if (item.type === 'note') { %>
+                                <div class="project-gallery-note">
+                                    <p><%= item.text %></p>
+                                </div>
+                            <% } %>
                         <% }); %>
                     </div>
                 <% } %>
@@ -141,26 +138,35 @@
     </div>
 
     <script>
-        var currentVariantIndex = 0;
-        var variantThumbs = document.querySelectorAll('.project-viewer-thumb');
-        var heroImg = document.getElementById('projectHeroImg');
+        // ---------- Multiple viewer sections ----------
+        var viewers = document.querySelectorAll('[id^="projectViewer"]');
+        var viewerState = [];
+        viewers.forEach(function(v, i) {
+            viewerState.push({ index: 0, el: v });
+        });
 
-        function goToVariant(index) {
-            if (!variantThumbs.length) return;
-            currentVariantIndex = index;
-            var thumb = variantThumbs[index];
+        function goToViewerImage(sectionIdx, imgIdx) {
+            var viewer = viewerState[sectionIdx];
+            if (!viewer) return;
+            viewer.index = imgIdx;
+            var heroImg = viewer.el.querySelector('.viewer-hero');
+            var thumbs = viewer.el.querySelectorAll('.project-viewer-thumb');
+            var thumb = thumbs[imgIdx];
             if (heroImg && thumb && thumb.dataset.full) {
                 heroImg.src = thumb.dataset.full;
             }
-            variantThumbs.forEach(function(t) { t.classList.remove('active'); });
+            thumbs.forEach(function(t) { t.classList.remove('active'); });
             if (thumb) thumb.classList.add('active');
         }
 
-        function cycleVariant(direction) {
-            var total = variantThumbs.length;
+        function cycleViewer(sectionIdx, direction) {
+            var viewer = viewerState[sectionIdx];
+            if (!viewer) return;
+            var thumbs = viewer.el.querySelectorAll('.project-viewer-thumb');
+            var total = thumbs.length;
             if (!total) return;
-            currentVariantIndex = (currentVariantIndex + direction + total) % total;
-            goToVariant(currentVariantIndex);
+            viewer.index = (viewer.index + direction + total) % total;
+            goToViewerImage(sectionIdx, viewer.index);
         }
 
         // ---------- Gallery grid: classify cells by aspect ratio ----------
@@ -174,7 +180,6 @@
                     var ratio = img.naturalWidth / img.naturalHeight;
                     var cell = img.closest('.project-gallery-cell');
                     if (!cell) return;
-                    // Wide: 16:9 or wider (ratio >= ~1.78)
                     if (ratio >= 1.78) {
                         cell.classList.add('gallery-wide');
                     }

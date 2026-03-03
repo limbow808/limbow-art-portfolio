@@ -87,7 +87,6 @@ function getImagesWithLayout() {
     ];
     
     const heroNamePattern = /^hero(\d+)?$/i;
-    const variantPattern = /^(.+)_v(\d+)$/i;
 
     try {
         const folders = fs.readdirSync(projectsDir, { withFileTypes: true })
@@ -101,42 +100,35 @@ function getImagesWithLayout() {
         for (const slug of folders) {
             const folderPath = path.join(projectsDir, slug);
             const files = fs.readdirSync(folderPath)
-                .filter(f => imageExtensions.includes(path.extname(f).toLowerCase()))
+                .filter(f => {
+                    if (!imageExtensions.includes(path.extname(f).toLowerCase())) return false;
+                    // Only include actual files (not directories)
+                    return fs.statSync(path.join(folderPath, f)).isFile();
+                })
                 .sort();
 
             if (files.length === 0) continue;
 
-            // Group into base + variants
-            let baseFile = null;
-            const variants = [];
+            // The base/main image is the first non-variant image in the root
+            const baseFile = {
+                filename: files[0],
+                name: path.parse(files[0]).name,
+                path: `/images/projects/${slug}/${files[0]}`
+            };
 
-            files.forEach(file => {
-                const baseName = path.parse(file).name;
-                const variantMatch = baseName.match(variantPattern);
-                if (variantMatch) {
-                    variants.push({
-                        filename: file,
-                        name: baseName,
-                        path: `/images/projects/${slug}/${file}`,
-                        variantNum: parseInt(variantMatch[2])
-                    });
-                } else if (!baseFile) {
-                    baseFile = {
-                        filename: file,
-                        name: baseName,
-                        path: `/images/projects/${slug}/${file}`
-                    };
-                }
-            });
-
-            if (!baseFile) continue;
-
-            variants.sort((a, b) => a.variantNum - b.variantNum);
-
-            const allVariants = [
-                { filename: baseFile.filename, name: baseFile.name, path: baseFile.path },
-                ...variants.map(v => ({ filename: v.filename, name: v.name, path: v.path }))
-            ];
+            // Read variants from viewer/ subfolder
+            const viewerDir = path.join(folderPath, 'viewer');
+            let allVariants = [];
+            if (fs.existsSync(viewerDir)) {
+                const viewerFiles = fs.readdirSync(viewerDir)
+                    .filter(f => imageExtensions.includes(path.extname(f).toLowerCase()))
+                    .sort();
+                allVariants = viewerFiles.map(f => ({
+                    filename: f,
+                    name: path.parse(f).name,
+                    path: `/images/projects/${slug}/viewer/${f}`
+                }));
+            }
 
             // Read project.json
             let projectData = { title: baseFile.name, workType: '3D Artwork' };
@@ -268,11 +260,11 @@ router.get("/project/:slug", (req, res) => {
         return res.status(500).send('Error reading project data');
     }
 
-    // Find the main gallery image matching this slug (check gallery + hero images)
+    const exts = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+
+    // Find the main gallery image (root of project folder, first non-variant)
     const allImages = getImagesWithLayout();
     let match = allImages.find(img => img.slug === slug);
-    
-    // If not found in gallery, check hero images
     if (!match) {
         const heroImages = getHeroImages();
         const heroMatch = heroImages.find(h => toSlug(h.name) === slug);
@@ -280,43 +272,81 @@ router.get("/project/:slug", (req, res) => {
             match = { path: heroMatch.path, variants: [] };
         }
     }
-    
     const mainImagePath = match ? match.path : '';
-    const variants = match && match.variants ? match.variants : [];
 
-    // Read workflow images from project subfolder
+    // Read VIEWER sections — supports viewer/, viewer-2/, viewer-3/, etc.
+    const viewerSections = [];
+    const allEntries = fs.readdirSync(projectDir, { withFileTypes: true });
+    const viewerDirs = allEntries
+        .filter(d => d.isDirectory() && /^viewer(-\d+)?$/i.test(d.name))
+        .map(d => d.name)
+        .sort((a, b) => {
+            const numA = a === 'viewer' ? 1 : parseInt(a.split('-')[1]);
+            const numB = b === 'viewer' ? 1 : parseInt(b.split('-')[1]);
+            return numA - numB;
+        });
+
+    for (const vDir of viewerDirs) {
+        const vPath = path.join(projectDir, vDir);
+        const images = fs.readdirSync(vPath)
+            .filter(f => exts.includes(path.extname(f).toLowerCase()))
+            .sort()
+            .map(f => ({
+                filename: f,
+                name: path.parse(f).name,
+                path: `/images/projects/${slug}/${vDir}/${f}`
+            }));
+
+        if (images.length > 0) {
+            // Use a label.txt inside the viewer folder, or default to "Variants" / "Variants 2" etc.
+            let label = viewerDirs.length === 1 ? '' : (vDir === 'viewer' ? 'Variants' : 'Variants ' + vDir.split('-')[1]);
+            const labelFile = path.join(vPath, 'label.txt');
+            if (fs.existsSync(labelFile)) {
+                label = fs.readFileSync(labelFile, 'utf8').trim();
+            }
+
+            viewerSections.push({ label, images });
+        }
+    }
+
+    // Read GALLERY items — supports gallery.json for ordering + notes, or auto-reads images
+    const galleryDir = path.join(projectDir, 'gallery');
+    let galleryItems = [];
+    if (fs.existsSync(galleryDir)) {
+        const galleryJsonPath = path.join(galleryDir, 'gallery.json');
+        if (fs.existsSync(galleryJsonPath)) {
+            try {
+                const entries = JSON.parse(fs.readFileSync(galleryJsonPath, 'utf8'));
+                galleryItems = entries.map(entry => {
+                    if (entry.image) {
+                        return { type: 'image', src: `/images/projects/${slug}/gallery/${entry.image}` };
+                    } else if (entry.note) {
+                        return { type: 'note', text: entry.note };
+                    }
+                    return null;
+                }).filter(Boolean);
+            } catch (e) {
+                console.error('Error reading gallery.json for', slug, e);
+            }
+        }
+
+        // Fallback: if no gallery.json or it was empty, auto-read all images
+        if (galleryItems.length === 0) {
+            galleryItems = fs.readdirSync(galleryDir)
+                .filter(f => exts.includes(path.extname(f).toLowerCase()))
+                .sort()
+                .map(f => ({ type: 'image', src: `/images/projects/${slug}/gallery/${f}` }));
+        }
+    }
+
+    // Read WORKFLOW images from workflow/ subfolder
     const workflowDir = path.join(projectDir, 'workflow');
     let workflowImages = [];
     if (fs.existsSync(workflowDir)) {
-        const exts = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
         workflowImages = fs.readdirSync(workflowDir)
             .filter(f => exts.includes(path.extname(f).toLowerCase()))
             .sort()
             .map(f => `/images/projects/${slug}/workflow/${f}`);
-    }
-
-    // Read any extra images directly inside the project folder (not workflow)
-    // Exclude the main image and its variants so they don't appear twice
-    const exts = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
-    const mainAndVariantFiles = new Set();
-    if (variants && variants.length > 0) {
-        variants.forEach(v => { if (v.filename) mainAndVariantFiles.add(v.filename); });
-    }
-    // Also exclude the main image filename itself
-    if (match && match.filename) mainAndVariantFiles.add(match.filename);
-    // Fallback: derive filename from mainImagePath
-    if (mainImagePath) {
-        const mainFilename = path.basename(mainImagePath);
-        mainAndVariantFiles.add(mainFilename);
-    }
-
-    let extraImages = [];
-    if (fs.existsSync(projectDir)) {
-        extraImages = fs.readdirSync(projectDir)
-            .filter(f => exts.includes(path.extname(f).toLowerCase()))
-            .filter(f => !mainAndVariantFiles.has(f))
-            .sort()
-            .map(f => `/images/projects/${slug}/${f}`);
     }
 
     res.render('portfolio/project', {
@@ -324,9 +354,9 @@ router.get("/project/:slug", (req, res) => {
         project: projectData,
         slug: slug,
         mainImagePath: mainImagePath,
-        variants: variants,
+        viewerSections: viewerSections,
+        galleryItems: galleryItems,
         workflowImages: workflowImages,
-        extraImages: extraImages,
         currentURL: req.originalUrl
     });
 });
