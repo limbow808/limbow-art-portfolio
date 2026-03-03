@@ -8,6 +8,57 @@ const path = require('path');
 
 const sitename = "| limbow";
 
+function getHeroImages() {
+    const imagesDir = path.join(__dirname, '..', 'images', 'index');
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+    const heroPattern = /^hero(\d+)$/i;
+
+    try {
+        const files = fs.readdirSync(imagesDir);
+
+        const numberedHeroFiles = files
+            .filter(file => imageExtensions.includes(path.extname(file).toLowerCase()))
+            .map((file) => {
+                const parsed = path.parse(file).name;
+                const match = parsed.match(heroPattern);
+
+                if (!match) {
+                    return null;
+                }
+
+                return {
+                    filename: file,
+                    name: parsed,
+                    number: parseInt(match[1], 10),
+                    path: `/images/index/${file}`,
+                    workType: '3D Artwork'
+                };
+            })
+            .filter(Boolean)
+            .sort((a, b) => a.number - b.number);
+
+        if (numberedHeroFiles.length > 0) {
+            return numberedHeroFiles;
+        }
+
+        const fallbackHero = files.find(file => /^hero\.[a-z0-9]+$/i.test(file));
+        if (fallbackHero) {
+            return [{
+                filename: fallbackHero,
+                name: path.parse(fallbackHero).name,
+                number: 0,
+                path: `/images/index/${fallbackHero}`,
+                workType: '3D Artwork'
+            }];
+        }
+
+        return [];
+    } catch (error) {
+        console.error('Error reading hero images directory:', error);
+        return [];
+    }
+}
+
 function getImagesWithLayout() {
     const imagesDir = path.join(__dirname, '..', 'images', 'index');
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
@@ -37,11 +88,13 @@ function getImagesWithLayout() {
         'span-1col span-1row'
     ];
     
+    const heroNamePattern = /^hero(\d+)?$/i;
+
     try {
         const files = fs.readdirSync(imagesDir);
         const imageFiles = files
             .filter(file => imageExtensions.includes(path.extname(file).toLowerCase()))
-            .filter(file => file !== 'hero.png')
+            .filter(file => !heroNamePattern.test(path.parse(file).name))
             .sort();
         
         return imageFiles.map((file, index) => ({
@@ -60,9 +113,11 @@ function getImagesWithLayout() {
 
 // Add a route for the path /
 router.get("/", (req, res) => {
+    const heroImages = getHeroImages();
     const images = getImagesWithLayout();
     let data = {
         title: `Overview ${sitename}`,
+        heroImages: heroImages,
         images: images
     };
 

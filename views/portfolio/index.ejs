@@ -8,15 +8,19 @@
         <div class="main" role="main" id = "main">
             <div class = "content overview">
                 <h2 class="section-heading">Recent Work</h2>
-                <picture class = "hero-image">
-                    <source media="(max-width: 900px)" srcset="/images/index/hero.png?w=1000">
-                    <img class = "gallery-image" src="/images/index/hero.png?w=2000" alt="Hero image" onclick="openPreview('/images/index/hero.png?w=2000')" />
-                    <div class = "loading-overlay"></div>
-                    <div class="card-meta">
-                        <h3 class="card-title">hero</h3>
-                        <p class="card-type">3D Artwork</p>
-                    </div>
-                </picture>
+                <% if (typeof heroImages !== 'undefined' && heroImages && heroImages.length > 0) { %>
+                    <% heroImages.forEach(function(heroImage) { %>
+                        <picture class = "hero-image">
+                            <source media="(max-width: 900px)" srcset="<%= heroImage.path %>?w=1000">
+                            <img class = "gallery-image" src="<%= heroImage.path %>?w=2000" alt="<%= heroImage.name %>" onclick="openPreview('<%= heroImage.path %>?w=2000')" />
+                            <div class = "loading-overlay"></div>
+                            <div class="card-meta">
+                                <h3 class="card-title"><%= heroImage.name %></h3>
+                                <p class="card-type"><%= heroImage.workType %></p>
+                            </div>
+                        </picture>
+                    <% }); %>
+                <% } %>
                 <h2 class="section-heading gallery-heading">Gallery</h2>
                 <div class = "gallery-container">
                     <% if (images && images.length > 0) { %>
