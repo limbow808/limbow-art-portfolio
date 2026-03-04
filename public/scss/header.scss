@@ -7,7 +7,7 @@
   width: 100%;
   height: $header-height;
   background-color: #ffffff;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -38,6 +38,10 @@
   margin: 0 auto;
 }
 
+#nav {
+  height: 100%;
+}
+
 .nav ul {
   display: flex;
   flex-direction: row;
@@ -65,12 +69,30 @@
 
 .nav a:hover {
   opacity: 0.6;
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+.nav ul li {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .active a {
-  opacity: 0.6;
-  text-decoration: underline;
+  opacity: 1;
+  text-decoration: none;
+}
+
+.nav ul li.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #666666;
+  border-radius: 1px;
 }
 
 .nav-collapse-btn {

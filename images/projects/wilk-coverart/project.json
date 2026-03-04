@@ -1,9 +1,9 @@
 {
-  "title": "WILK Coverart",
-  "workType": "3D Artwork",
+  "title": "WILK",
+  "workType": "Commission Work",
   "notes": "",
   "scope": "",
   "category": "",
-  "tools": [],
+  "software": ["Blender, Zbrush, Daz3D"],
   "date": ""
 }

@@ -18,10 +18,9 @@
                         // Collect detail items for the info strip
                         var infoItems = [];
                         if (project.title) infoItems.push({ label: 'Project', value: project.title });
-                        if (project.date) infoItems.push({ label: 'Date', value: project.date });
-                        if (project.scope) infoItems.push({ label: 'Scope', value: project.scope });
                         if (project.category) infoItems.push({ label: 'Category', value: project.category });
                         if (project.workType) infoItems.push({ label: 'Type', value: project.workType });
+                        if (project.date) infoItems.push({ label: 'Date', value: project.date });
                     %>
                     <% if (infoItems.length > 0) { %>
                         <div class="project-panel project-panel--info">
@@ -107,6 +106,9 @@
 
                 <!-- Gallery — smart layout with optional notes from gallery.json -->
                 <% if (galleryItems && galleryItems.length > 0) { %>
+                    <% if (galleryLabel) { %>
+                        <h2 class="project-section-heading"><%= galleryLabel %></h2>
+                    <% } %>
                     <div class="project-gallery" id="projectGallery">
                         <% galleryItems.forEach(function(item) { %>
                             <% if (item.type === 'image') { %>
@@ -124,7 +126,7 @@
 
                 <!-- Workflow / process images -->
                 <% if (workflowImages && workflowImages.length > 0) { %>
-                    <h2 class="project-section-heading">Process</h2>
+                    <h2 class="project-section-heading"><%= workflowLabel %></h2>
                     <div class="project-workflow">
                         <% workflowImages.forEach(function(img) { %>
                             <img class="project-workflow-image" src="<%= img %>?w=800" alt="" loading="lazy" />

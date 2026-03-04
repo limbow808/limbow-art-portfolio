@@ -34,19 +34,40 @@ function getHeroImages() {
         const results = [];
         for (const hero of heroFolders) {
             const folderPath = path.join(projectsDir, hero.folder);
-            const files = fs.readdirSync(folderPath)
-                .filter(f => imageExtensions.includes(path.extname(f).toLowerCase()))
-                .filter(f => !/_v\d+/i.test(path.parse(f).name))
-                .sort();
-            if (files.length > 0) {
-                const file = files[0];
+
+            // Check for thumbnail/ subfolder first
+            const thumbDir = path.join(folderPath, 'thumbnail');
+            let thumbFile = null;
+            if (fs.existsSync(thumbDir)) {
+                const thumbFiles = fs.readdirSync(thumbDir)
+                    .filter(f => imageExtensions.includes(path.extname(f).toLowerCase()))
+                    .sort();
+                if (thumbFiles.length > 0) thumbFile = thumbFiles[0];
+            }
+
+            if (thumbFile) {
                 results.push({
-                    filename: file,
+                    filename: thumbFile,
                     name: hero.folder,
                     number: hero.number,
-                    path: `/images/projects/${hero.folder}/${file}`,
+                    path: `/images/projects/${hero.folder}/thumbnail/${thumbFile}`,
                     workType: '3D Artwork'
                 });
+            } else {
+                const files = fs.readdirSync(folderPath)
+                    .filter(f => imageExtensions.includes(path.extname(f).toLowerCase()))
+                    .filter(f => !/_v\d+/i.test(path.parse(f).name))
+                    .sort();
+                if (files.length > 0) {
+                    const file = files[0];
+                    results.push({
+                        filename: file,
+                        name: hero.folder,
+                        number: hero.number,
+                        path: `/images/projects/${hero.folder}/${file}`,
+                        workType: '3D Artwork'
+                    });
+                }
             }
         }
 
@@ -109,12 +130,28 @@ function getImagesWithLayout() {
 
             if (files.length === 0) continue;
 
-            // The base/main image is the first non-variant image in the root
-            const baseFile = {
-                filename: files[0],
-                name: path.parse(files[0]).name,
-                path: `/images/projects/${slug}/${files[0]}`
-            };
+            // Check for thumbnail/ subfolder first
+            const thumbDir = path.join(folderPath, 'thumbnail');
+            let baseFile;
+            if (fs.existsSync(thumbDir)) {
+                const thumbFiles = fs.readdirSync(thumbDir)
+                    .filter(f => imageExtensions.includes(path.extname(f).toLowerCase()))
+                    .sort();
+                if (thumbFiles.length > 0) {
+                    baseFile = {
+                        filename: thumbFiles[0],
+                        name: path.parse(thumbFiles[0]).name,
+                        path: `/images/projects/${slug}/thumbnail/${thumbFiles[0]}`
+                    };
+                }
+            }
+            if (!baseFile) {
+                baseFile = {
+                    filename: files[0],
+                    name: path.parse(files[0]).name,
+                    path: `/images/projects/${slug}/${files[0]}`
+                };
+            }
 
             // Read variants from viewer/ subfolder
             const viewerDir = path.join(folderPath, 'viewer');
@@ -312,7 +349,14 @@ router.get("/project/:slug", (req, res) => {
     // Read GALLERY items — supports gallery.json for ordering + notes, or auto-reads images
     const galleryDir = path.join(projectDir, 'gallery');
     let galleryItems = [];
+    let galleryLabel = '';
     if (fs.existsSync(galleryDir)) {
+        // Read optional label
+        const galleryLabelFile = path.join(galleryDir, 'label.txt');
+        if (fs.existsSync(galleryLabelFile)) {
+            galleryLabel = fs.readFileSync(galleryLabelFile, 'utf8').trim();
+        }
+
         const galleryJsonPath = path.join(galleryDir, 'gallery.json');
         if (fs.existsSync(galleryJsonPath)) {
             try {
@@ -342,7 +386,12 @@ router.get("/project/:slug", (req, res) => {
     // Read WORKFLOW images from workflow/ subfolder
     const workflowDir = path.join(projectDir, 'workflow');
     let workflowImages = [];
+    let workflowLabel = 'Process';
     if (fs.existsSync(workflowDir)) {
+        const workflowLabelFile = path.join(workflowDir, 'label.txt');
+        if (fs.existsSync(workflowLabelFile)) {
+            workflowLabel = fs.readFileSync(workflowLabelFile, 'utf8').trim();
+        }
         workflowImages = fs.readdirSync(workflowDir)
             .filter(f => exts.includes(path.extname(f).toLowerCase()))
             .sort()
@@ -356,7 +405,9 @@ router.get("/project/:slug", (req, res) => {
         mainImagePath: mainImagePath,
         viewerSections: viewerSections,
         galleryItems: galleryItems,
+        galleryLabel: galleryLabel,
         workflowImages: workflowImages,
+        workflowLabel: workflowLabel,
         currentURL: req.originalUrl
     });
 });
