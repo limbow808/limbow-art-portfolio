@@ -45,6 +45,12 @@ html {
   overflow-y: auto;
   height: calc(100vh - $header-height);
   background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.main > .content {
+  flex: 1 0 auto;
 }
 
 .content {
@@ -536,6 +542,37 @@ picture:hover .variant-nav {
   margin: 0 0 1.2rem;
 }
 
+/* Info page hero logo */
+.info-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 430px;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 2.5rem;
+  background-color: #ffffff;
+}
+
+.info-hero-img {
+  max-width: 50%;
+  max-height: 50%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+[data-theme="dark"] .info-hero {
+  background-color: #1a1a1a;
+}
+
+[data-theme="dark"] .info-hero-img {
+  filter: invert(1);
+}
+
 /* ---------- Smart panels ---------- */
 .project-panels {
   display: flex;
@@ -565,7 +602,7 @@ picture:hover .variant-nav {
 .project-panel-item {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.25rem;
 }
 
 .project-panel-label {
@@ -583,7 +620,7 @@ picture:hover .variant-nav {
 
 .project-panel-text {
   font-size: 0.95rem;
-  margin: 0.35rem 0 0;
+  margin: 0.25rem 0 0;
   color: inherit;
   line-height: 1.55;
   max-width: 100%;
@@ -599,7 +636,7 @@ picture:hover .variant-nav {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin-top: 0.35rem;
+  margin-top: 0.25rem;
 }
 
 .project-tool-tag {
@@ -698,6 +735,11 @@ picture:hover .variant-nav {
     opacity: 1;
     outline-color: #fff;
   }
+}
+
+.viewer-caption {
+  margin-top: 0.65rem;
+  margin-bottom: 1.5rem;
 }
 
 /* ---------- Gallery grid ---------- */

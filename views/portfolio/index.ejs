@@ -12,7 +12,7 @@
                 <h2 class="section-heading">Recent Work</h2>
                 <% if (typeof heroImages !== 'undefined' && heroImages && heroImages.length > 0) { %>
                     <% heroImages.forEach(function(heroImage) { %>
-                        <a href="/project/<%= heroImage.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') %>" class="gallery-link">
+                        <a href="/project/<%= heroImage.slug %>" class="gallery-link">
                             <picture class="hero-image">
                                 <source media="(max-width: 900px)" srcset="<%= heroImage.path %>?w=1000">
                                 <img class="gallery-image" src="<%= heroImage.path %>?w=2000" alt="<%= heroImage.name %>" />

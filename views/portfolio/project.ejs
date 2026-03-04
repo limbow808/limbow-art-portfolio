@@ -78,9 +78,6 @@
                 <!-- Viewer sections — arrow-cycling through images in viewer/ folders -->
                 <% if (viewerSections && viewerSections.length > 0) { %>
                     <% viewerSections.forEach(function(section, sIdx) { %>
-                        <% if (viewerSections.length > 1) { %>
-                            <h2 class="project-section-heading"><%= section.label %></h2>
-                        <% } %>
                         <div class="project-viewer" id="projectViewer<%= sIdx %>">
                             <img class="project-viewer-image viewer-hero" src="<%= section.images[0].path %>?w=2000" alt="<%= project.title %>" />
 
@@ -101,6 +98,16 @@
                                 </div>
                             <% } %>
                         </div>
+                        <% if ((section.label && section.label.trim()) || (section.description && section.description.trim())) { %>
+                            <div class="project-panel viewer-caption">
+                                <% if (section.label && section.label.trim()) { %>
+                                    <span class="project-panel-label"><%= section.label %></span>
+                                <% } %>
+                                <% if (section.description && section.description.trim()) { %>
+                                    <p class="project-panel-text"><%= section.description %></p>
+                                <% } %>
+                            </div>
+                        <% } %>
                     <% }); %>
                 <% } %>
 

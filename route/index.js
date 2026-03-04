@@ -13,27 +13,27 @@ function toSlug(name) {
 }
 
 function getHeroImages() {
-    const projectsDir = path.join(__dirname, '..', 'images', 'projects');
+    const recentDir = path.join(__dirname, '..', 'images', 'recent-work');
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
-    const heroPattern = /^hero(\d+)$/i;
 
     try {
-        const folders = fs.readdirSync(projectsDir, { withFileTypes: true })
-            .filter(d => d.isDirectory())
-            .map(d => d.name);
+        if (!fs.existsSync(recentDir)) return [];
 
-        const heroFolders = folders
-            .map(folder => {
-                const match = folder.match(heroPattern);
-                if (!match) return null;
-                return { folder, number: parseInt(match[1], 10) };
-            })
-            .filter(Boolean)
-            .sort((a, b) => a.number - b.number);
+        const folders = fs.readdirSync(recentDir, { withFileTypes: true })
+            .filter(d => d.isDirectory())
+            .map(d => d.name)
+            .sort();
 
         const results = [];
-        for (const hero of heroFolders) {
-            const folderPath = path.join(projectsDir, hero.folder);
+        for (const folder of folders) {
+            const folderPath = path.join(recentDir, folder);
+
+            // Read project.json for title and workType
+            let projectData = { title: folder, workType: '3D Artwork' };
+            const projectJsonPath = path.join(folderPath, 'project.json');
+            if (fs.existsSync(projectJsonPath)) {
+                try { projectData = JSON.parse(fs.readFileSync(projectJsonPath, 'utf8')); } catch(e) {}
+            }
 
             // Check for thumbnail/ subfolder first
             const thumbDir = path.join(folderPath, 'thumbnail');
@@ -48,24 +48,25 @@ function getHeroImages() {
             if (thumbFile) {
                 results.push({
                     filename: thumbFile,
-                    name: hero.folder,
-                    number: hero.number,
-                    path: `/images/projects/${hero.folder}/thumbnail/${thumbFile}`,
-                    workType: '3D Artwork'
+                    name: projectData.title || folder,
+                    slug: folder,
+                    path: `/images/recent-work/${folder}/thumbnail/${thumbFile}`,
+                    workType: projectData.workType || '3D Artwork'
                 });
             } else {
                 const files = fs.readdirSync(folderPath)
                     .filter(f => imageExtensions.includes(path.extname(f).toLowerCase()))
-                    .filter(f => !/_v\d+/i.test(path.parse(f).name))
+                    .filter(f => {
+                        try { return fs.statSync(path.join(folderPath, f)).isFile(); } catch(e) { return false; }
+                    })
                     .sort();
                 if (files.length > 0) {
-                    const file = files[0];
                     results.push({
-                        filename: file,
-                        name: hero.folder,
-                        number: hero.number,
-                        path: `/images/projects/${hero.folder}/${file}`,
-                        workType: '3D Artwork'
+                        filename: files[0],
+                        name: projectData.title || folder,
+                        slug: folder,
+                        path: `/images/recent-work/${folder}/${files[0]}`,
+                        workType: projectData.workType || '3D Artwork'
                     });
                 }
             }
@@ -73,13 +74,13 @@ function getHeroImages() {
 
         return results;
     } catch (error) {
-        console.error('Error reading hero images:', error);
+        console.error('Error reading recent-work images:', error);
         return [];
     }
 }
 
 function getImagesWithLayout() {
-    const projectsDir = path.join(__dirname, '..', 'images', 'projects');
+    const galleryDir = path.join(__dirname, '..', 'images', 'gallery');
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
     
     const layoutPatterns = [
@@ -106,24 +107,22 @@ function getImagesWithLayout() {
         'span-3col span-2row',
         'span-1col span-1row'
     ];
-    
-    const heroNamePattern = /^hero(\d+)?$/i;
 
     try {
-        const folders = fs.readdirSync(projectsDir, { withFileTypes: true })
+        if (!fs.existsSync(galleryDir)) return [];
+
+        const folders = fs.readdirSync(galleryDir, { withFileTypes: true })
             .filter(d => d.isDirectory())
             .map(d => d.name)
-            .filter(name => !heroNamePattern.test(name))
             .sort();
 
         const result = [];
 
         for (const slug of folders) {
-            const folderPath = path.join(projectsDir, slug);
+            const folderPath = path.join(galleryDir, slug);
             const files = fs.readdirSync(folderPath)
                 .filter(f => {
                     if (!imageExtensions.includes(path.extname(f).toLowerCase())) return false;
-                    // Only include actual files (not directories)
                     return fs.statSync(path.join(folderPath, f)).isFile();
                 })
                 .sort();
@@ -141,7 +140,7 @@ function getImagesWithLayout() {
                     baseFile = {
                         filename: thumbFiles[0],
                         name: path.parse(thumbFiles[0]).name,
-                        path: `/images/projects/${slug}/thumbnail/${thumbFiles[0]}`
+                        path: `/images/gallery/${slug}/thumbnail/${thumbFiles[0]}`
                     };
                 }
             }
@@ -149,7 +148,7 @@ function getImagesWithLayout() {
                 baseFile = {
                     filename: files[0],
                     name: path.parse(files[0]).name,
-                    path: `/images/projects/${slug}/${files[0]}`
+                    path: `/images/gallery/${slug}/${files[0]}`
                 };
             }
 
@@ -163,7 +162,7 @@ function getImagesWithLayout() {
                 allVariants = viewerFiles.map(f => ({
                     filename: f,
                     name: path.parse(f).name,
-                    path: `/images/projects/${slug}/viewer/${f}`
+                    path: `/images/gallery/${slug}/viewer/${f}`
                 }));
             }
 
@@ -194,7 +193,7 @@ function getImagesWithLayout() {
         return result;
         
     } catch (error) {
-        console.error('Error reading project images:', error);
+        console.error('Error reading gallery images:', error);
         return [];
     }
 }
@@ -278,10 +277,20 @@ router.get("/discography", (req, res) => {
  */
 router.get("/project/:slug", (req, res) => {
     const slug = req.params.slug;
-    const projectDir = path.join(__dirname, '..', 'images', 'projects', slug);
-    const projectJsonPath = path.join(projectDir, 'project.json');
-
-    if (!fs.existsSync(projectJsonPath)) {
+    
+    // Search for the project folder in both recent-work/ and gallery/
+    const recentDir = path.join(__dirname, '..', 'images', 'recent-work', slug);
+    const galleryDirPath = path.join(__dirname, '..', 'images', 'gallery', slug);
+    let projectDir;
+    let imageBase; // 'recent-work' or 'gallery'
+    
+    if (fs.existsSync(path.join(recentDir, 'project.json'))) {
+        projectDir = recentDir;
+        imageBase = 'recent-work';
+    } else if (fs.existsSync(path.join(galleryDirPath, 'project.json'))) {
+        projectDir = galleryDirPath;
+        imageBase = 'gallery';
+    } else {
         return res.status(404).render('portfolio/index', {
             title: `Not Found ${sitename}`,
             heroImages: [],
@@ -289,6 +298,8 @@ router.get("/project/:slug", (req, res) => {
             currentURL: req.originalUrl
         });
     }
+
+    const projectJsonPath = path.join(projectDir, 'project.json');
 
     let projectData;
     try {
@@ -304,7 +315,7 @@ router.get("/project/:slug", (req, res) => {
     let match = allImages.find(img => img.slug === slug);
     if (!match) {
         const heroImages = getHeroImages();
-        const heroMatch = heroImages.find(h => toSlug(h.name) === slug);
+        const heroMatch = heroImages.find(h => h.slug === slug);
         if (heroMatch) {
             match = { path: heroMatch.path, variants: [] };
         }
@@ -331,7 +342,7 @@ router.get("/project/:slug", (req, res) => {
             .map(f => ({
                 filename: f,
                 name: path.parse(f).name,
-                path: `/images/projects/${slug}/${vDir}/${f}`
+                path: `/images/${imageBase}/${slug}/${vDir}/${f}`
             }));
 
         if (images.length > 0) {
@@ -342,7 +353,14 @@ router.get("/project/:slug", (req, res) => {
                 label = fs.readFileSync(labelFile, 'utf8').trim();
             }
 
-            viewerSections.push({ label, images });
+            // Optional description.txt for a panel-style caption below the viewer
+            let description = '';
+            const descFile = path.join(vPath, 'description.txt');
+            if (fs.existsSync(descFile)) {
+                description = fs.readFileSync(descFile, 'utf8').trim();
+            }
+
+            viewerSections.push({ label, description, images });
         }
     }
 
@@ -363,7 +381,7 @@ router.get("/project/:slug", (req, res) => {
                 const entries = JSON.parse(fs.readFileSync(galleryJsonPath, 'utf8'));
                 galleryItems = entries.map(entry => {
                     if (entry.image) {
-                        return { type: 'image', src: `/images/projects/${slug}/gallery/${entry.image}` };
+                        return { type: 'image', src: `/images/${imageBase}/${slug}/gallery/${entry.image}` };
                     } else if (entry.note) {
                         return { type: 'note', text: entry.note };
                     }
@@ -379,7 +397,7 @@ router.get("/project/:slug", (req, res) => {
             galleryItems = fs.readdirSync(galleryDir)
                 .filter(f => exts.includes(path.extname(f).toLowerCase()))
                 .sort()
-                .map(f => ({ type: 'image', src: `/images/projects/${slug}/gallery/${f}` }));
+                .map(f => ({ type: 'image', src: `/images/${imageBase}/${slug}/gallery/${f}` }));
         }
     }
 
@@ -395,7 +413,7 @@ router.get("/project/:slug", (req, res) => {
         workflowImages = fs.readdirSync(workflowDir)
             .filter(f => exts.includes(path.extname(f).toLowerCase()))
             .sort()
-            .map(f => `/images/projects/${slug}/workflow/${f}`);
+            .map(f => `/images/${imageBase}/${slug}/workflow/${f}`);
     }
 
     res.render('portfolio/project', {

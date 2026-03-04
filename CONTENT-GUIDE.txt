@@ -1,0 +1,257 @@
+================================================================================
+  LIMBOW PORTFOLIO — CONTENT MANAGEMENT GUIDE
+================================================================================
+
+This guide explains how to add, edit, and manage all content on the portfolio
+website. Everything is file-based — no database, no CMS. Just folders and files.
+
+
+================================================================================
+  1. FOLDER STRUCTURE OVERVIEW
+================================================================================
+
+  images/
+  ├── recent-work/          ← Featured/hero projects (shown at the top)
+  │   └── hero1/
+  │       ├── project.json
+  │       ├── thumbnail/
+  │       ├── viewer/
+  │       ├── viewer-2/
+  │       ├── gallery/
+  │       └── workflow/
+  │
+  ├── gallery/              ← All other projects (shown in the grid below)
+  │   ├── my-project/
+  │   │   ├── project.json
+  │   │   ├── thumbnail/
+  │   │   ├── viewer/
+  │   │   ├── gallery/
+  │   │   └── workflow/
+  │   └── another-project/
+  │       └── ...
+  │
+  └── logo.png              ← Site logo used on the Info page
+
+
+================================================================================
+  2. CREATING A NEW PROJECT
+================================================================================
+
+  1. Pick where it goes:
+     - images/recent-work/<slug>/   → Featured projects (hero banner on homepage)
+     - images/gallery/<slug>/       → Regular gallery projects
+
+  2. The folder name IS the URL slug:
+     - Folder name "cool-render" → URL will be /project/cool-render
+     - Use lowercase, hyphens, no spaces
+
+  3. Create a project.json file inside the folder:
+
+     {
+       "title": "Project Title",
+       "workType": "Commission Work",
+       "scope": "Full character + environment",
+       "category": "3D Artwork, Character",
+       "notes": "Description of the project. This appears in the notes panel.",
+       "software": ["Blender", "ZBrush", "Substance Painter"],
+       "date": "March 2026"
+     }
+
+     Fields:
+     - title      → Display name (shown on cards, project page header)
+     - workType   → Shown on overview cards (e.g. "Commission Work", "Personal")
+     - scope      → Optional. Shown in info strip on project page.
+     - category   → Optional. Shown in info strip.
+     - notes      → Optional. Longer description shown in its own panel.
+     - software   → Optional. Array of tool names.
+     - date       → Optional. Shown in info strip.
+
+     Any field can be left empty "" or omitted entirely — empty fields won't show.
+
+
+================================================================================
+  3. THUMBNAIL (What appears on the overview page)
+================================================================================
+
+  Create a folder: thumbnail/
+  Put ONE image inside it. This image is used as the card on the overview page.
+
+  If no thumbnail/ folder exists, the first image file found in the project
+  root folder is used instead.
+
+
+================================================================================
+  4. VIEWER SECTIONS (Arrow-cycling image viewers)
+================================================================================
+
+  Create folders named:
+    viewer/       → First viewer section
+    viewer-2/     → Second viewer section
+    viewer-3/     → Third viewer section
+    ... and so on
+
+  Put your images inside each viewer folder. They will be sorted alphabetically.
+  If a viewer has multiple images, left/right arrows and thumbnails appear.
+
+  LABEL (optional title below the viewer):
+    Create a file:  viewer/label.txt
+    Write the title text inside, e.g.:  Character Turnaround
+
+    To HIDE the label:
+    - Create an empty label.txt (0 bytes), OR
+    - Don't create label.txt at all (single viewer auto-hides label)
+
+  DESCRIPTION (optional text below the viewer, panel-style):
+    Create a file:  viewer/description.txt
+    Write your description text inside.
+
+    This renders as a project-panel with the label as header and description
+    as body text — same style as the notes panel.
+
+  Example:
+    viewer/
+    ├── 01-front.png
+    ├── 02-side.png
+    ├── 03-back.png
+    ├── label.txt          ← Contains: "Character Turnaround"
+    └── description.txt    ← Contains: "Full 360 turnaround with rig preview."
+
+    viewer-2/
+    ├── env-day.png
+    ├── env-night.png
+    ├── label.txt          ← Contains: "Lighting Variants"
+    └── description.txt    ← Contains: "Day and night lighting comparison."
+
+
+================================================================================
+  5. GALLERY SECTION (Grid of additional images)
+================================================================================
+
+  Create a folder: gallery/
+
+  SIMPLE MODE — just drop images in:
+    gallery/
+    ├── detail-01.png
+    ├── detail-02.png
+    └── closeup.jpg
+
+    Images are sorted alphabetically and shown in a 2-column grid.
+
+  ADVANCED MODE — use gallery.json for custom ordering and text notes:
+    Create:  gallery/gallery.json
+
+    [
+      { "image": "detail-01.png" },
+      { "note": "This is a text note that appears between images." },
+      { "image": "detail-02.png" },
+      { "image": "closeup.jpg" },
+      { "note": "Close-up of the material work on the jacket." }
+    ]
+
+    - "image" entries reference filenames in the gallery/ folder
+    - "note" entries insert text blocks between images
+    - Order in the JSON = order on the page
+
+  LABEL (optional heading above the gallery):
+    Create:  gallery/label.txt
+    Write the title text inside, e.g.:  Details & Close-ups
+
+
+================================================================================
+  6. WORKFLOW / PROCESS SECTION
+================================================================================
+
+  Create a folder: workflow/
+  Put images inside — shown as a simple vertical stack with a heading.
+
+  LABEL (optional, defaults to "Process"):
+    Create:  workflow/label.txt
+    Write custom heading text, e.g.:  Making Of
+
+
+================================================================================
+  7. PAGE ORDER ON THE PROJECT PAGE
+================================================================================
+
+  Sections always render in this order (top to bottom):
+
+    1. Back to Gallery link
+    2. Project title (from project.json → title)
+    3. Info strip (scope, category, software, date — from project.json)
+    4. Notes panel (from project.json → notes)
+    5. Viewer sections (viewer/, viewer-2/, etc.)
+    6. Gallery section (gallery/)
+    7. Workflow section (workflow/)
+    8. Footer
+
+
+================================================================================
+  8. SUPPORTED IMAGE FORMATS
+================================================================================
+
+  .jpg  .jpeg  .png  .gif  .webp
+
+  Images are automatically resized on the fly via a ?w= query parameter
+  (powered by Sharp). Original files are never modified.
+
+
+================================================================================
+  9. OVERVIEW PAGE (Homepage)
+================================================================================
+
+  The homepage has two sections:
+
+  RECENT WORK (top):
+    Shows all projects from images/recent-work/ as large hero banners.
+    Title and workType come from each project's project.json.
+
+  GALLERY (below):
+    Shows all projects from images/gallery/ as a masonry-style grid.
+    Title and workType come from each project's project.json.
+
+  Card text (title + work type) appears on hover.
+
+
+================================================================================
+  10. INFO PAGE
+================================================================================
+
+  Edit:  views/portfolio/info.ejs
+
+  Uses the project-page layout with a hero-style logo banner at the top.
+  The logo image is at:  images/logo.png
+
+  Content is in project-panel divs — add/edit panels directly in the EJS file.
+
+
+================================================================================
+  11. QUICK CHECKLIST — Adding a New Project
+================================================================================
+
+  [ ] Create folder: images/gallery/my-project/  (or recent-work/)
+  [ ] Add project.json with at least { "title": "...", "workType": "..." }
+  [ ] Add thumbnail/ folder with one card image
+  [ ] Add viewer/ folder with main images
+  [ ] (Optional) Add label.txt and/or description.txt in viewer/
+  [ ] (Optional) Add viewer-2/, viewer-3/ for additional sections
+  [ ] (Optional) Add gallery/ folder with detail images
+  [ ] (Optional) Add gallery/gallery.json for custom order + notes
+  [ ] (Optional) Add workflow/ folder with process images
+  [ ] Restart the server: node index.js
+
+  That's it — no code changes needed. The site reads everything from the file
+  system automatically.
+
+
+================================================================================
+  12. TIPS
+================================================================================
+
+  - Name image files with number prefixes for ordering: 01-front.png, 02-side.png
+  - The folder name (slug) should be short and descriptive
+  - Empty label.txt = hidden label. No label.txt with single viewer = also hidden.
+  - gallery.json overrides auto-sorting — use it when you need specific ordering
+  - The server must be restarted after adding/removing projects (node index.js)
+  - Images are served from /images/ via Express static middleware
+
+================================================================================

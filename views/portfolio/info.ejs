@@ -1,40 +1,43 @@
 <%- include("header", {title: title}); %>
 
-<!-- page-level styles moved into public/css/style.css for maintainability -->
-
 <body>
     <div class="wrapper">
 
         <%- include('nav'); %>
 
         <div class="main" role="main" id="main">
-            <div class="content about">
-                <div class="about-inner">
-                    <!-- page heading removed so the bio starts at the top -->
+            <div class="content project-page">
 
-                                            <!-- Three side-by-side containers: bio | links | credits -->
-                        <section class="info-row" role="region" aria-label="Info layout">
-                                <div class="i-bio" style="padding: 0; margin: 0;">
-                                                    <p>Jag är en dynamisk figur, jag har spelat trumset för ABBA och är ofta sedd att jobba som en tolk för 37 språk. Jag skriver romaner på mina lunchraster och har skrivit 9/10 böcker som finns på listan “10 böcker som har förändrat mitt liv”. Ibland optimerar jag processen av jordgubbssyltens produktion.</p>
-
-                                                    <p>Jag charmar kvinnor med mina svenska uppsatser, gör standup comedy på fredagar och bakar mitt bröd själv. Om jag känner för det så kan jag springa 7 Iron Man på 6 dagar. Jag tycker om regnbågen, även om jag är färgblind. Jag lär små barn att simma.</p>
-
-                                                    <p>Jag behärskar pianot, men behöver bara endast 1 av de 88 tangenterna. Jag har aldrig gråtit hos läkaren. Jag blev vald till president i Chicago men tackade nej till jobbet eftersom jag bara var på genomresa. Jag gillar oliver och russin samtidigt.</p>
-
-                                                    <p>Jag är en djurviskare, stavhoppsrekordhållare och har en historia utan nederlag mot Stockfish i schack. Vid 4 års ålder tog jag mitt pilotcertifikat. Jag kan hålla min andedräkt i 21 minuter med full mage. När jag är uttråkad skriver jag bokrecensioner på latin med min vänster hand och på engelska med min högra. Jag gör en ett minut ägg på 45 sekunder och känner till meningen med livet.</p>
-
-                                                    <p>Vill du gå på bio med mig?</p>
-
-                                                    <!-- main bio stays here; side container will hold links + credits -->
-                                                    </div>
-                                                    <aside class="info-side" aria-label="Supplementary">
-                                                        <!-- Links and credits removed from this page and saved to /data/info-archived.json -->
-                                                    </aside>
-                                            </section>
-
+                <!-- Hero-style logo banner -->
+                <div class="info-hero">
+                    <img src="/images/logo.png" alt="limbow" class="info-hero-img" />
                 </div>
+
+                <!-- Bio & info panels -->
+                <div class="project-panels">
+                    <div class="project-panel project-panel--notes">
+                        <span class="project-panel-label">About</span>
+                        <p class="project-panel-text">Swedish-based 3D artist specialising in character design, environment art, and stylised illustration. Working across commissions, personal projects, and collaborative creative work — always exploring new ways to bring ideas to life in three dimensions.</p>
+                        <p class="project-panel-text">With a background spanning concept art, digital sculpting, and real-time rendering, every project is approached with an eye for detail and a drive to push the craft further.</p>
+                    </div>
+
+                    <div class="project-panel project-panel--notes">
+                        <span class="project-panel-label">Services</span>
+                        <p class="project-panel-text">Character Design &amp; Modelling — Original characters, fan art, VTuber models, and stylised portraits brought to life in 3D.</p>
+                        <p class="project-panel-text">Environment &amp; Scene Art — Atmospheric environments and compositions for illustration, games, or personal projects.</p>
+                        <p class="project-panel-text">Commission Work — Open to freelance commissions for individuals, studios, and content creators. Reach out via the contact page for rates and availability.</p>
+                    </div>
+
+                    <div class="project-panel project-panel--notes">
+                        <span class="project-panel-label">Software &amp; Tools</span>
+                        <p class="project-panel-text">Blender · ZBrush · Daz3D · Substance Painter · Marvelous Designer · Photoshop · Clip Studio Paint</p>
+                    </div>
+                </div>
+
             </div>
             <%- include('footer'); %>
         </div>
     </div>
 </body>
+
+</html>
