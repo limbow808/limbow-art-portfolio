@@ -676,7 +676,7 @@ html[data-theme=dark] .email-copy {
 }
 
 .nav ul li.active::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -854,7 +854,7 @@ html[data-theme=dark] .email-copy {
 
 .hero-image {
   display: block;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
 }
 
 .gallery-container {
@@ -1721,12 +1721,11 @@ picture:hover .variant-nav {
     gap: 1rem;
   }
 }
-
 /* ============================================
    Gallery links (overview page)
    ============================================ */
 .gallery-link {
-  display: contents;
+  display: contents; /* keeps grid layout intact */
   text-decoration: none;
   color: inherit;
 }
@@ -1779,11 +1778,11 @@ picture:hover .variant-nav {
   display: block;
 }
 
-[data-theme="dark"] .info-hero {
+[data-theme=dark] .info-hero {
   background-color: #1a1a1a;
 }
 
-[data-theme="dark"] .info-hero-img {
+[data-theme=dark] .info-hero-img {
   filter: invert(1);
 }
 
@@ -1801,12 +1800,11 @@ picture:hover .variant-nav {
   padding: 1rem 1.4rem;
 }
 
-[data-theme="dark"] .project-panel {
+[data-theme=dark] .project-panel {
   background-color: #2a2a2a;
   color: #e0e0e0;
 }
 
-/* Info strip — horizontal row of key/value pairs, justified */
 .project-panel--info {
   display: flex;
   flex-wrap: wrap;
@@ -1847,7 +1845,6 @@ picture:hover .variant-nav {
   max-width: 100%;
 }
 
-/* Software tags */
 .project-tools-list {
   display: flex;
   flex-wrap: wrap;
@@ -1864,7 +1861,7 @@ picture:hover .variant-nav {
   color: inherit;
 }
 
-[data-theme="dark"] .project-tool-tag {
+[data-theme=dark] .project-tool-tag {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -1883,7 +1880,6 @@ picture:hover .variant-nav {
   object-fit: cover;
 }
 
-/* Arrows */
 .project-viewer-arrow {
   position: absolute;
   top: 0;
@@ -1899,23 +1895,23 @@ picture:hover .variant-nav {
   display: flex;
   align-items: center;
 }
-.project-viewer:hover .project-viewer-arrow {
-  opacity: 1;
-}
 .project-viewer-arrow--left {
   left: 0;
   justify-content: flex-start;
   padding-left: 0.8rem;
-  background: linear-gradient(to right, rgba(0,0,0,0.10), transparent);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.1), transparent);
 }
 .project-viewer-arrow--right {
   right: 0;
   justify-content: flex-end;
   padding-right: 0.8rem;
-  background: linear-gradient(to left, rgba(0,0,0,0.10), transparent);
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.1), transparent);
 }
 
-/* Variant thumbnails overlay */
+.project-viewer:hover .project-viewer-arrow {
+  opacity: 1;
+}
+
 .project-viewer-thumbs {
   position: absolute;
   bottom: 0;
@@ -1925,11 +1921,12 @@ picture:hover .variant-nav {
   justify-content: center;
   gap: 0.45rem;
   padding: 0.6rem 0.8rem;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.20));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.2));
   z-index: 1;
   opacity: 0;
   transition: opacity 0.25s;
 }
+
 .project-viewer:hover .project-viewer-thumbs {
   opacity: 1;
 }
@@ -1970,9 +1967,8 @@ picture:hover .variant-nav {
   border-radius: 10px;
   overflow: hidden;
 }
-
 .project-gallery-cell.gallery-wide {
-  grid-column: 1 / -1;
+  grid-column: 1/-1;
 }
 
 .project-gallery-img {
@@ -1982,12 +1978,11 @@ picture:hover .variant-nav {
 }
 
 .project-gallery-note {
-  grid-column: 1 / -1;
+  grid-column: 1/-1;
   padding: 1.2rem 1.6rem;
   background-color: #f7f7f7;
   border-radius: 10px;
 }
-
 .project-gallery-note p {
   margin: 0;
   font-size: 0.95rem;
@@ -1996,7 +1991,7 @@ picture:hover .variant-nav {
   max-width: 100%;
 }
 
-[data-theme="dark"] .project-gallery-note {
+[data-theme=dark] .project-gallery-note {
   background-color: #2a2a2a;
   color: #e0e0e0;
 }
@@ -2006,7 +2001,6 @@ picture:hover .variant-nav {
     grid-template-columns: 1fr;
   }
 }
-
 /* ---------- Section headings & grids ---------- */
 .project-section-heading {
   font-size: 1rem;
@@ -2018,7 +2012,7 @@ picture:hover .variant-nav {
   color: inherit;
 }
 
-[data-theme="dark"] .project-section-heading {
+[data-theme=dark] .project-section-heading {
   background-color: #2a2a2a;
   color: #e0e0e0;
 }
@@ -2029,6 +2023,7 @@ picture:hover .variant-nav {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
 }
+
 .project-extra-image,
 .project-workflow-image {
   width: 100%;
