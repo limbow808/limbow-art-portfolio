@@ -238,15 +238,18 @@ router.get("/", (req, res) => {
     res.render("portfolio/index", {...data, currentURL: req.originalUrl });
 });
 
-// (old /about rendering removed) - /about will redirect to /info for compatibility
-
-// Info page (new - replaces About in navigation)
-router.get("/info", (req, res) => {
+// About page
+router.get("/about", (req, res) => {
     let data = {
-        title: `Info ${sitename}`
+        title: `About ${sitename}`
     };
 
     res.render("portfolio/info", {...data, currentURL: req.originalUrl });
+});
+
+// Keep /info route for compatibility
+router.get("/info", (req, res) => {
+    res.redirect(301, '/about');
 });
 
 // Contact page
@@ -261,10 +264,7 @@ router.get("/impressum", (req, res) => {
     res.render("portfolio/impressum", {...data, currentURL: req.originalUrl });
 });
 
-// Keep /about route for compatibility but render the info page
-router.get("/about", (req, res) => {
-    res.redirect(301, '/info');
-});
+// Keep old /about redirect removed — /about is now canonical
 
 /*
  * commission page
