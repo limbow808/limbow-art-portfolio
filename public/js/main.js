@@ -165,20 +165,29 @@ function setupImageLoading() {
 
 function revealImage(image) {
 	image.classList.add('loaded');
-	var overlay = image.closest('.hero-image, .gallery-card');
-	if (!overlay) overlay = image.closest('picture');
-	if (overlay) {
-		var loadingEl = overlay.querySelector('.loading-overlay');
-		if (loadingEl) loadingEl.style.display = 'none';
+	var container = image.closest('.hero-image, .gallery-card');
+	if (!container) container = image.closest('picture');
+	if (container) {
+		var loadingEl = container.querySelector('.loading-overlay');
+		if (loadingEl) {
+			loadingEl.classList.add('is-hidden');
+			loadingEl.addEventListener('transitionend', function() {
+				loadingEl.remove();
+			}, { once: true });
+		}
 	}
 }
 
-window.addEventListener('load', function() {
+document.addEventListener('DOMContentLoaded', function() {
 	setupEmailCopy();
 	setupCustomCursor();
 	setupImageLoading();
 
-	// Fade in the main content
-	var main = document.getElementById('main');
-	if (main) main.classList.add('fade-in');
+	// Fade in after the browser has completed style/layout calculations
+	requestAnimationFrame(function() {
+		requestAnimationFrame(function() {
+			var main = document.getElementById('main');
+			if (main) main.classList.add('fade-in');
+		});
+	});
 });

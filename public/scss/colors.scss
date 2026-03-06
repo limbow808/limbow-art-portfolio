@@ -55,7 +55,7 @@ picture {
 }
 
 .loading-overlay {
-  background: linear-gradient(100deg, $loading-bg-color1 25%, $loading-bg-color2 50%, $loading-bg-color3 75%);
+  background-color: #e8e8e8;
 }
 
 .nav a,
@@ -133,7 +133,7 @@ html[data-theme="dark"] .discography-loading-overlay {
 }
 
 html[data-theme="dark"] .loading-overlay {
-  background: linear-gradient(100deg, #444444 25%, #2a2a2a 50%, #333333 75%);
+  background-color: #2a2a2a;
 }
 
 html[data-theme="dark"] .nav a,

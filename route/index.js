@@ -8,6 +8,16 @@ const path = require('path');
 
 const sitename = "| limbow";
 
+// Load pre-built image metadata (aspect ratio + avg color)
+const metaCachePath = path.join(__dirname, '..', 'data', 'image-meta.json');
+let imageMetaCache = {};
+try { imageMetaCache = JSON.parse(fs.readFileSync(metaCachePath, 'utf8')); } catch (e) {}
+
+function getImageMeta(absPath) {
+    const rel = path.relative(path.join(__dirname, '..'), absPath).replace(/\\/g, '/');
+    return imageMetaCache[rel] || { aspectRatio: '1/1', avgColor: '#e8e8e8' };
+}
+
 function toSlug(name) {
     return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
@@ -46,12 +56,16 @@ function getHeroImages() {
             }
 
             if (thumbFile) {
+                const imgPath = path.join(thumbDir, thumbFile);
+                const meta = getImageMeta(imgPath);
                 results.push({
                     filename: thumbFile,
                     name: projectData.title || folder,
                     slug: folder,
                     path: `/images/recent-work/${folder}/thumbnail/${thumbFile}`,
-                    workType: projectData.workType || '3D Artwork'
+                    workType: projectData.workType || '3D Artwork',
+                    aspectRatio: meta.aspectRatio,
+                    avgColor: meta.avgColor
                 });
             } else {
                 const files = fs.readdirSync(folderPath)
@@ -61,12 +75,16 @@ function getHeroImages() {
                     })
                     .sort();
                 if (files.length > 0) {
+                    const imgPath = path.join(folderPath, files[0]);
+                    const meta = getImageMeta(imgPath);
                     results.push({
                         filename: files[0],
                         name: projectData.title || folder,
                         slug: folder,
                         path: `/images/recent-work/${folder}/${files[0]}`,
-                        workType: projectData.workType || '3D Artwork'
+                        workType: projectData.workType || '3D Artwork',
+                        aspectRatio: meta.aspectRatio,
+                        avgColor: meta.avgColor
                     });
                 }
             }
@@ -173,6 +191,12 @@ function getImagesWithLayout() {
                 try { projectData = JSON.parse(fs.readFileSync(projectJsonPath, 'utf8')); } catch(e) {}
             }
 
+            // Resolve the actual file path for aspect ratio
+            const actualFilePath = baseFile.path.startsWith('/images/gallery/')
+                ? path.join(__dirname, '..', baseFile.path)
+                : path.join(galleryDir, slug, baseFile.filename);
+            const meta = getImageMeta(actualFilePath);
+
             result.push({
                 filename: baseFile.filename,
                 name: projectData.title || baseFile.name,
@@ -180,7 +204,9 @@ function getImagesWithLayout() {
                 workType: projectData.workType || '3D Artwork',
                 slug: slug,
                 cssClass: '',
-                variants: allVariants
+                variants: allVariants,
+                aspectRatio: meta.aspectRatio,
+                avgColor: meta.avgColor
             });
         }
         

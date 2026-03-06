@@ -10,12 +10,12 @@
                 <% if (typeof heroImages !== 'undefined' && heroImages && heroImages.length > 0) { %>
                     <% heroImages.forEach(function(heroImage, idx) { %>
                         <a href="/project/<%= heroImage.slug %>" class="gallery-link">
-                            <div class="hero-image">
+                            <div class="hero-image" style="aspect-ratio: <%= heroImage.aspectRatio %>">
                                 <picture>
                                     <source media="(max-width: 900px)" srcset="<%= heroImage.path %>?w=1000">
                                     <img class="gallery-image" src="<%= heroImage.path %>?w=2000" alt="<%= heroImage.name %>" <%= idx > 0 ? 'loading="lazy"' : '' %> />
                                 </picture>
-                                <div class="loading-overlay"></div>
+                                <div class="loading-overlay" style="background-color: <%= heroImage.avgColor %>"></div>
                                 <div class="card-meta">
                                     <h3 class="card-title"><%= heroImage.name %></h3>
                                     <p class="card-type"><%= heroImage.workType %></p>
@@ -29,14 +29,14 @@
                     <% if (images && images.length > 0) { %>
                         <% images.forEach(function(image) { %>
                             <a href="/project/<%= image.slug %>" class="gallery-link">
-                                <div class="gallery-card <%= image.cssClass %>" <% if (image.variants && image.variants.length > 1) { %>data-variants='<%= JSON.stringify(image.variants) %>'<% } %>>
+                                <div class="gallery-card <%= image.cssClass %>" style="aspect-ratio: <%= image.aspectRatio %>" <% if (image.variants && image.variants.length > 1) { %>data-variants='<%= JSON.stringify(image.variants) %>'<% } %>>
                                     <picture>
                                         <source media="(max-width: 900px)" srcset="<%= image.path %>?w=650">
                                         <source media="(min-width: 3000px)" srcset="<%= image.path %>?w=800">
                                         <source media="(min-width: 901px) and (max-width: 2999px)" srcset="<%= image.path %>?w=480">
                                         <img loading="lazy" class="gallery-image" src="<%= image.path %>?w=650" alt="<%= image.name %>" />
                                     </picture>
-                                    <div class="loading-overlay"></div>
+                                    <div class="loading-overlay" style="background-color: <%= image.avgColor %>"></div>
                                     <div class="card-meta">
                                         <h3 class="card-title"><%= image.name %></h3>
                                         <p class="card-type"><%= image.workType %></p>

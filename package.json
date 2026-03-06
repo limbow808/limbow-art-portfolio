@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build:css": "npx sass --load-path=node_modules public/scss/style.scss public/css/style.css",
+    "build:images": "node scripts/build-image-meta.js",
     "watch:css": "sass --watch public/scss/style.scss:public/css/style.css",
-    "build": "npm run build:css",
+    "build": "npm run build:css && npm run build:images",
     "start": "node index.js"
   },
   "repository": {

@@ -1,0 +1,86 @@
+{
+  "images/recent-work/howl-angel/thumbnail/1.jpg": {
+    "aspectRatio": "3440/1440",
+    "avgColor": "#252a30"
+  },
+  "images/recent-work/minu/thumbnail/2.png": {
+    "aspectRatio": "3440/1440",
+    "avgColor": "#343941"
+  },
+  "images/gallery/21/21.png": {
+    "aspectRatio": "2000/2000",
+    "avgColor": "#bbb8b5"
+  },
+  "images/gallery/3/3.png": {
+    "aspectRatio": "1000/1000",
+    "avgColor": "#918b8a"
+  },
+  "images/gallery/aa/Aa.png": {
+    "aspectRatio": "3000/3000",
+    "avgColor": "#424753"
+  },
+  "images/gallery/baby-blizzard2/baby blizzard2.png": {
+    "aspectRatio": "4096/4096",
+    "avgColor": "#473c3a"
+  },
+  "images/gallery/carl-zeer-queen-noise/carl zeer queen NOISE.jpg": {
+    "aspectRatio": "4096/4096",
+    "avgColor": "#aaadb4"
+  },
+  "images/gallery/delete-funny-compression/delete funny compression.jpg": {
+    "aspectRatio": "4096/4096",
+    "avgColor": "#8b8a8d"
+  },
+  "images/gallery/falls-6w/falls 6w.png": {
+    "aspectRatio": "3000/3000",
+    "avgColor": "#696965"
+  },
+  "images/gallery/harelatias/harelastias.png": {
+    "aspectRatio": "3000/3000",
+    "avgColor": "#39393b"
+  },
+  "images/gallery/hate/hate.png": {
+    "aspectRatio": "3000/3000",
+    "avgColor": "#313634"
+  },
+  "images/gallery/idk5/idk5.png": {
+    "aspectRatio": "4550/6500",
+    "avgColor": "#928d8d"
+  },
+  "images/gallery/jeans-1/jeans 1.png": {
+    "aspectRatio": "1280/720",
+    "avgColor": "#37302c"
+  },
+  "images/gallery/kopfsteinpflaster/kopfsteinpflaster.png": {
+    "aspectRatio": "4096/4096",
+    "avgColor": "#766960"
+  },
+  "images/gallery/lavel-field/lavel field.png": {
+    "aspectRatio": "3840/3840",
+    "avgColor": "#443e3a"
+  },
+  "images/gallery/maybe-baby-funny-2/maybe baby funny 2.jpg": {
+    "aspectRatio": "1352/1352",
+    "avgColor": "#5c6180"
+  },
+  "images/gallery/onion/onion.jpg": {
+    "aspectRatio": "4800/7242",
+    "avgColor": "#e4e3e3"
+  },
+  "images/gallery/place-like-this-noise/place like this noise.png": {
+    "aspectRatio": "4096/4096",
+    "avgColor": "#7c6f6c"
+  },
+  "images/gallery/random-shape-art-compressed/random shape art compressed.jpg": {
+    "aspectRatio": "3000/3000",
+    "avgColor": "#cccdd1"
+  },
+  "images/gallery/vanda/vanda.png": {
+    "aspectRatio": "3000/3000",
+    "avgColor": "#232625"
+  },
+  "images/gallery/wilk-coverart/WILK Coverart.JPG": {
+    "aspectRatio": "1440/1440",
+    "avgColor": "#3e3733"
+  }
+}
