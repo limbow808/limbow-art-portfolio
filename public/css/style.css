@@ -1365,8 +1365,7 @@ html {
 }
 .commission-banner a {
   color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration: none;
 }
 
 [data-theme=dark] .commission-banner {
