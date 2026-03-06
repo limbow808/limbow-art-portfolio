@@ -203,16 +203,6 @@ router.get("/", (req, res) => {
     const heroImages = getHeroImages();
     const images = getImagesWithLayout();
     
-    // Debug: log images with variants
-    const imagesWithVariants = images.filter(img => img.variants && img.variants.length > 0);
-    if (imagesWithVariants.length > 0) {
-        console.log('Images with variants:', imagesWithVariants.map(img => ({
-            name: img.name,
-            variantCount: img.variants.length,
-            variants: img.variants.map(v => v.name)
-        })));
-    }
-    
     let data = {
         title: `Overview ${sitename}`,
         heroImages: heroImages,

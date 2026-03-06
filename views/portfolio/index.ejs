@@ -1,52 +1,60 @@
 <%- include("header", {title: title}); %>
 
 <body>
-    <div id="siteLoadingScreen" class="site-loading-screen">
-        <span class="loading-emoticon">:)</span>
-        <span class="loading-text">loading</span>
-    </div>
-    <div class = "wrapper">
+    <div class="wrapper">
         <%- include("nav"); %>
-        <div class="main" role="main" id = "main">
-            <div class = "content overview">
+        <div class="main" role="main" id="main">
+            <div class="content overview">
                 <h2 class="section-heading">Recent Work</h2>
+
                 <% if (typeof heroImages !== 'undefined' && heroImages && heroImages.length > 0) { %>
-                    <% heroImages.forEach(function(heroImage) { %>
+                    <% heroImages.forEach(function(heroImage, idx) { %>
                         <a href="/project/<%= heroImage.slug %>" class="gallery-link">
-                            <picture class="hero-image">
-                                <source media="(max-width: 900px)" srcset="<%= heroImage.path %>?w=1000">
-                                <img class="gallery-image" src="<%= heroImage.path %>?w=2000" alt="<%= heroImage.name %>" />
+                            <div class="hero-image">
+                                <picture>
+                                    <source media="(max-width: 900px)" srcset="<%= heroImage.path %>?w=1000">
+                                    <img class="gallery-image" src="<%= heroImage.path %>?w=2000" alt="<%= heroImage.name %>" <%= idx > 0 ? 'loading="lazy"' : '' %> />
+                                </picture>
                                 <div class="loading-overlay"></div>
                                 <div class="card-meta">
                                     <h3 class="card-title"><%= heroImage.name %></h3>
                                     <p class="card-type"><%= heroImage.workType %></p>
                                 </div>
-                            </picture>
+                            </div>
                         </a>
                     <% }); %>
                 <% } %>
                 <h2 class="section-heading gallery-heading">Gallery</h2>
-                <div class = "gallery-container">
+                <div class="gallery-container">
                     <% if (images && images.length > 0) { %>
                         <% images.forEach(function(image) { %>
                             <a href="/project/<%= image.slug %>" class="gallery-link">
-                                <picture class="<%= image.cssClass %>" <% if (image.variants && image.variants.length > 1) { %>data-variants='<%= JSON.stringify(image.variants) %>'<% } %>>
-                                    <source media="(max-width: 900px)" srcset="<%= image.path %>?w=650">
-                                    <source media="(min-width: 3000px)" srcset="<%= image.path %>?w=800">
-                                    <source media="(min-width: 901px) and (max-width: 2999px)" srcset="<%= image.path %>?w=480">
-                                    <img loading="lazy" class="gallery-image" src="<%= image.path %>?w=650" alt="<%= image.name %>" />
+                                <div class="gallery-card <%= image.cssClass %>" <% if (image.variants && image.variants.length > 1) { %>data-variants='<%= JSON.stringify(image.variants) %>'<% } %>>
+                                    <picture>
+                                        <source media="(max-width: 900px)" srcset="<%= image.path %>?w=650">
+                                        <source media="(min-width: 3000px)" srcset="<%= image.path %>?w=800">
+                                        <source media="(min-width: 901px) and (max-width: 2999px)" srcset="<%= image.path %>?w=480">
+                                        <img loading="lazy" class="gallery-image" src="<%= image.path %>?w=650" alt="<%= image.name %>" />
+                                    </picture>
                                     <div class="loading-overlay"></div>
                                     <div class="card-meta">
                                         <h3 class="card-title"><%= image.name %></h3>
                                         <p class="card-type"><%= image.workType %></p>
                                     </div>
-                                </picture>
+                                </div>
                             </a>
                         <% }); %>
                     <% } else { %>
                         <p>No images found in the gallery folder.</p>
                     <% } %>
                 </div>
+
+                <!-- CTA -->
+                <div class="overview-cta">
+                    <p class="overview-cta-text">Interested in working together?</p>
+                    <a href="/contact" class="overview-cta-btn">Get in Touch</a>
+                </div>
+
             </div>
             <%- include("footer"); %>
         </div>

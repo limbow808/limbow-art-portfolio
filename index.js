@@ -18,71 +18,85 @@ app.use(middleware.logIncomingToConsole);
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", routeIndex);
 
-app.listen(port, '0.0.0.0', () => {
-  logStartUpDetailsToConsole();
-  console.log(`Server is running on port ${port}`);
-});
+// Image optimization route — handles any nested path under /images/
+// Supports ?w= for resize and automatic WebP conversion when browser supports it
+app.get("/images/*", async (req, res, next) => {
+    const width = parseInt(req.query.w, 10) || null;
 
-app.get("/images/:folder/:filename", async (req, res) => {
+    // If no resize requested, fall through to static serving
+    if (!width) return next();
+
     try {
-        console.log("Route hit")
-        const { folder, filename } = req.params;
-        const width = parseInt(req.query.w, 10) || null; // Get width from ?w=xxx
-        const imagePath = path.join(__dirname, "images", folder, filename);
+        const relativePath = req.params[0]; // everything after /images/
+        const imagePath = path.join(__dirname, "images", relativePath);
 
-        // Check if file exists
         if (!fs.existsSync(imagePath)) {
-            console.log("File does not exist: ", imagePath);
-            return res.status(404).send("Image not found");
+            return next(); // let static handler 404
         }
 
         const metadata = await sharp(imagePath).metadata();
-        const format = metadata.format; // Get image format (png, jpg, etc.)
-        console.log("Original Image Metadata:", metadata);
+        let image = sharp(imagePath).resize({ width, withoutEnlargement: true });
 
-        let image = sharp(imagePath);
-
-        if (width) {
-            image = image.resize({ width, withoutEnlargement: true }); // Resize with limit
+        // Convert to WebP if the browser supports it
+        const acceptHeader = req.headers.accept || '';
+        if (acceptHeader.includes('image/webp')) {
+            image = image.webp({ quality: 82 });
+            res.type('image/webp');
+        } else {
+            // Serve in original format
+            res.type(`image/${metadata.format === 'jpg' ? 'jpeg' : metadata.format}`);
         }
 
         const buffer = await image.toBuffer();
-
-        res.type("image/png"); // Adjust the file type accordingly
+        // Cache optimized images for 7 days
+        res.set('Cache-Control', 'public, max-age=604800, immutable');
         res.send(buffer);
     } catch (error) {
-        console.error(error);
-        res.status(500).send("Error processing image");
+        console.error('Image processing error:', error.message);
+        next(); // fall through to static on error
     }
 });
 
 app.use("/images", express.static("images"));
 
-/**
- * Log app details to console when starting up.
- *
- * @return {void}
- */
-function logStartUpDetailsToConsole() {
-    let routes = [];
+// Sitemap route
+app.get("/sitemap.xml", (req, res) => {
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const recentDir = path.join(__dirname, 'images', 'recent-work');
+    const galleryDir = path.join(__dirname, 'images', 'gallery');
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
 
-    // Find what routes are supported
-    app._router.stack.forEach((middleware) => {
-        if (middleware.route) {
-            // Routes registered directly on the app
-            routes.push(middleware.route);
-        } else if (middleware.name === "router") {
-            // Routes added as router middleware
-            middleware.handle.stack.forEach((handler) => {
-                let route;
+    let projectSlugs = [];
+    if (fs.existsSync(recentDir)) {
+        projectSlugs = projectSlugs.concat(
+            fs.readdirSync(recentDir, { withFileTypes: true })
+                .filter(d => d.isDirectory())
+                .map(d => d.name)
+        );
+    }
+    if (fs.existsSync(galleryDir)) {
+        projectSlugs = projectSlugs.concat(
+            fs.readdirSync(galleryDir, { withFileTypes: true })
+                .filter(d => d.isDirectory())
+                .map(d => d.name)
+        );
+    }
 
-                route = handler.route;
-                route && routes.push(route);
-            });
-        }
+    const staticPages = ['/', '/info', '/contact', '/impressum'];
+    const urls = staticPages.map(p => `  <url><loc>${baseUrl}${p}</loc><changefreq>monthly</changefreq></url>`);
+    projectSlugs.forEach(slug => {
+        urls.push(`  <url><loc>${baseUrl}/project/${slug}</loc><changefreq>monthly</changefreq></url>`);
     });
 
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.join('\n')}
+</urlset>`;
+
+    res.header('Content-Type', 'application/xml');
+    res.send(sitemap);
+});
+
+app.listen(port, '0.0.0.0', () => {
     console.info(`Server is listening on port ${port}.`);
-    console.info("Available routes are:");
-    console.info(routes);
-}
+});

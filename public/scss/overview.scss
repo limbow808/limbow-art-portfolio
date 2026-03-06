@@ -27,22 +27,42 @@
 
 .hero-image {
   display: block;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
   margin-bottom: 1rem;
+  background-color: transparent;
+  isolation: isolate;
+  contain: paint;
+}
+
+.hero-image .gallery-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+.hero-image picture {
+  display: block;
+  width: 100%;
+}
+
+.hero-image:hover .gallery-image {
+  filter: opacity(0.92);
+}
+
+.hero-image:hover .card-meta {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .gallery-container {
-  $count: 3;
-  $col-gap: 0.6rem;
+  column-count: 3;
+  column-gap: 0.6rem;
+  row-gap: 0.6rem;
   line-height: 2rem;
-  column-count: $count;
-  column-gap: $col-gap;
-  -webkit-row-gap: $col-gap;
-  column-count: $count;
-  column-gap: $col-gap;
-  -moz-row-gap: $col-gap;
-  column-count: $count;
-  column-gap: $col-gap;
-  row-gap: $col-gap;
 }
 
 .gallery-container img {
@@ -51,35 +71,33 @@
   object-fit: cover;
 }
 
-picture {
+.gallery-card {
   position: relative;
   display: inline-block;
   width: 100%;
-  height: 430px;
   overflow: hidden;
   border-radius: 12px;
   margin-bottom: 0.75rem;
   background-color: transparent;
   isolation: isolate;
   contain: paint;
-  -webkit-border-radius: 12px;
+
+  picture {
+    display: block;
+    width: 100%;
+  }
 }
 
 .gallery-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
   transition: opacity 0.3s ease, filter 0.28s ease;
   border-radius: 12px;
   backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  -webkit-border-radius: 12px;
-  clip-path: inset(0 round 12px);
-  -webkit-clip-path: inset(0 round 12px);
 }
 
-picture:hover .gallery-image {
+.gallery-card:hover .gallery-image {
   filter: opacity(0.92);
 }
 
@@ -106,7 +124,7 @@ picture:hover .gallery-image {
   background-clip: padding-box;
 }
 
-picture:hover .card-meta {
+.gallery-card:hover .card-meta {
   opacity: 1;
   transform: translateY(0);
 }
@@ -159,55 +177,58 @@ picture:hover .card-meta {
   opacity: 1;
 }
 
-picture .gallery-image.loaded {
-  height: auto;
-}
-
 .gallery-image {
   opacity: 0;
 }
 
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    opacity: 1;
+// CTA at bottom of overview
+.overview-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem 1rem 1rem;
+  text-align: center;
 }
 
-.overlay img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
+.overview-cta-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #666666;
+  margin: 0;
 }
 
+.overview-cta-btn {
+  display: inline-block;
+  padding: 0.7rem 2rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.04rem;
+  color: #ffffff;
+  background-color: #333333;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+
+  &:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+}
 
 // mobile
 @media (max-width: 768px) {
   .gallery-container {
     padding-bottom: 5rem;
-    $count: 2;
-    $col-gap: 0.3rem;
+    column-count: 2;
+    column-gap: 0.4rem;
+    row-gap: 0.4rem;
     line-height: 1rem;
-    column-count: $count;
-    column-gap: $col-gap;
-    -webkit-row-gap: $col-gap;
-    column-count: $count;
-    column-gap: $col-gap;
-    -moz-row-gap: $col-gap;
-    column-count: $count;
-    column-gap: $col-gap;
-    row-gap: $col-gap;
   }
 
-  picture {
+  .gallery-card {
     border-radius: 10px;
+    margin-bottom: 0.4rem;
   }
 
   .card-title {
@@ -217,7 +238,15 @@ picture .gallery-image.loaded {
   .card-type {
     font-size: 0.62rem;
   }
+}
 
-  //.hero-image {display: none;}
+@media (max-width: 480px) {
+  .gallery-container {
+    column-count: 1;
+    column-gap: 0;
+  }
 
+  .gallery-card {
+    margin-bottom: 0.5rem;
+  }
 }

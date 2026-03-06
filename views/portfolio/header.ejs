@@ -6,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
 
+    <!-- SEO -->
+    <meta name="description" content="<%= typeof metaDescription !== 'undefined' && metaDescription ? metaDescription : 'limbow — 3D artist & digital creator. Portfolio showcasing character art, environment design, and illustration. Open for commissions.' %>" />
+    <meta name="author" content="limbow" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="<%= title %>" />
+    <meta property="og:description" content="<%= typeof metaDescription !== 'undefined' && metaDescription ? metaDescription : 'limbow — 3D artist & digital creator. Open for commissions.' %>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="<%= typeof ogImage !== 'undefined' && ogImage ? ogImage : '/images/logo.png' %>" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="<%= title %>" />
+    <meta name="twitter:description" content="<%= typeof metaDescription !== 'undefined' && metaDescription ? metaDescription : 'limbow — 3D artist & digital creator. Open for commissions.' %>" />
+    <meta name="twitter:image" content="<%= typeof ogImage !== 'undefined' && ogImage ? ogImage : '/images/logo.png' %>" />
+
     <link rel="icon" href="/images/favicon.ico">
     
     <!-- Early theme initialization to prevent flash -->
@@ -15,7 +32,6 @@
             let theme = localStorage.getItem(STORAGE_KEY);
             
             if (!theme) {
-                // Check system preference
                 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                     theme = 'dark';
                 } else {
@@ -27,24 +43,18 @@
 
             function syncToggleButton(currentTheme) {
                 const button = document.getElementById('theme-toggle-btn');
-                if (!button) {
-                    return;
-                }
+                if (!button) return;
                 button.classList.toggle('theme-toggle--toggled', currentTheme === 'dark');
             }
             
-            // Theme toggle handler
             window.toggleTheme = function() {
                 const current = document.documentElement.getAttribute('data-theme');
                 const newTheme = current === 'dark' ? 'light' : 'dark';
-                
                 document.documentElement.setAttribute('data-theme', newTheme);
                 localStorage.setItem(STORAGE_KEY, newTheme);
-
                 syncToggleButton(newTheme);
             };
             
-            // Attach handler immediately
             function attachHandler() {
                 const btn = document.getElementById('theme-toggle-btn');
                 if (btn) {
@@ -63,127 +73,7 @@
         })();
     </script>
     
-    <!-- Critical loading screen styles to prevent FOUC -->
-    <style>
-        .site-loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            z-index: 9999;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.5s ease-out;
-            opacity: 0;
-            pointer-events: none;
-        }
-        html[data-theme="dark"] .site-loading-screen {
-            background: #1a1a1a;
-        }
-        .site-loading-screen.is-visible {
-            display: flex;
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .loading-emoticon {
-            font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', 'Roboto', sans-serif;
-            font-size: 5rem;
-            color: #111111;
-            text-align: center;
-            display: block;
-            margin-bottom: 2rem;
-            line-height: 1;
-            opacity: 1;
-            animation: pulse 0.9s ease-in-out infinite;
-        }
-        html[data-theme="dark"] .loading-emoticon {
-            color: #ffffff;
-        }
-        .loading-text {
-            font-family: 'Manrope', 'Roboto', sans-serif;
-            font-size: 1.2rem;
-            color: #666666;
-            position: absolute;
-            bottom: 4rem;
-            animation: pulse 1.5s ease-in-out infinite;
-            display: none;
-        }
-        html[data-theme="dark"] .loading-text {
-            color: #999999;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
-        }
-        .site-loading-screen.fade-out {
-            opacity: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css?v=<%= Date.now() %>" type="text/css" />
 
-    <script>
-        (function () {
-            var emoticons = [':)', ':3', ':D', 'xD', ':]', '>:3', ':P', '<3', ':O', '( ͡° ͜ʖ ͡°)', '(>w<)', 'UwU'];
-            var currentIndex = 0;
-            var intervalId;
-            var started = false;
-            var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-            var effectiveType = connection && connection.effectiveType ? connection.effectiveType : '';
-            var saveData = !!(connection && connection.saveData);
-            var isBadConnection = saveData || effectiveType === 'slow-2g' || effectiveType === '2g' || effectiveType === '3g';
-            var shouldActivateEarly = isBadConnection;
-
-            function startEarlyLoader() {
-                if (started) return;
-
-                var loadingScreen = document.getElementById('siteLoadingScreen');
-                var emoticonEl = document.querySelector('.loading-emoticon');
-                var loadingText = document.querySelector('.loading-text');
-                if (!loadingScreen || !emoticonEl) return;
-
-                started = true;
-                window.__earlyLoaderActive = true;
-                loadingScreen.classList.add('is-visible');
-
-                if (loadingText) {
-                    loadingText.style.display = 'block';
-                    loadingText.textContent = '0%';
-                }
-
-                intervalId = window.setInterval(function () {
-                    if (loadingScreen.classList.contains('fade-out') || loadingScreen.style.display === 'none') {
-                        window.clearInterval(intervalId);
-                        return;
-                    }
-
-                    currentIndex = (currentIndex + 1) % emoticons.length;
-                    emoticonEl.textContent = emoticons[currentIndex];
-                }, 120);
-
-                window.__earlyLoaderInterval = intervalId;
-            }
-
-            if (shouldActivateEarly) {
-                var pollId = window.setInterval(function () {
-                    startEarlyLoader();
-                    if (started) {
-                        window.clearInterval(pollId);
-                    }
-                }, 50);
-
-                window.setTimeout(function () {
-                    window.clearInterval(pollId);
-                    startEarlyLoader();
-                }, 5000);
-            }
-        })();
-    </script>
-    
-    <link rel="stylesheet" href="/css/style.css?v=db7fa9e" type="text/css" />
-    <link rel="stylesheet" href="/css/mobile-menu.css" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-
+    <!-- Analytics — replace with your Plausible/Fathom domain or remove if not needed -->
+    <!-- <script defer data-domain="yourdomain.com" src="https://plausible.io/js/script.js"></script> -->
