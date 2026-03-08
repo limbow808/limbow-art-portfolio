@@ -1,0 +1,73 @@
+.page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md) var(--space-3xl);
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 430px;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-xl);
+  background-color: var(--color-bg);
+}
+
+.heroImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+html[data-theme="dark"] .hero {
+  background-color: var(--color-bg-elevated);
+}
+
+html[data-theme="dark"] .heroImg {
+  filter: invert(1);
+}
+
+.panels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.panel {
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.4rem;
+  transition: background-color 0.3s ease;
+}
+
+.label {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+}
+
+.text {
+  font-size: var(--font-size-base);
+  line-height: 1.55;
+  margin: 0.25rem 0 0;
+}
+
+.toolsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.toolTag {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-tag-bg);
+}
