@@ -1,0 +1,68 @@
+:root {
+  /* Colors - Light */
+  --color-bg: #ffffff;
+  --color-bg-elevated: #f7f7f7;
+  --color-bg-overlay: rgba(255, 255, 255, 0.92);
+  --color-text: #111111;
+  --color-text-secondary: #666666;
+  --color-text-muted: #999999;
+  --color-border: #f0f0f0;
+  --color-accent: #333333;
+  --color-accent-hover: #555555;
+  --color-card-bg: #f7f7f7;
+  --color-tag-bg: rgba(0, 0, 0, 0.07);
+  --color-cursor: #ffffff;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+
+  /* Typography */
+  --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-size-xs: 0.7rem;
+  --font-size-sm: 0.82rem;
+  --font-size-base: 0.95rem;
+  --font-size-lg: 1.1rem;
+  --font-size-xl: 1.4rem;
+  --font-size-2xl: 2.2rem;
+  --font-size-3xl: clamp(2rem, 5vw, 3.5rem);
+  --font-size-4xl: clamp(2.8rem, 7vw, 5rem);
+  --font-size-hero: clamp(3rem, 8vw, 6.5rem);
+
+  /* Layout */
+  --max-width: 1400px;
+  --header-height: 3rem;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+
+  /* Transitions */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 800ms;
+}
+
+html[data-theme="dark"] {
+  --color-bg: #0a0a0a;
+  --color-bg-elevated: #1a1a1a;
+  --color-bg-overlay: rgba(10, 10, 10, 0.92);
+  --color-text: #f0f0f0;
+  --color-text-secondary: #aaaaaa;
+  --color-text-muted: #666666;
+  --color-border: #222222;
+  --color-accent: #e0e0e0;
+  --color-accent-hover: #ffffff;
+  --color-card-bg: #1a1a1a;
+  --color-tag-bg: rgba(255, 255, 255, 0.1);
+  --color-cursor: #ffffff;
+}

@@ -9,12 +9,23 @@ const path    = require("path");
 const express = require("express");
 const app     = express();
 const routeIndex = require("./route/index.js");
+const apiRouter = require("./route/api.js");
 const middleware = require("./middleware/index.js");
 const fs = require("fs");
 
 app.set("view engine", "ejs");
 
 app.use(middleware.logIncomingToConsole);
+
+// API routes (for React frontend)
+app.use("/api", apiRouter);
+
+// Serve React build (production)
+const distPath = path.join(__dirname, "dist");
+if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+}
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", routeIndex);
 
@@ -96,6 +107,14 @@ ${urls.join('\n')}
     res.header('Content-Type', 'application/xml');
     res.send(sitemap);
 });
+
+// SPA catch-all — serve React index.html for client-side routes
+const reactIndex = path.join(__dirname, "dist", "index.html");
+if (fs.existsSync(reactIndex)) {
+    app.get("*", (req, res) => {
+        res.sendFile(reactIndex);
+    });
+}
 
 app.listen(port, '0.0.0.0', () => {
     console.info(`Server is listening on port ${port}.`);
