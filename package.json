@@ -8,11 +8,11 @@
     "build:images": "node scripts/build-image-meta.js",
     "watch:css": "sass --watch public/scss/style.scss:public/css/style.css",
     "build:legacy": "npm run build:css && npm run build:images",
-    "client:install": "cd client && npm install",
+    "client:install": "cd client && npm install --include=dev",
     "client:dev": "cd client && npm run dev",
     "client:build": "cd client && npm run build",
     "dev": "node index.js",
-    "build": "npm run build:legacy && npm run client:build",
+    "build": "npm run build:legacy && npm run client:install && npm run client:build",
     "start": "node index.js"
   },
   "repository": {
