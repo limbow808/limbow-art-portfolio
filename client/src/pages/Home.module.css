@@ -30,17 +30,16 @@
 
 .heroCard {
   position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  isolation: isolate;
+  clip-path: inset(0 round var(--radius-lg));
 }
 
 .heroCard img {
   transition: transform 0.6s var(--ease-out-expo), filter 0.3s ease, opacity 0.5s ease;
+  transform: scale(1.005);
 }
 
 .heroCard:hover img {
-  transform: scale(1.02);
+  transform: scale(1.03);
   filter: brightness(0.92);
 }
 
@@ -75,9 +74,7 @@
   opacity: 0;
   transform: translateY(-12px);
   transition: opacity 0.28s ease, transform 0.28s ease;
-  z-index: 2;
-  border-top-left-radius: var(--radius-lg);
-  border-top-right-radius: var(--radius-lg);
+  z-index: 4;
   pointer-events: none;
 }
 
@@ -126,13 +123,12 @@
 .galleryCard {
   position: relative;
   width: 100%;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  isolation: isolate;
+  clip-path: inset(0 round var(--radius-lg));
 }
 
 .galleryCard img {
   transition: transform 0.6s var(--ease-out-expo), filter 0.3s ease, opacity 0.5s ease;
+  transform: scale(1.005);
 }
 
 .galleryCard:hover img {
@@ -158,19 +154,18 @@
 
 .ctaBtn {
   display: inline-block;
-  padding: 0.7rem 2rem;
-  font-size: 0.88rem;
-  font-weight: 600;
-  letter-spacing: 0.04rem;
-  color: var(--color-bg);
-  background-color: var(--color-accent);
-  border-radius: 8px;
-  transition: opacity 0.2s ease, transform 0.15s ease;
+  padding: 0.7rem 3rem;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.05rem;
+  color: inherit;
+  background-color: var(--color-card-bg);
+  border-radius: var(--radius-md);
+  transition: opacity 0.2s ease;
 }
 
 .ctaBtn:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
+  opacity: 0.6;
 }
 
 /* Responsive */
