@@ -102,16 +102,46 @@
   margin-bottom: 0.65rem;
 }
 
+.viewerImageWrap {
+  position: relative;
+  width: 100%;
+  background: var(--color-card-bg);
+  min-height: 200px;
+}
+
 .viewerImage {
   width: 100%;
   display: block;
   object-fit: cover;
   cursor: zoom-in;
-  transition: filter 0.3s ease;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.viewerImageLoading {
+  opacity: 0.3;
 }
 
 .viewerImage:hover {
   filter: brightness(0.95);
+}
+
+.viewerSpinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border: 2.5px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  z-index: 3;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 .arrow {

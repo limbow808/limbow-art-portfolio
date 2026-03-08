@@ -1,12 +1,105 @@
 import { useParams, Link } from 'react-router-dom'
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
 import PageTransition from '../components/PageTransition'
 import Reveal from '../components/Reveal'
 import ProgressiveImage from '../components/ProgressiveImage'
 import Lightbox from '../components/Lightbox'
 import { useProjectData } from '../hooks/useData'
 import styles from './Project.module.css'
+
+function ViewerSection({ section, sIdx, title, currentIdx, setViewerIndex, openLightbox }) {
+  const [imgLoaded, setImgLoaded] = useState(true)
+  const containerRef = useRef(null)
+  const currentImage = section.images[currentIdx]
+
+  // Preload adjacent images
+  useEffect(() => {
+    const preload = (idx) => {
+      if (idx >= 0 && idx < section.images.length) {
+        const img = new Image()
+        img.src = `${section.images[idx].path}?w=2000`
+      }
+    }
+    preload(currentIdx + 1)
+    preload(currentIdx - 1)
+  }, [currentIdx, section.images])
+
+  const handleSwitch = (newIdx) => {
+    setImgLoaded(false)
+    setViewerIndex(sIdx, newIdx)
+  }
+
+  return (
+    <Reveal key={sIdx} delay={0.1}>
+      <div className={styles.viewer} ref={containerRef}>
+        <div className={styles.viewerImageWrap}>
+          <img
+            key={currentImage?.path}
+            src={`${currentImage?.path}?w=2000`}
+            alt={currentImage?.name || title}
+            className={`${styles.viewerImage} ${!imgLoaded ? styles.viewerImageLoading : ''}`}
+            onLoad={() => setImgLoaded(true)}
+            onClick={() =>
+              openLightbox(
+                section.images.map((v) => ({ src: `${v.path}?w=2000`, name: v.name })),
+                currentIdx
+              )
+            }
+          />
+          {!imgLoaded && <div className={styles.viewerSpinner} />}
+        </div>
+
+        {section.images.length > 1 && (
+          <>
+            <button
+              className={`${styles.arrow} ${styles.arrowLeft}`}
+              onClick={() =>
+                handleSwitch(
+                  (currentIdx - 1 + section.images.length) % section.images.length
+                )
+              }
+              aria-label="Previous"
+            >
+              &#8249;
+            </button>
+            <button
+              className={`${styles.arrow} ${styles.arrowRight}`}
+              onClick={() =>
+                handleSwitch((currentIdx + 1) % section.images.length)
+              }
+              aria-label="Next"
+            >
+              &#8250;
+            </button>
+
+            <div className={styles.thumbs}>
+              {section.images.map((v, i) => (
+                <img
+                  key={v.path}
+                  src={`${v.path}?w=200`}
+                  alt={v.name}
+                  className={`${styles.thumb} ${i === currentIdx ? styles.thumbActive : ''}`}
+                  onClick={() => handleSwitch(i)}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      {(section.label || section.description) && (
+        <div className={`${styles.panel} ${styles.viewerCaption}`}>
+          {section.label && (
+            <span className={styles.panelLabel}>{section.label}</span>
+          )}
+          {section.description && (
+            <p className={styles.panelText}>{section.description}</p>
+          )}
+        </div>
+      )}
+    </Reveal>
+  )
+}
 
 export default function Project() {
   const { slug } = useParams()
@@ -139,81 +232,17 @@ export default function Project() {
         )}
 
         {/* Viewer sections */}
-        {viewerSections.map((section, sIdx) => {
-          const currentIdx = getViewerIndex(sIdx)
-          const currentImage = section.images[currentIdx]
-
-          return (
-            <Reveal key={sIdx} delay={0.1}>
-              <div className={styles.viewer}>
-                <motion.img
-                  key={currentImage?.path}
-                  src={`${currentImage?.path}?w=2000`}
-                  alt={currentImage?.name || title}
-                  className={styles.viewerImage}
-                  initial={{ opacity: 0.6 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  onClick={() =>
-                    openLightbox(
-                      section.images.map((v) => ({ src: `${v.path}?w=2000`, name: v.name })),
-                      currentIdx
-                    )
-                  }
-                />
-
-                {section.images.length > 1 && (
-                  <>
-                    <button
-                      className={`${styles.arrow} ${styles.arrowLeft}`}
-                      onClick={() =>
-                        setViewerIndex(
-                          sIdx,
-                          (currentIdx - 1 + section.images.length) % section.images.length
-                        )
-                      }
-                      aria-label="Previous"
-                    >
-                      &#8249;
-                    </button>
-                    <button
-                      className={`${styles.arrow} ${styles.arrowRight}`}
-                      onClick={() =>
-                        setViewerIndex(sIdx, (currentIdx + 1) % section.images.length)
-                      }
-                      aria-label="Next"
-                    >
-                      &#8250;
-                    </button>
-
-                    <div className={styles.thumbs}>
-                      {section.images.map((v, i) => (
-                        <img
-                          key={v.path}
-                          src={`${v.path}?w=200`}
-                          alt={v.name}
-                          className={`${styles.thumb} ${i === currentIdx ? styles.thumbActive : ''}`}
-                          onClick={() => setViewerIndex(sIdx, i)}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {(section.label || section.description) && (
-                <div className={`${styles.panel} ${styles.viewerCaption}`}>
-                  {section.label && (
-                    <span className={styles.panelLabel}>{section.label}</span>
-                  )}
-                  {section.description && (
-                    <p className={styles.panelText}>{section.description}</p>
-                  )}
-                </div>
-              )}
-            </Reveal>
-          )
-        })}
+        {viewerSections.map((section, sIdx) => (
+          <ViewerSection
+            key={sIdx}
+            section={section}
+            sIdx={sIdx}
+            title={title}
+            currentIdx={getViewerIndex(sIdx)}
+            setViewerIndex={setViewerIndex}
+            openLightbox={openLightbox}
+          />
+        ))}
 
         {/* Gallery */}
         {galleryItems.length > 0 && (
