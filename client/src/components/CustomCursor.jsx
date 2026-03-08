@@ -35,22 +35,11 @@ export default function CustomCursor() {
     const onDown = () => cursor.classList.add('custom-cursor--click')
     const onUp = () => cursor.classList.remove('custom-cursor--click')
 
-    const onOver = (e) => {
-      const el = e.target.closest('a, button, [data-hover]')
-      if (el) cursor.classList.add('custom-cursor--hover')
-    }
-    const onOut = (e) => {
-      const el = e.target.closest('a, button, [data-hover]')
-      if (el) cursor.classList.remove('custom-cursor--hover')
-    }
-
     document.addEventListener('mousemove', onMove)
     document.addEventListener('mouseleave', onLeave)
     document.addEventListener('mouseenter', onEnter)
     document.addEventListener('mousedown', onDown)
     document.addEventListener('mouseup', onUp)
-    document.addEventListener('mouseover', onOver)
-    document.addEventListener('mouseout', onOut)
 
     rafId.current = requestAnimationFrame(animate)
 
@@ -60,8 +49,6 @@ export default function CustomCursor() {
       document.removeEventListener('mouseenter', onEnter)
       document.removeEventListener('mousedown', onDown)
       document.removeEventListener('mouseup', onUp)
-      document.removeEventListener('mouseover', onOver)
-      document.removeEventListener('mouseout', onOut)
       cancelAnimationFrame(rafId.current)
     }
   }, [animate])

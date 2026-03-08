@@ -6,9 +6,9 @@ import ScrollProgress from './ScrollProgress'
 export default function Layout({ children }) {
   return (
     <>
-      <CustomCursor />
       <ScrollProgress />
       <div className="page-wrapper">
+        <CustomCursor />
         <Nav />
         <main className="page-content">
           {children}

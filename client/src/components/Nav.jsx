@@ -41,7 +41,7 @@ export default function Nav() {
                 `${styles.navItem} ${isActive ? styles.active : ''}`
               }
             >
-              Info
+              About
             </NavLink>
           </li>
           <li>
